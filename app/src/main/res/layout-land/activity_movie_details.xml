@@ -211,7 +211,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_view_description" />
 
         <ImageView
-            android:id="@+id/foto_01"
+            android:id="@+id/photo_01"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
@@ -219,13 +219,13 @@
             android:layout_marginEnd="4dp"
             android:background="@android:color/transparent"
             app:layout_constraintDimensionRatio="1:1"
-            android:src="@drawable/foto_01"
-            app:layout_constraintEnd_toStartOf="@+id/foto_02"
+            android:src="@drawable/photo_01"
+            app:layout_constraintEnd_toStartOf="@+id/photo_02"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_cast" />
 
         <ImageView
-            android:id="@+id/foto_02"
+            android:id="@+id/photo_02"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
@@ -233,13 +233,13 @@
             android:layout_marginEnd="4dp"
             android:background="@android:color/transparent"
             app:layout_constraintDimensionRatio="1:1"
-            android:src="@drawable/foto_02"
-            app:layout_constraintEnd_toStartOf="@id/foto_03"
-            app:layout_constraintStart_toEndOf="@id/foto_01"
+            android:src="@drawable/photo_02"
+            app:layout_constraintEnd_toStartOf="@id/photo_03"
+            app:layout_constraintStart_toEndOf="@id/photo_01"
             app:layout_constraintTop_toBottomOf="@+id/text_view_cast" />
 
         <ImageView
-            android:id="@+id/foto_03"
+            android:id="@+id/photo_03"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
@@ -247,13 +247,13 @@
             android:layout_marginEnd="4dp"
             android:background="@android:color/transparent"
             app:layout_constraintDimensionRatio="1:1"
-            android:src="@drawable/foto_03"
-            app:layout_constraintEnd_toStartOf="@id/foto_04"
-            app:layout_constraintStart_toEndOf="@id/foto_02"
+            android:src="@drawable/photo_03"
+            app:layout_constraintEnd_toStartOf="@id/photo_04"
+            app:layout_constraintStart_toEndOf="@id/photo_02"
             app:layout_constraintTop_toBottomOf="@+id/text_view_cast" />
 
         <ImageView
-            android:id="@+id/foto_04"
+            android:id="@+id/photo_04"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
@@ -261,9 +261,9 @@
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             app:layout_constraintDimensionRatio="1:1"
-            android:src="@drawable/foto_04"
+            android:src="@drawable/photo_04"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/foto_03"
+            app:layout_constraintStart_toEndOf="@id/photo_03"
             app:layout_constraintTop_toBottomOf="@+id/text_view_cast" />
 
         <TextView
@@ -276,9 +276,9 @@
             android:minLines="2"
             android:includeFontPadding="false"
             android:text="@string/name_01"
-            app:layout_constraintStart_toStartOf="@id/foto_01"
-            app:layout_constraintEnd_toEndOf="@id/foto_01"
-            app:layout_constraintTop_toBottomOf="@+id/foto_01" />
+            app:layout_constraintStart_toStartOf="@id/photo_01"
+            app:layout_constraintEnd_toEndOf="@id/photo_01"
+            app:layout_constraintTop_toBottomOf="@+id/photo_01" />
 
         <TextView
             android:id="@+id/text_view_name_02"
@@ -290,9 +290,9 @@
             android:minLines="2"
             android:includeFontPadding="false"
             android:text="@string/name_02"
-            app:layout_constraintStart_toStartOf="@id/foto_02"
-            app:layout_constraintEnd_toEndOf="@id/foto_02"
-            app:layout_constraintTop_toBottomOf="@+id/foto_02" />
+            app:layout_constraintStart_toStartOf="@id/photo_02"
+            app:layout_constraintEnd_toEndOf="@id/photo_02"
+            app:layout_constraintTop_toBottomOf="@+id/photo_02" />
 
         <TextView
             android:id="@+id/text_view_name_03"
@@ -304,9 +304,9 @@
             android:minLines="2"
             android:text="@string/name_03"
             android:includeFontPadding="false"
-            app:layout_constraintStart_toStartOf="@id/foto_03"
-            app:layout_constraintEnd_toEndOf="@id/foto_03"
-            app:layout_constraintTop_toBottomOf="@+id/foto_03" />
+            app:layout_constraintStart_toStartOf="@id/photo_03"
+            app:layout_constraintEnd_toEndOf="@id/photo_03"
+            app:layout_constraintTop_toBottomOf="@+id/photo_03" />
 
         <TextView
             android:id="@+id/text_view_name_04"
@@ -318,9 +318,9 @@
             android:minLines="2"
             android:text="@string/name_04"
             android:includeFontPadding="false"
-            app:layout_constraintStart_toStartOf="@id/foto_04"
-            app:layout_constraintEnd_toEndOf="@id/foto_04"
-            app:layout_constraintTop_toBottomOf="@+id/foto_04" />
+            app:layout_constraintStart_toStartOf="@id/photo_04"
+            app:layout_constraintEnd_toEndOf="@id/photo_04"
+            app:layout_constraintTop_toBottomOf="@+id/photo_04" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
