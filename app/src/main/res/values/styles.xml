@@ -31,4 +31,14 @@
     <style name="DescriptionMovieDetails" parent="BackMovieDetails">
         <item name="android:textSize">14sp</item>
     </style>
+    <style name="TitleMovieList" parent="BackMovieDetails">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="LongMovieList" parent="BackMovieDetails">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">#565665</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

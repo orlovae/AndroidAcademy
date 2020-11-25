@@ -14,4 +14,6 @@
     <string name="name_02">Chris Evans</string>
     <string name="name_03">Mark Ruffalo</string>
     <string name="name_04">Chris Hemsworth</string>
+    <string name="movie_list">Movie list</string>
+    <string name="long_movie">137 min</string>
 </resources>

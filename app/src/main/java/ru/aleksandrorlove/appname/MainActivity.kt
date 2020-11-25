@@ -7,18 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private val fragmentMoviesDetails = FragmentMoviesDetails()
+    private val fragmentMoviesList = FragmentMoviesList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button : Button = findViewById(R.id.button)
+        val fragmentManager = supportFragmentManager
+        val fragmentTransition = fragmentManager.beginTransaction()
 
-        button.setOnClickListener {moveToMovieScreen()}
-
-    }
-
-    private fun moveToMovieScreen() {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        startActivity(intent)
+        fragmentTransition.apply {
+            add(R.id.fragment_container_view, fragmentMoviesDetails)
+            add(R.id.fragment_container_view, fragmentMoviesList)
+            commit()
+        }
     }
 }
