@@ -9,10 +9,6 @@ import androidx.fragment.app.Fragment
 
 class FragmentMoviesList : Fragment(), View.OnClickListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater!!.inflate(R.layout.fragment_movies_list, container, false)
         val cardView: CardView = view.findViewById(R.id.card_view)
