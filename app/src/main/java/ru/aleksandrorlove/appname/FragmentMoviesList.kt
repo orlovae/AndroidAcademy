@@ -17,16 +17,20 @@ class FragmentMoviesList : Fragment(), View.OnClickListener {
         return view
     }
 
-    companion object {
-        fun newInstance(): FragmentMoviesList {
-            return FragmentMoviesList()
-        }
-    }
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.card_view -> {
                 Toast.makeText(v.context, "Получилось!!!", Toast.LENGTH_LONG).show()
+
+                val fragmentMoviesDetails = FragmentMoviesDetails()
+                val tag = fragmentMoviesDetails.tag
+
+                val fragmentManager = requireActivity().supportFragmentManager
+                val fragmentTransition = fragmentManager.beginTransaction()
+
+                fragmentTransition.replace(R.id.fragment_container_view, fragmentMoviesDetails, tag)
+                fragmentTransition.addToBackStack(tag)
+                fragmentTransition.commit()
             }
         }
     }
