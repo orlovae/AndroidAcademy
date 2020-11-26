@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 
 class FragmentMoviesList : Fragment(), View.OnClickListener {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater!!.inflate(R.layout.fragment_movies_list, container, false)
@@ -20,8 +23,6 @@ class FragmentMoviesList : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.card_view -> {
-                Toast.makeText(v.context, "Получилось!!!", Toast.LENGTH_LONG).show()
-
                 val fragmentMoviesDetails = FragmentMoviesDetails()
                 val tag = fragmentMoviesDetails.tag
 
