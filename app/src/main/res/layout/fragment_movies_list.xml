@@ -46,7 +46,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_back_horizontal"
         app:strokeColor="@color/card_view_border"
-        app:strokeWidth="1dp">
+        app:strokeWidth="1dp"
+        android:theme="@style/Theme.MaterialComponents.Light">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constrain_layout_card_view"
