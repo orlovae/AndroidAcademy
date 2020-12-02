@@ -40,20 +40,19 @@
         android:layout_height="296dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="27dp"
-        android:background="@drawable/card_view_background"
+        android:theme="@style/Theme.MaterialComponents.Light"
         app:cardCornerRadius="8dp"
         app:cardElevation="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_back_horizontal"
         app:strokeColor="@color/card_view_border"
-        app:strokeWidth="1dp"
-        android:theme="@style/Theme.MaterialComponents.Light">
+        app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constrain_layout_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/card_view_cover_border">
+            android:background="@drawable/card_view_background">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_card_view_horizontal_top"
@@ -62,21 +61,17 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.067567568" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_card_view_horizontal_bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.837837838" />
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view_card_view_background"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
-                app:layout_constraintBottom_toBottomOf="@id/guideline_card_view_horizontal_bottom"
+                android:adjustViewBounds="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/card_view_cover_gradient" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -223,7 +218,8 @@
                 android:text="@string/long_movie"
                 android:textAllCaps="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_card_view_title" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_card_view_title"
+                app:layout_constraintBottom_toBottomOf="@id/constrain_layout_card_view"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

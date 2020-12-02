@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState != null) {
-            fragment = supportFragmentManager.getFragment(savedInstanceState, "name")
+            fragment = supportFragmentManager.getFragment(savedInstanceState, fragment.toString())
         } else {
             val fragmentManager = supportFragmentManager
             val fragmentTransition = fragmentManager.beginTransaction()
