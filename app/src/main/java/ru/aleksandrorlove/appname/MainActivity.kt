@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState != null) {
-            fragment = supportFragmentManager.getFragment(savedInstanceState, fragment.toString())
+            fragment = supportFragmentManager.getFragment(savedInstanceState, "fragmentTag1")
         } else {
             val fragmentManager = supportFragmentManager
             val fragmentTransition = fragmentManager.beginTransaction()
@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        supportFragmentManager.putFragment(outState, "name", fragment!!)
+        fragment?.let {
+            supportFragmentManager.putFragment(outState, "fragmentTag1", it)
+        }
     }
 }
