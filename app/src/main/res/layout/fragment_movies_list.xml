@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="22dp"
                 android:background="@android:color/transparent"
                 android:gravity="start"
                 android:includeFontPadding="false"
@@ -122,7 +122,7 @@
                 android:id="@+id/guideline_rating_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@id/text_view_tag" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -202,7 +202,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
                 android:gravity="start"
                 android:includeFontPadding="false"
