@@ -155,7 +155,7 @@
         app:srcCompat="@drawable/star_icon_empty" />
 
     <TextView
-        android:id="@+id/text_view_rating"
+        android:id="@+id/text_view_reviews"
         style="@style/RatingMovieDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
         android:background="@android:color/transparent"
         android:gravity="start"
         android:includeFontPadding="false"
-        android:text="@string/rating"
+        android:text="@string/reviews"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="@id/guideline_rating_horizontal"
         app:layout_constraintStart_toEndOf="@id/star_05"
