@@ -12,9 +12,9 @@ data class Movie(
     val like: Boolean,
     val tag: String,
     val stars: Int,
-    val reviews: Int,
+    val reviews: String,
     val title: String,
-    val longMovie: Int,
+    val longMovie: String,
 
     //For Movie Details
     val description: String,

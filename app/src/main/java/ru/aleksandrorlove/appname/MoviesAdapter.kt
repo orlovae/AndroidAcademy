@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class MoviesAdapter(private val mMovies: List<Movie>) :
-    RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+    RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-        val cover = itemView.findViewById<ImageView>(R.id.image_view_card_view_background)
-        val RARS = itemView.findViewById<TextView>(R.id.text_view_RARS)
-        val like = itemView.findViewById<ImageView>(R.id.image_view_like)
-        val tag = itemView.findViewById<TextView>(R.id.text_view_tag)
+        val cover = itemView.findViewById<ImageView>(R.id.holder_movie_image_view_cover)
+        val RARS = itemView.findViewById<TextView>(R.id.holder_movie_text_view_RARS)
+        val like = itemView.findViewById<ImageView>(R.id.holder_movie_image_view_like)
+        val tag = itemView.findViewById<TextView>(R.id.holder_movie_text_view_tag)
 
         //        val stars
-        val reviews = itemView.findViewById<TextView>(R.id.text_view_reviews)
-        val title = itemView.findViewById<TextView>(R.id.text_view_title)
-        val longMovie = itemView.findViewById<TextView>(R.id.text_view_card_view_long)
+        val reviews = itemView.findViewById<TextView>(R.id.holder_movie_text_view_reviews)
+        val title = itemView.findViewById<TextView>(R.id.holder_movie_text_view_title)
+        val longMovie = itemView.findViewById<TextView>(R.id.holder_movie_text_view_long)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,11 +34,17 @@ class MoviesAdapter(private val mMovies: List<Movie>) :
         val movie: Movie = mMovies.get(position)
 
         val coverImageView = holder.cover
+        coverImageView.setImageResource(movie.cover)
 
         val RARSTextView = holder.RARS
         RARSTextView.setText(movie.RARS)
 
         val likeImageView = holder.like
+        if (!movie.like) {
+            likeImageView.setImageResource(R.drawable.ic_like)
+        }
+        //TODO переписать, если тру то красное сердце, иначе, белое. Посмотреть образец, м.б. делать
+        // заливку через цвет
 
         val tagTextView = holder.tag
         tagTextView.setText(movie.tag)
