@@ -77,7 +77,7 @@ class MoviesAdapter(
         val textLongMovie = context.getString(R.string.long_movie, movie.longMovie)
         longMovieTextView.text = textLongMovie
 
-        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener() }
+        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie) }
 
     }
 

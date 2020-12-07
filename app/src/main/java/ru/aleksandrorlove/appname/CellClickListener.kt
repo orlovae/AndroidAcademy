@@ -1,5 +1,7 @@
 package ru.aleksandrorlove.appname
 
+import java.util.*
+
 interface CellClickListener {
-    fun onCellClickListener()
+    fun onCellClickListener(data: Movie)
 }
