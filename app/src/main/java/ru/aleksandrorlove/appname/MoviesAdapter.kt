@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -39,30 +40,33 @@ class MoviesAdapter(private val mMovies: List<Movie>) :
         coverImageView.setImageResource(movie.cover)
 
         val RARSTextView = holder.RARS
-        RARSTextView.setText(movie.RARS)
+        RARSTextView.text = movie.RARS
 
         val likeImageView = holder.like
-        if (!movie.like) {
-            likeImageView.setImageResource(R.drawable.ic_like)
+        if (movie.like) {
+            likeImageView.setColorFilter(
+                ContextCompat.getColor(
+                    likeImageView.context,
+                    R.color.pink_light
+                ), android.graphics.PorterDuff.Mode.SRC_IN
+            )
         }
-        //TODO переписать, если тру то красное сердце, иначе, белое. Посмотреть образец, м.б. делать
-        // заливку через цвет
 
         val tagTextView = holder.tag
-        tagTextView.setText(movie.tag)
+        tagTextView.text = movie.tag
 
         //        val stars
 
         val reviewsTextView = holder.reviews
         val textReviews = context.getString(R.string.reviews, movie.reviews)
-        reviewsTextView.setText(textReviews)
+        reviewsTextView.text = textReviews
 
         val titleTextView = holder.title
-        titleTextView.setText(movie.title)
+        titleTextView.text = movie.title
 
         val longMovieTextView = holder.longMovie
-        val textLongMovie = context.getString(R.string.long_movie , movie.longMovie)
-        longMovieTextView.setText(textLongMovie)
+        val textLongMovie = context.getString(R.string.long_movie, movie.longMovie)
+        longMovieTextView.text = textLongMovie
 
     }
 
