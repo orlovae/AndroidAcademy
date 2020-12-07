@@ -31,6 +31,8 @@ class MoviesAdapter(private val mMovies: List<Movie>) :
     }
 
     override fun onBindViewHolder(holder: MoviesAdapter.ViewHolder, position: Int) {
+        val context = holder.itemView.context
+
         val movie: Movie = mMovies.get(position)
 
         val coverImageView = holder.cover
@@ -52,13 +54,15 @@ class MoviesAdapter(private val mMovies: List<Movie>) :
         //        val stars
 
         val reviewsTextView = holder.reviews
-        reviewsTextView.setText(movie.reviews)
+        val textReviews = context.getString(R.string.reviews, movie.reviews)
+        reviewsTextView.setText(textReviews)
 
         val titleTextView = holder.title
         titleTextView.setText(movie.title)
 
         val longMovieTextView = holder.longMovie
-        longMovieTextView.setText(movie.longMovie)
+        val textLongMovie = context.getString(R.string.long_movie , movie.longMovie)
+        longMovieTextView.setText(textLongMovie)
 
     }
 

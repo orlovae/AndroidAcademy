@@ -6,7 +6,7 @@
     <string name="RARS">13+</string>
     <string name="title">Avengers: End Game</string>
     <string name="tag">Action, Adventure, Fantasy</string>
-    <string name="reviews">125 Reviews</string>
+    <string name="reviews">%1$s Reviews</string>
     <string name="story_line">Storyline</string>
     <string name="description">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
     <string name="cast">Cast</string>
@@ -15,5 +15,5 @@
     <string name="name_03">Mark Ruffalo</string>
     <string name="name_04">Chris Hemsworth</string>
     <string name="movie_list">Movie list</string>
-    <string name="long_movie">137 min</string>
+    <string name="long_movie">%1$s min</string>
 </resources>
