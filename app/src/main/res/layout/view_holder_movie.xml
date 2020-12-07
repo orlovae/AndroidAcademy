@@ -62,8 +62,7 @@
             app:layout_constraintBottom_toBottomOf="@id/guideline_card_view_horizontal_top"
             app:layout_constraintEnd_toEndOf="@id/constrain_layout_card_view"
             app:layout_constraintTop_toTopOf="@id/guideline_card_view_horizontal_top"
-            app:srcCompat="@drawable/ic_favorite"
-            app:tint="@color/white"/>
+            app:srcCompat="@drawable/ic_favorite"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/holder_movie_text_view_tag"
@@ -139,7 +138,7 @@
             app:layout_constraintBottom_toBottomOf="@id/guideline_rating_horizontal"
             app:layout_constraintStart_toEndOf="@id/holder_movie_star_04"
             app:layout_constraintTop_toTopOf="@+id/guideline_rating_horizontal"
-            app:srcCompat="@drawable/star_icon_empty" />
+            app:srcCompat="@drawable/star_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/holder_movie_text_view_reviews"
