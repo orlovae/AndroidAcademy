@@ -1,6 +1,5 @@
 package ru.aleksandrorlove.appname
 
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MoviesAdapter(private val mMovies: List<Movie>) :
+class MoviesAdapter(
+    private val mMovies: List<Movie>,
+    private val cellClickListener: CellClickListener
+) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
@@ -74,6 +76,8 @@ class MoviesAdapter(private val mMovies: List<Movie>) :
         val longMovieTextView = holder.longMovie
         val textLongMovie = context.getString(R.string.long_movie, movie.longMovie)
         longMovieTextView.text = textLongMovie
+
+        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener() }
 
     }
 
