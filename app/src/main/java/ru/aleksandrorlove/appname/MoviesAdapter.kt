@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname
 
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,8 @@ class MoviesAdapter(private val mMovies: List<Movie>) :
         val movie: Movie = mMovies.get(position)
 
         val coverImageView = holder.cover
-        coverImageView.setImageResource(movie.cover)
+        coverImageView.setImageResource(R.drawable.cover_gradient)
+        coverImageView.setBackgroundResource(movie.cover)
 
         val RARSTextView = holder.RARS
         RARSTextView.text = movie.RARS
