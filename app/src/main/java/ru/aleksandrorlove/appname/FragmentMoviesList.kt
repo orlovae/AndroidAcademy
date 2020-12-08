@@ -26,8 +26,8 @@ class FragmentMoviesList : Fragment(), CellClickListener {
         return view
     }
 
-    override fun onCellClickListener(data: Movie) {
-        val fragmentMoviesDetails = FragmentMoviesDetails()
+    override fun onCellClickListener(movie: Movie) {
+        val fragmentMoviesDetails = FragmentMoviesDetails(movie)
         val tag = fragmentMoviesDetails.tag
 
         val fragmentManager = requireActivity().supportFragmentManager
