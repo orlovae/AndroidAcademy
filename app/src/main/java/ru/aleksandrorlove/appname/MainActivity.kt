@@ -3,9 +3,10 @@ package ru.aleksandrorlove.appname
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CellClickListener {
 
     private val fragmentMoviesList = FragmentMoviesList()
     private var fragment: Fragment? = null
@@ -32,5 +33,9 @@ class MainActivity : AppCompatActivity() {
         fragment?.let {
             supportFragmentManager.putFragment(outState, "fragmentTag1", it)
         }
+    }
+
+    override fun onCellClickListener(movie: Movie) {
+        (fragment as FragmentMoviesDetails).arguments = bundleOf("movie" to movie)
     }
 }
