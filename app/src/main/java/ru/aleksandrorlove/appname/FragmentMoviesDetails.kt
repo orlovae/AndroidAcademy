@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var movie: Movie? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,26 +26,31 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         val buttonBack: TextView = view.findViewById(R.id.movie_details_button_back)
         buttonBack.setOnClickListener(this)
+        val backgroundTop: ImageView = view.findViewById(R.id.movie_details_background_top)
+        val rars: TextView = view.findViewById(R.id.movie_details_text_view_RARS)
+        val title: TextView = view.findViewById(R.id.movie_details_text_view_title)
+        val tag: TextView = view.findViewById(R.id.movie_details_text_view_tag)
+
+        val star01: ImageView = view.findViewById(R.id.movie_details_star_01)
+        val star02: ImageView = view.findViewById(R.id.movie_details_star_02)
+        val star03: ImageView = view.findViewById(R.id.movie_details_star_03)
+        val star04: ImageView = view.findViewById(R.id.movie_details_star_04)
+        val star05: ImageView = view.findViewById(R.id.movie_details_star_05)
+        val reviews: TextView = view.findViewById(R.id.movie_details_text_view_reviews)
+        val description: TextView = view.findViewById(R.id.movie_details_text_view_description)
+        val recyclerViewActors: RecyclerView = view.findViewById(R.id.recyclerview_actors)
+
 
         movie?.let {
-            val backgroundTop: ImageView = view.findViewById(R.id.movie_details_background_top)
+
             backgroundTop.setImageResource(R.drawable.background_gradient)
             backgroundTop.setBackgroundResource(it.background)
 
-            val rars: TextView = view.findViewById(R.id.movie_details_text_view_RARS)
             rars.text = it.RARS
 
-            val title: TextView = view.findViewById(R.id.movie_details_text_view_title)
             title.text = it.title
 
-            val tag: TextView = view.findViewById(R.id.movie_details_text_view_tag)
             tag.text = it.tag
-
-            val star01: ImageView = view.findViewById(R.id.movie_details_star_01)
-            val star02: ImageView = view.findViewById(R.id.movie_details_star_02)
-            val star03: ImageView = view.findViewById(R.id.movie_details_star_03)
-            val star04: ImageView = view.findViewById(R.id.movie_details_star_04)
-            val star05: ImageView = view.findViewById(R.id.movie_details_star_05)
 
             val starImageViewList = mutableListOf<ImageView>(
                 star01,
@@ -63,12 +70,15 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 )
             }
 
-            val reviews: TextView = view.findViewById(R.id.movie_details_text_view_reviews)
             val textReviews = this.getString(R.string.reviews, it.reviews)
             reviews.text = textReviews
 
-            val description: TextView = view.findViewById(R.id.movie_details_text_view_description)
             description.text = it.description
+
+            val actors: ArrayList<Actor> = it.actors
+            val adapter = ActorsAdapter(actors)
+            recyclerViewActors.adapter = adapter
+            recyclerViewActors.apply { layoutManager = GridLayoutManager(requireContext(), 4) }
         }
         return view
     }

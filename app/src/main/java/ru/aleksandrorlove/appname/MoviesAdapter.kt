@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class MoviesAdapter(
-    private val mMovies: List<Movie>,
+    private val movies: List<Movie>,
     private val cellClickListener: CellClickListener
 ) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
@@ -42,7 +42,7 @@ class MoviesAdapter(
     override fun onBindViewHolder(holder: MoviesAdapter.ViewHolder, position: Int) {
         val context = holder.itemView.context
 
-        val movie: Movie = mMovies.get(position)
+        val movie: Movie = movies[position]
 
         val coverImageView = holder.cover
         coverImageView.setImageResource(R.drawable.cover_gradient)
@@ -82,7 +82,7 @@ class MoviesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return mMovies.size
+        return movies.size
     }
 
     private fun setColorStars(holder: MoviesAdapter.ViewHolder, stars: Int) {
