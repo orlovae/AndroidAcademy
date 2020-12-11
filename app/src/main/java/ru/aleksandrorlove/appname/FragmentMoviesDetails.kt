@@ -6,37 +6,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
+    private var movie: Movie? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { movie = it.getParcelable(ARG_MOVIE) }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val movie = arguments?.getParcelable<Movie>(ARG_MOVIE)
-//        if (movie == null) {
-//            Toast.makeText(requireContext(), "movie is null", Toast.LENGTH_SHORT).show()
-//        } else {
-//            Toast.makeText(requireContext(), movie.toString(), Toast.LENGTH_SHORT).show()
-//        }
-        movie?.let {
-            val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-            val buttonBack: TextView = view.findViewById(R.id.movie_details_button_back)
-            buttonBack.setOnClickListener(this)
+        val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
+        val buttonBack: TextView = view.findViewById(R.id.movie_details_button_back)
+        buttonBack.setOnClickListener(this)
 
+        movie?.let {
             val backgroundTop: ImageView = view.findViewById(R.id.movie_details_background_top)
             backgroundTop.setImageResource(R.drawable.background_gradient)
-            backgroundTop.setBackgroundResource(movie.background)
+            backgroundTop.setBackgroundResource(it.background)
 
             val rars: TextView = view.findViewById(R.id.movie_details_text_view_RARS)
-            rars.text = movie.RARS
+            rars.text = it.RARS
 
             val title: TextView = view.findViewById(R.id.movie_details_text_view_title)
-            title.text = movie.title
+            title.text = it.title
 
             val tag: TextView = view.findViewById(R.id.movie_details_text_view_tag)
-            tag.text = movie.tag
+            tag.text = it.tag
 
             val star01: ImageView = view.findViewById(R.id.movie_details_star_01)
             val star02: ImageView = view.findViewById(R.id.movie_details_star_02)
@@ -52,7 +53,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 star05
             )
 
-            val stars = movie.stars - 1
+            val stars = it.stars - 1
             for (i in 0..stars) {
                 starImageViewList.get(i).setColorFilter(
                     ContextCompat.getColor(
@@ -63,13 +64,12 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             }
 
             val reviews: TextView = view.findViewById(R.id.movie_details_text_view_reviews)
-            val textReviews = this.getString(R.string.reviews, movie.reviews)
+            val textReviews = this.getString(R.string.reviews, it.reviews)
             reviews.text = textReviews
 
             val description: TextView = view.findViewById(R.id.movie_details_text_view_description)
-            description.text = movie.description
+            description.text = it.description
         }
-
         return view
     }
 
