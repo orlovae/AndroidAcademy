@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,11 @@ class FragmentMoviesList : Fragment(), CellClickListener {
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransition = fragmentManager.beginTransaction()
         val fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movie)
-        fragmentTransition.replace(R.id.fragment_container_view, fragmentMoviesDetails, "fragmentMoviesDetails")
+        fragmentTransition.replace(
+            R.id.fragment_container_view,
+            fragmentMoviesDetails,
+            "fragmentMoviesDetails"
+        )
         fragmentTransition.addToBackStack(tag)
         fragmentTransition.commit()
     }

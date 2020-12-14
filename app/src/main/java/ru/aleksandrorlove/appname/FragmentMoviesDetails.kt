@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var movie: Movie? = null
+    private var _binding: FragmentMoviesDetailsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,41 +23,46 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        val buttonBack: TextView = view.findViewById(R.id.movie_details_button_back)
-        buttonBack.setOnClickListener(this)
-        val backgroundTop: ImageView = view.findViewById(R.id.movie_details_background_top)
-        val rars: TextView = view.findViewById(R.id.movie_details_text_view_RARS)
-        val title: TextView = view.findViewById(R.id.movie_details_text_view_title)
-        val tag: TextView = view.findViewById(R.id.movie_details_text_view_tag)
+        _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        val star01: ImageView = view.findViewById(R.id.movie_details_star_01)
-        val star02: ImageView = view.findViewById(R.id.movie_details_star_02)
-        val star03: ImageView = view.findViewById(R.id.movie_details_star_03)
-        val star04: ImageView = view.findViewById(R.id.movie_details_star_04)
-        val star05: ImageView = view.findViewById(R.id.movie_details_star_05)
-        val reviews: TextView = view.findViewById(R.id.movie_details_text_view_reviews)
-        val description: TextView = view.findViewById(R.id.movie_details_text_view_description)
-        val recyclerViewActors: RecyclerView = view.findViewById(R.id.recyclerview_actors)
+        setView()
 
+        return view
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.movie_details_button_back -> {
+                val fragmentManager = requireActivity().supportFragmentManager
+                fragmentManager.popBackStack()
+            }
+        }
+    }
+
+    private fun setView() {
+        binding.movieDetailsButtonBack.setOnClickListener(this)
         movie?.let {
+            binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
+            binding.movieDetailsBackgroundTop.setBackgroundResource(it.background)
 
-            backgroundTop.setImageResource(R.drawable.background_gradient)
-            backgroundTop.setBackgroundResource(it.background)
+            binding.movieDetailsTextViewRARS.text = it.RARS
 
-            rars.text = it.RARS
+            binding.movieDetailsTextViewTitle.text = it.title
 
-            title.text = it.title
+            binding.movieDetailsTextViewTag.text = it.tag
 
-            tag.text = it.tag
-
-            val starImageViewList = mutableListOf<ImageView>(
-                star01,
-                star02,
-                star03,
-                star04,
-                star05
+            val starImageViewList = listOf<ImageView>(
+                binding.movieDetailsStar01,
+                binding.movieDetailsStar02,
+                binding.movieDetailsStar03,
+                binding.movieDetailsStar04,
+                binding.movieDetailsStar05
             )
 
             val stars = it.stars - 1
@@ -71,23 +76,15 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             }
 
             val textReviews = this.getString(R.string.reviews, it.reviews)
-            reviews.text = textReviews
+            binding.movieDetailsTextViewReviews.text = textReviews
 
-            description.text = it.description
+            binding.movieDetailsTextViewDescription.text = it.description
 
             val actors: ArrayList<Actor> = it.actors
             val adapter = ActorsAdapter(actors)
-            recyclerViewActors.adapter = adapter
-            recyclerViewActors.apply { layoutManager = GridLayoutManager(requireContext(), 4) }
-        }
-        return view
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.movie_details_button_back -> {
-                val fragmentManager = requireActivity().supportFragmentManager
-                fragmentManager.popBackStack()
+            binding.movieDetailsRecyclerviewActors.adapter = adapter
+            binding.movieDetailsRecyclerviewActors.apply {
+                layoutManager = GridLayoutManager(requireContext(), 4)
             }
         }
     }

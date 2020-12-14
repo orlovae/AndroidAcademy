@@ -214,7 +214,7 @@
             app:layout_constraintTop_toBottomOf="@+id/movie_details_text_view_description" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_actors"
+            android:id="@+id/movie_details_recyclerview_actors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
