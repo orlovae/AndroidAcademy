@@ -25,8 +25,8 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val recyclerViewMovies: RecyclerView = view.findViewById(R.id.recyclerview_movies)
-//        movies = Movies.createMovieList() as ArrayList<Movie>
 
+        //Todo может быть должна быть проверка, если муви нуль, то загружать
         scope.launch {
             load()
         }

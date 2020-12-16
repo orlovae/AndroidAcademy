@@ -8,9 +8,12 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.data.Actor
+import ru.aleksandrorlove.appname.data.Genre
 import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
+import kotlin.math.roundToInt
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var movie: Movie? = null
@@ -19,7 +22,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        arguments?.let { movie = it.getParcelable(ARG_MOVIE) }
+        arguments?.let { movie = it.getParcelable(ARG_MOVIE) }
     }
 
     override fun onCreateView(
@@ -50,14 +53,18 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private fun setView() {
         binding.movieDetailsButtonBack.setOnClickListener(this)
         movie?.let {
-//            binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
+            binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
+            Glide.with(requireActivity())
+                .load(it.backdrop)
+                .into(binding.movieDetailsBackgroundTop)
 //            binding.movieDetailsBackgroundTop.setBackgroundResource(it.background)
-//
-//            binding.movieDetailsTextViewRARS.text = it.RARS
-//
-//            binding.movieDetailsTextViewTitle.text = it.title
-//
-//            binding.movieDetailsTextViewTag.text = it.tag
+
+            binding.movieDetailsTextViewMinimumAge?.text = it.minimumAge.toString()
+
+            binding.movieDetailsTextViewTitle.text = it.title
+
+            val genres = getGenres(it.genres)
+            binding.movieDetailsTextViewGenre?.text = genres
 
             val starImageViewList = listOf<ImageView>(
                 binding.movieDetailsStar01,
@@ -67,29 +74,42 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 binding.movieDetailsStar05
             )
 
-//            val stars = it.stars - 1
-//            for (i in 0..stars) {
-//                starImageViewList.get(i).setColorFilter(
-//                    ContextCompat.getColor(
-//                        starImageViewList.get(i).context,
-//                        R.color.pink_light
-//                    ), android.graphics.PorterDuff.Mode.SRC_IN
-//                )
-//            }
+            val stars = getStars(it.ratings) - 1
+            for (i in 0..stars) {
+                starImageViewList.get(i).setColorFilter(
+                    ContextCompat.getColor(
+                        starImageViewList.get(i).context,
+                        R.color.pink_light
+                    ), android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
 
-//            val textReviews = this.getString(R.string.reviews, it.reviews)
-//            binding.movieDetailsTextViewReviews.text = textReviews
+            val textNumberOfRatings = this.getString(R.string.numberOfRatings, it.numberOfRatings.toString())
+            binding.movieDetailsTextViewNumberOfRatings?.text = textNumberOfRatings
+
+            binding.movieDetailsTextViewOverview?.text = it.overview
 //
-//            binding.movieDetailsTextViewDescription.text = it.description
-//
-//            val actors: ArrayList<Actor> = it.actors
-//            val adapter = ActorsAdapter(actors)
-//            binding.movieDetailsRecyclerviewActors.adapter = adapter
-//            binding.movieDetailsRecyclerviewActors.apply {
-//                layoutManager = GridLayoutManager(requireContext(), 4)
+            val actors: ArrayList<Actor> = it.actors as ArrayList<Actor>
+            val adapter = ActorsAdapter(actors)
+            binding.movieDetailsRecyclerviewActors.adapter = adapter
+            binding.movieDetailsRecyclerviewActors.apply {
+                layoutManager = GridLayoutManager(requireContext(), 4)
             }
         }
+    }
 
+    private fun getGenres(genres: List<Genre>): String {
+        val result: StringBuilder = StringBuilder()
+        for (genre in genres) {
+            result.append(genre.name).append(", ")
+        }
+        return result.dropLast(2).toString()
+    }
+
+    private fun getStars(rating: Float): Int {
+        val result = (rating * 0.5).roundToInt()
+        return result
+    }
 
     companion object {
         private val ARG_MOVIE = "FragmentMoviesDetails_movie"
@@ -102,4 +122,5 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             return fragment
         }
     }
+
 }

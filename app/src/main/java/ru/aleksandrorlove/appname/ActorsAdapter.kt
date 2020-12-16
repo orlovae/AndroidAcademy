@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.data.Actor
 
 class ActorsAdapter(private val actors: List<Actor>) :
@@ -28,6 +29,9 @@ class ActorsAdapter(private val actors: List<Actor>) :
         val actor: Actor = actors[position]
         val photoImageView = holder.photo
 //        photoImageView.setImageResource(actor.photo)
+        Glide.with(holder.itemView.context)
+            .load(actor.picture)
+            .into(photoImageView)
         val nameTextView = holder.name
         nameTextView.text = actor.name
     }

@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
 import ru.aleksandrorlove.appname.data.Genre
 import ru.aleksandrorlove.appname.data.Movie
 import kotlin.math.roundToInt
-
 
 class MoviesAdapter(
     private val movies: List<Movie>,
@@ -48,7 +49,11 @@ class MoviesAdapter(
         val movie: Movie = movies[position]
 
         val posterImageView = holder.poster
-        posterImageView.setImageResource(R.drawable.poster_gradient)
+//        posterImageView.setImageResource(R.drawable.poster_gradient)
+
+        Glide.with(context)
+            .load(movie.poster)
+            .into(posterImageView)
 //        coverImageView.setBackgroundResource(movie.cover)
 
         val minimumAgeTextView = holder.minimumAge
@@ -65,7 +70,7 @@ class MoviesAdapter(
 //        }
 
         val genreTextView = holder.genre
-        var genres = getGenres(movie.genres)
+        val genres = getGenres(movie.genres)
         genreTextView.text = genres
 
         val stars = getStars(movie.ratings) - 1
