@@ -41,14 +41,14 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     override fun onCellClickListener(movie: Movie) {
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransition = fragmentManager.beginTransaction()
-//        val fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movie)
-//        fragmentTransition.replace(
-//            R.id.fragment_container_view,
-//            fragmentMoviesDetails,
-//            "fragmentMoviesDetails"
-//        )
-//        fragmentTransition.addToBackStack(tag)
-//        fragmentTransition.commit()
+        val fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movie)
+        fragmentTransition.replace(
+            R.id.fragment_container_view,
+            fragmentMoviesDetails,
+            "fragmentMoviesDetails"
+        )
+        fragmentTransition.addToBackStack(tag)
+        fragmentTransition.commit()
     }
 
     private suspend fun load() {

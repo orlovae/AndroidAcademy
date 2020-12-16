@@ -89,17 +89,17 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 //                layoutManager = GridLayoutManager(requireContext(), 4)
             }
         }
-    }
 
-//    companion object {
-//        private val ARG_MOVIE = "FragmentMoviesDetails_movie"
-//
-//        fun newInstance(movie: Movie): FragmentMoviesDetails {
-//            val args: Bundle = Bundle()
-//            args.putParcelable(ARG_MOVIE, movie)
-//            val fragment = FragmentMoviesDetails()
-//            fragment.arguments = args
-//            return fragment
-//        }
-//    }
-//}
+
+    companion object {
+        private val ARG_MOVIE = "FragmentMoviesDetails_movie"
+
+        fun newInstance(movie: Movie): FragmentMoviesDetails {
+            val args: Bundle = Bundle()
+            args.putParcelable(ARG_MOVIE, movie)
+            val fragment = FragmentMoviesDetails()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+}
