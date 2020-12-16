@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import ru.aleksandrorlove.appname.data.Movie
 
 
 class MoviesAdapter(
@@ -46,36 +47,36 @@ class MoviesAdapter(
 
         val coverImageView = holder.cover
         coverImageView.setImageResource(R.drawable.cover_gradient)
-        coverImageView.setBackgroundResource(movie.cover)
+//        coverImageView.setBackgroundResource(movie.cover)
 
         val RARSTextView = holder.RARS
-        RARSTextView.text = movie.RARS
+//        RARSTextView.text = movie.RARS
 
         val likeImageView = holder.like
-        if (movie.like) {
-            likeImageView.setColorFilter(
-                ContextCompat.getColor(
-                    likeImageView.context,
-                    R.color.pink_light
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-        }
+//        if (movie.like) {
+//            likeImageView.setColorFilter(
+//                ContextCompat.getColor(
+//                    likeImageView.context,
+//                    R.color.pink_light
+//                ), android.graphics.PorterDuff.Mode.SRC_IN
+//            )
+//        }
 
         val tagTextView = holder.tag
-        tagTextView.text = movie.tag
+//        tagTextView.text = movie.tag
 
-        setColorStars(holder, movie.stars - 1)
+//        setColorStars(holder, movie.stars - 1)
 
         val reviewsTextView = holder.reviews
-        val textReviews = context.getString(R.string.reviews, movie.reviews)
-        reviewsTextView.text = textReviews
+//        val textReviews = context.getString(R.string.reviews, movie.reviews)
+//        reviewsTextView.text = textReviews
 
         val titleTextView = holder.title
         titleTextView.text = movie.title
 
         val longMovieTextView = holder.longMovie
-        val textLongMovie = context.getString(R.string.long_movie, movie.longMovie)
-        longMovieTextView.text = textLongMovie
+//        val textLongMovie = context.getString(R.string.long_movie, movie.longMovie)
+//        longMovieTextView.text = textLongMovie
 
         holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie) }
 

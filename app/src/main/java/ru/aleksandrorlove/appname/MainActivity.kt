@@ -5,6 +5,7 @@ import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import ru.aleksandrorlove.appname.data.Movie
 
 class MainActivity : AppCompatActivity(), CellClickListener {
 

@@ -8,6 +8,8 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import ru.aleksandrorlove.appname.data.Actor
+import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
@@ -17,7 +19,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { movie = it.getParcelable(ARG_MOVIE) }
+//        arguments?.let { movie = it.getParcelable(ARG_MOVIE) }
     }
 
     override fun onCreateView(
@@ -48,14 +50,14 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private fun setView() {
         binding.movieDetailsButtonBack.setOnClickListener(this)
         movie?.let {
-            binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
-            binding.movieDetailsBackgroundTop.setBackgroundResource(it.background)
-
-            binding.movieDetailsTextViewRARS.text = it.RARS
-
-            binding.movieDetailsTextViewTitle.text = it.title
-
-            binding.movieDetailsTextViewTag.text = it.tag
+//            binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
+//            binding.movieDetailsBackgroundTop.setBackgroundResource(it.background)
+//
+//            binding.movieDetailsTextViewRARS.text = it.RARS
+//
+//            binding.movieDetailsTextViewTitle.text = it.title
+//
+//            binding.movieDetailsTextViewTag.text = it.tag
 
             val starImageViewList = listOf<ImageView>(
                 binding.movieDetailsStar01,
@@ -65,39 +67,39 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 binding.movieDetailsStar05
             )
 
-            val stars = it.stars - 1
-            for (i in 0..stars) {
-                starImageViewList.get(i).setColorFilter(
-                    ContextCompat.getColor(
-                        starImageViewList.get(i).context,
-                        R.color.pink_light
-                    ), android.graphics.PorterDuff.Mode.SRC_IN
-                )
-            }
+//            val stars = it.stars - 1
+//            for (i in 0..stars) {
+//                starImageViewList.get(i).setColorFilter(
+//                    ContextCompat.getColor(
+//                        starImageViewList.get(i).context,
+//                        R.color.pink_light
+//                    ), android.graphics.PorterDuff.Mode.SRC_IN
+//                )
+//            }
 
-            val textReviews = this.getString(R.string.reviews, it.reviews)
-            binding.movieDetailsTextViewReviews.text = textReviews
-
-            binding.movieDetailsTextViewDescription.text = it.description
-
-            val actors: ArrayList<Actor> = it.actors
-            val adapter = ActorsAdapter(actors)
-            binding.movieDetailsRecyclerviewActors.adapter = adapter
-            binding.movieDetailsRecyclerviewActors.apply {
-                layoutManager = GridLayoutManager(requireContext(), 4)
+//            val textReviews = this.getString(R.string.reviews, it.reviews)
+//            binding.movieDetailsTextViewReviews.text = textReviews
+//
+//            binding.movieDetailsTextViewDescription.text = it.description
+//
+//            val actors: ArrayList<Actor> = it.actors
+//            val adapter = ActorsAdapter(actors)
+//            binding.movieDetailsRecyclerviewActors.adapter = adapter
+//            binding.movieDetailsRecyclerviewActors.apply {
+//                layoutManager = GridLayoutManager(requireContext(), 4)
             }
         }
     }
 
-    companion object {
-        private val ARG_MOVIE = "FragmentMoviesDetails_movie"
-
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
-            val args: Bundle = Bundle()
-            args.putParcelable(ARG_MOVIE, movie)
-            val fragment = FragmentMoviesDetails()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-}
+//    companion object {
+//        private val ARG_MOVIE = "FragmentMoviesDetails_movie"
+//
+//        fun newInstance(movie: Movie): FragmentMoviesDetails {
+//            val args: Bundle = Bundle()
+//            args.putParcelable(ARG_MOVIE, movie)
+//            val fragment = FragmentMoviesDetails()
+//            fragment.arguments = args
+//            return fragment
+//        }
+//    }
+//}

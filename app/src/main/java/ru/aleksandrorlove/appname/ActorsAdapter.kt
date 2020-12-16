@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ru.aleksandrorlove.appname.data.Actor
 
 class ActorsAdapter(private val actors: List<Actor>) :
     RecyclerView.Adapter<ActorsAdapter.ViewHolder>() {
@@ -26,7 +27,7 @@ class ActorsAdapter(private val actors: List<Actor>) :
     override fun onBindViewHolder(holder: ActorsAdapter.ViewHolder, position: Int) {
         val actor: Actor = actors[position]
         val photoImageView = holder.photo
-        photoImageView.setImageResource(actor.photo)
+//        photoImageView.setImageResource(actor.photo)
         val nameTextView = holder.name
         nameTextView.text = actor.name
     }
