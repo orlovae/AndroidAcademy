@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.data.Actor
@@ -29,7 +31,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
-        val view = binding.root
+        val view: ScrollView = binding.root
 
         setView()
 
@@ -44,7 +46,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.movie_details_button_back -> {
-                val fragmentManager = requireActivity().supportFragmentManager
+                val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
                 fragmentManager.popBackStack()
             }
         }
@@ -58,14 +60,14 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 .load(it.backdrop)
                 .into(binding.movieDetailsBackgroundTop)
 
-            binding.movieDetailsTextViewMinimumAge?.text = it.minimumAge.toString()
+            binding.movieDetailsTextViewMinimumAge.text = it.minimumAge.toString()
 
             binding.movieDetailsTextViewTitle.text = it.title
 
-            val genres = getGenres(it.genres)
-            binding.movieDetailsTextViewGenre?.text = genres
+            val genres : String = getGenres(it.genres)
+            binding.movieDetailsTextViewGenre.text = genres
 
-            val starImageViewList = listOf<ImageView>(
+            val starImageViewList : List<ImageView> = listOf(
                 binding.movieDetailsStar01,
                 binding.movieDetailsStar02,
                 binding.movieDetailsStar03,
@@ -83,10 +85,10 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 )
             }
 
-            val textNumberOfRatings = this.getString(R.string.numberOfRatings, it.numberOfRatings.toString())
-            binding.movieDetailsTextViewNumberOfRatings?.text = textNumberOfRatings
+            val textNumberOfRatings : String = this.getString(R.string.numberOfRatings, it.numberOfRatings.toString())
+            binding.movieDetailsTextViewNumberOfRatings.text = textNumberOfRatings
 
-            binding.movieDetailsTextViewOverview?.text = it.overview
+            binding.movieDetailsTextViewOverview.text = it.overview
 
             val actors: ArrayList<Actor> = it.actors as ArrayList<Actor>
             val adapter = ActorsAdapter(actors)
@@ -106,20 +108,18 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     }
 
     private fun getStars(rating: Float): Int {
-        val result = (rating * 0.5).roundToInt()
-        return result
+        return (rating * 0.5).roundToInt()
     }
 
     companion object {
         private val ARG_MOVIE = "FragmentMoviesDetails_movie"
 
         fun newInstance(movie: Movie): FragmentMoviesDetails {
-            val args: Bundle = Bundle()
+            val args = Bundle()
             args.putParcelable(ARG_MOVIE, movie)
             val fragment = FragmentMoviesDetails()
             fragment.arguments = args
             return fragment
         }
     }
-
 }

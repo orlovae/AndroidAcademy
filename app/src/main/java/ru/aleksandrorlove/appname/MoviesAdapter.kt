@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,24 +39,24 @@ class MoviesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val context = parent.context
-        val inflater = LayoutInflater.from(context)
-        val movieCard = inflater.inflate(R.layout.view_holder_movie, parent, false)
+        val context: Context = parent.context
+        val inflater: LayoutInflater = LayoutInflater.from(context)
+        val movieCard: View = inflater.inflate(R.layout.view_holder_movie, parent, false)
         return ViewHolder(movieCard)
     }
 
     override fun onBindViewHolder(holder: MoviesAdapter.ViewHolder, position: Int) {
-        val context = holder.itemView.context
+        val context: Context = holder.itemView.context
 
         val movie: Movie = movies[position]
 
-        val posterImageView = holder.poster
+        val posterImageView: ImageView = holder.poster
 
         Glide.with(context)
             .load(movie.poster)
             .into(posterImageView)
 
-        val minimumAgeTextView = holder.minimumAge
+        val minimumAgeTextView : TextView = holder.minimumAge
         minimumAgeTextView.text = movie.minimumAge.toString()
 
 //        val likeImageView = holder.like
@@ -68,23 +69,23 @@ class MoviesAdapter(
 //            )
 //        }
 
-        val genreTextView = holder.genre
-        val genres = getGenres(movie.genres)
+        val genreTextView: TextView = holder.genre
+        val genres: String = getGenres(movie.genres)
         genreTextView.text = genres
 
-        val stars = getStars(movie.ratings) - 1
+        val stars: Int = getStars(movie.ratings) - 1
         setColorStars(holder, stars)
 
-        val numberOfRatingsTextView = holder.numberOfRatings
-        val textNumberOfRatings = context.getString(R.string.numberOfRatings,
+        val numberOfRatingsTextView: TextView = holder.numberOfRatings
+        val textNumberOfRatings: String = context.getString(R.string.numberOfRatings,
             movie.numberOfRatings.toString())
         numberOfRatingsTextView.text = textNumberOfRatings
 
-        val titleTextView = holder.title
+        val titleTextView: TextView = holder.title
         titleTextView.text = movie.title
 
-        val runtime = holder.runtime
-        val textRuntime = context.getString(R.string.long_movie, movie.runtime.toString())
+        val runtime: TextView = holder.runtime
+        val textRuntime: String = context.getString(R.string.long_movie, movie.runtime.toString())
         runtime.text = textRuntime
 
         holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie) }
@@ -96,7 +97,7 @@ class MoviesAdapter(
     }
 
     private fun setColorStars(holder: MoviesAdapter.ViewHolder, stars: Int) {
-        val starImageViewList = mutableListOf<ImageView>(
+        val starImageViewList : MutableList<ImageView> = mutableListOf(
             holder.star01,
             holder.star02,
             holder.star03,
@@ -116,14 +117,13 @@ class MoviesAdapter(
 
     private fun getGenres(genres: List<Genre>): String {
         val result: StringBuilder = StringBuilder()
-        for (genre in genres) {
+        for (genre: Genre in genres) {
             result.append(genre.name).append(", ")
         }
         return result.dropLast(2).toString()
     }
 
     private fun getStars(rating: Float): Int {
-        val result = (rating * 0.5).roundToInt()
-        return result
+        return (rating * 0.5).roundToInt()
     }
 }

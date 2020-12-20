@@ -54,6 +54,6 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     }
 
     private suspend fun load() {
-        movies = loadMovies(requireContext()) as ArrayList<Movie>
+        this.movies = loadMovies(requireContext()) as ArrayList<Movie>
     }
 }
