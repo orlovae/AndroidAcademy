@@ -9,12 +9,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.annotation.GlideModule
+import kotlinx.coroutines.Deferred
 import ru.aleksandrorlove.appname.data.Genre
 import ru.aleksandrorlove.appname.data.Movie
 import kotlin.math.roundToInt
 
 class MoviesAdapter(
-    private val movies: List<Movie>,
+    private val movies: ArrayList<Movie>,
     private val cellClickListener: CellClickListener
 ) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
@@ -49,12 +50,10 @@ class MoviesAdapter(
         val movie: Movie = movies[position]
 
         val posterImageView = holder.poster
-//        posterImageView.setImageResource(R.drawable.poster_gradient)
 
         Glide.with(context)
             .load(movie.poster)
             .into(posterImageView)
-//        coverImageView.setBackgroundResource(movie.cover)
 
         val minimumAgeTextView = holder.minimumAge
         minimumAgeTextView.text = movie.minimumAge.toString()

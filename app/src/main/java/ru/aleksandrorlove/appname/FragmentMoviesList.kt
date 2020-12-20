@@ -1,6 +1,5 @@
 package ru.aleksandrorlove.appname
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +7,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.data.loadMovies
-import kotlin.coroutines.suspendCoroutine
 
 class FragmentMoviesList : Fragment(), CellClickListener {
     lateinit var movies: ArrayList<Movie>
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        scope.launch {
+            load()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,11 +32,6 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val recyclerViewMovies: RecyclerView = view.findViewById(R.id.recyclerview_movies)
-
-        //Todo может быть должна быть проверка, если муви нуль, то загружать
-        scope.launch {
-            load()
-        }
 
         val adapter = MoviesAdapter(movies, this)
         recyclerViewMovies.adapter = adapter

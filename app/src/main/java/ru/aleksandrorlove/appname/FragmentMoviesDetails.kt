@@ -57,7 +57,6 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             Glide.with(requireActivity())
                 .load(it.backdrop)
                 .into(binding.movieDetailsBackgroundTop)
-//            binding.movieDetailsBackgroundTop.setBackgroundResource(it.background)
 
             binding.movieDetailsTextViewMinimumAge?.text = it.minimumAge.toString()
 
@@ -88,7 +87,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             binding.movieDetailsTextViewNumberOfRatings?.text = textNumberOfRatings
 
             binding.movieDetailsTextViewOverview?.text = it.overview
-//
+
             val actors: ArrayList<Actor> = it.actors as ArrayList<Actor>
             val adapter = ActorsAdapter(actors)
             binding.movieDetailsRecyclerviewActors.adapter = adapter
