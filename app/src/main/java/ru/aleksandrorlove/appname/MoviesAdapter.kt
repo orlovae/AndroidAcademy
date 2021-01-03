@@ -14,11 +14,10 @@ import ru.aleksandrorlove.appname.data.Movie
 import kotlin.math.roundToInt
 
 class MoviesAdapter(
-    private var movies_param: ArrayList<Movie>,
+    var movies: ArrayList<Movie>,
     private val cellClickListener: CellClickListener
 ) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
-    var movies = movies_param
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val poster = itemView.findViewById<ImageView>(R.id.holder_movie_image_view_poster)
