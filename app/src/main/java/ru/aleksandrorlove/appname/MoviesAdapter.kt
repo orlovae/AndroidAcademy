@@ -9,17 +9,16 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
-import kotlinx.coroutines.Deferred
 import ru.aleksandrorlove.appname.data.Genre
 import ru.aleksandrorlove.appname.data.Movie
 import kotlin.math.roundToInt
 
 class MoviesAdapter(
-    private val movies: ArrayList<Movie>,
+    private var movies_param: ArrayList<Movie>,
     private val cellClickListener: CellClickListener
 ) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+    var movies = movies_param
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val poster = itemView.findViewById<ImageView>(R.id.holder_movie_image_view_poster)
@@ -33,7 +32,8 @@ class MoviesAdapter(
         val star04 = itemView.findViewById<ImageView>(R.id.holder_movie_star_04)
         val star05 = itemView.findViewById<ImageView>(R.id.holder_movie_star_05)
 
-        val numberOfRatings = itemView.findViewById<TextView>(R.id.holder_movie_text_view_number_of_ratings)
+        val numberOfRatings =
+            itemView.findViewById<TextView>(R.id.holder_movie_text_view_number_of_ratings)
         val title = itemView.findViewById<TextView>(R.id.holder_movie_text_view_title)
         val runtime = itemView.findViewById<TextView>(R.id.holder_movie_text_view_runtime)
     }
@@ -56,7 +56,7 @@ class MoviesAdapter(
             .load(movie.poster)
             .into(posterImageView)
 
-        val minimumAgeTextView : TextView = holder.minimumAge
+        val minimumAgeTextView: TextView = holder.minimumAge
         minimumAgeTextView.text = movie.minimumAge.toString()
 
 //        val likeImageView = holder.like
@@ -77,8 +77,10 @@ class MoviesAdapter(
         setColorStars(holder, stars)
 
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
-        val textNumberOfRatings: String = context.getString(R.string.numberOfRatings,
-            movie.numberOfRatings.toString())
+        val textNumberOfRatings: String = context.getString(
+            R.string.numberOfRatings,
+            movie.numberOfRatings.toString()
+        )
         numberOfRatingsTextView.text = textNumberOfRatings
 
         val titleTextView: TextView = holder.title
@@ -97,7 +99,7 @@ class MoviesAdapter(
     }
 
     private fun setColorStars(holder: MoviesAdapter.ViewHolder, stars: Int) {
-        val starImageViewList : MutableList<ImageView> = mutableListOf(
+        val starImageViewList: MutableList<ImageView> = mutableListOf(
             holder.star01,
             holder.star02,
             holder.star03,

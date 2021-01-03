@@ -15,13 +15,16 @@ import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.data.loadMovies
 
 class FragmentMoviesList : Fragment(), CellClickListener {
-    lateinit var movies: ArrayList<Movie>
-    private var scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private lateinit var movies: ArrayList<Movie>
+    private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private lateinit var adapter: MoviesAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         scope.launch {
             load()
+            adapter.movies = movies
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -32,8 +35,7 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val recyclerViewMovies: RecyclerView = view.findViewById(R.id.recyclerview_movies)
-
-        val adapter = MoviesAdapter(movies, this)
+        adapter = MoviesAdapter(arrayListOf<Movie>(), this)
         recyclerViewMovies.adapter = adapter
         recyclerViewMovies.apply { layoutManager = GridLayoutManager(requireContext(), 2) }
 
