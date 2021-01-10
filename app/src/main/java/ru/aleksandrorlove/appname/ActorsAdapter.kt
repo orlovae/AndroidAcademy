@@ -28,7 +28,6 @@ class ActorsAdapter(private val actors: List<Actor>) :
     override fun onBindViewHolder(holder: ActorsAdapter.ViewHolder, position: Int) {
         val actor: Actor = actors[position]
         val photoImageView = holder.photo
-//        photoImageView.setImageResource(actor.photo)
         Glide.with(holder.itemView.context)
             .load(actor.picture)
             .into(photoImageView)

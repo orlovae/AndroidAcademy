@@ -9,6 +9,8 @@ import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.data.Actor
@@ -18,13 +20,30 @@ import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 import kotlin.math.roundToInt
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
+    private var id: Int? = null
     private var movie: Movie? = null
     private var _binding: FragmentMoviesDetailsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { movie = it.getParcelable(ARG_MOVIE) }
+        arguments?.let { id = it.getInt(ARG_MOVIE_ID) }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val vm: ViewModelMovieDetails =
+            ViewModelProvider(this).get(ViewModelMovieDetails::class.java)
+        id?.let { vm.onPressItemRecyclerView(it) }
+        vm.liveDataMovie.observe(
+            viewLifecycleOwner,
+            Observer<Movie> {
+                it?.let {
+                    movie = vm.liveDataMovie.value
+                    setView()
+                }
+            })
     }
 
     override fun onCreateView(
@@ -32,8 +51,6 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     ): View? {
         _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
         val view: ScrollView = binding.root
-
-        setView()
 
         return view
     }
@@ -64,10 +81,10 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
             binding.movieDetailsTextViewTitle.text = it.title
 
-            val genres : String = getGenres(it.genres)
+            val genres: String = getGenres(it.genres)
             binding.movieDetailsTextViewGenre.text = genres
 
-            val starImageViewList : List<ImageView> = listOf(
+            val starImageViewList: List<ImageView> = listOf(
                 binding.movieDetailsStar01,
                 binding.movieDetailsStar02,
                 binding.movieDetailsStar03,
@@ -85,7 +102,8 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 )
             }
 
-            val textNumberOfRatings : String = this.getString(R.string.numberOfRatings, it.numberOfRatings.toString())
+            val textNumberOfRatings: String =
+                this.getString(R.string.numberOfRatings, it.numberOfRatings.toString())
             binding.movieDetailsTextViewNumberOfRatings.text = textNumberOfRatings
 
             binding.movieDetailsTextViewOverview.text = it.overview
@@ -112,11 +130,11 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private val ARG_MOVIE = "FragmentMoviesDetails_movie"
+        private val ARG_MOVIE_ID = "FragmentMoviesDetails_movie_id"
 
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
+        fun newInstance(id: Int): FragmentMoviesDetails {
             val args = Bundle()
-            args.putParcelable(ARG_MOVIE, movie)
+            args.putInt(ARG_MOVIE_ID, id)
             val fragment = FragmentMoviesDetails()
             fragment.arguments = args
             return fragment

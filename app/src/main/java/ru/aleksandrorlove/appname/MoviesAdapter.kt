@@ -53,6 +53,28 @@ class MoviesAdapter(
 
         Glide.with(context)
             .load(movie.poster)
+//            .listener(object : RequestListener<Drawable> {
+//                override fun onLoadFailed(
+//                    e: GlideException?,
+//                    model: Any?,
+//                    target: Target<Drawable>?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    Log.d("MoviesAdapter", "GlideException " + e.toString())
+//                    return false
+//                }
+//
+//                override fun onResourceReady(
+//                    resource: Drawable?,
+//                    model: Any?,
+//                    target: Target<Drawable>?,
+//                    dataSource: com.bumptech.glide.load.DataSource?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    Log.d("MoviesAdapter", "onResourceReady")
+//                    return false
+//                }
+//            })
             .into(posterImageView)
 
         val minimumAgeTextView: TextView = holder.minimumAge
@@ -89,7 +111,7 @@ class MoviesAdapter(
         val textRuntime: String = context.getString(R.string.long_movie, movie.runtime.toString())
         runtime.text = textRuntime
 
-        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie) }
+        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie.id) }
 
     }
 

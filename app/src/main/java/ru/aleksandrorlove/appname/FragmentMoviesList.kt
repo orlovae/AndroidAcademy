@@ -5,27 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import ru.aleksandrorlove.appname.data.Movie
-import ru.aleksandrorlove.appname.data.loadMovies
 
 class FragmentMoviesList : Fragment(), CellClickListener {
-    private lateinit var movies: ArrayList<Movie>
-    private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private lateinit var adapter: MoviesAdapter
+    private var adapter = MoviesAdapter(arrayListOf<Movie>(), this)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scope.launch {
-            load()
-            adapter.movies = movies
-            adapter.notifyDataSetChanged()
-        }
+
+        val vm: ViewModelMoviesList = ViewModelProvider(this).get(ViewModelMoviesList::class.java)
+        vm.init()
+        vm.liveDataListMovie.observe(
+            viewLifecycleOwner,
+            Observer<List<Movie>> {
+                it?.let {
+                    adapter.movies = vm.liveDataListMovie.value as ArrayList<Movie>
+                    adapter.notifyDataSetChanged()
+                }
+            })
+
     }
 
     override fun onCreateView(
@@ -35,17 +38,17 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val recyclerViewMovies: RecyclerView = view.findViewById(R.id.recyclerview_movies)
-        adapter = MoviesAdapter(arrayListOf<Movie>(), this)
         recyclerViewMovies.adapter = adapter
         recyclerViewMovies.apply { layoutManager = GridLayoutManager(requireContext(), 2) }
 
         return view
     }
 
-    override fun onCellClickListener(movie: Movie) {
+    override fun onCellClickListener(id: Int) {
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransition = fragmentManager.beginTransaction()
-        val fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movie)
+
+        val fragmentMoviesDetails = FragmentMoviesDetails.newInstance(id)
         fragmentTransition.replace(
             R.id.fragment_container_view,
             fragmentMoviesDetails,
@@ -53,9 +56,5 @@ class FragmentMoviesList : Fragment(), CellClickListener {
         )
         fragmentTransition.addToBackStack(tag)
         fragmentTransition.commit()
-    }
-
-    private suspend fun load() {
-        this.movies = loadMovies(requireContext()) as ArrayList<Movie>
     }
 }

@@ -1,11 +1,9 @@
 package ru.aleksandrorlove.appname
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import ru.aleksandrorlove.appname.data.Movie
 
 class MainActivity : AppCompatActivity(), CellClickListener {
 
@@ -29,14 +27,15 @@ class MainActivity : AppCompatActivity(), CellClickListener {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         fragment?.let {
             supportFragmentManager.putFragment(outState, "fragmentTag1", it)
+
         }
     }
 
-    override fun onCellClickListener(movie: Movie) {
-        (fragment as FragmentMoviesDetails).arguments = bundleOf("movie" to movie)
+    override fun onCellClickListener(id: Int) {
+        (fragment as FragmentMoviesDetails).arguments = bundleOf("id" to id)
     }
 }
