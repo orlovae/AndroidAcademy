@@ -22,7 +22,7 @@ class Repository {
         return movie!!
     }
 
-    companion object {
+    object Singleton {
         val instance = Repository()
     }
 }

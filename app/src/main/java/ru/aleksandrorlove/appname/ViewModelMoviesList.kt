@@ -10,7 +10,7 @@ import ru.aleksandrorlove.appname.data.Movie
 
 class ViewModelMoviesList : ViewModel() {
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private val repository: Repository = Repository.instance
+    private val repository: Repository = Repository.Singleton.instance
 
     private lateinit var movies: List<Movie>
 
