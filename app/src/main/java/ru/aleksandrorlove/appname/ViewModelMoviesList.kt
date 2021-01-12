@@ -18,6 +18,7 @@ class ViewModelMoviesList : ViewModel() {
 
     fun init() {
         scope.launch {
+            repository.getListMoviesPopular()
             movies = repository.getListMovies()
             liveDataListMovie.value = movies
         }

@@ -30,6 +30,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "serverType"
+    productFlavors {
+        prod {
+            dimension "serverType"
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/movie/\""
+            buildConfigField "String", "API_KEY", "\"bf8d7c001e2e06e7103834992b477d1a\""
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -58,6 +67,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
     testImplementation 'junit:junit:4.+'
