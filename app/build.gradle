@@ -35,10 +35,21 @@ android {
     productFlavors {
         prod {
             dimension "serverType"
-            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/movie/\""
-            buildConfigField "String", "API_KEY", "\"bf8d7c001e2e06e7103834992b477d1a\""
+            buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         }
     }
+
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        def tmdbApiKey = properties.getProperty("tmdb_api_key", "")
+
+        it.buildConfigField 'String', "TMDB_API_KEY", tmdbApiKey
+
+        it.resValue 'string', "api_key", tmdbApiKey
+
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
