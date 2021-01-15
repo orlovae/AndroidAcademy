@@ -12,23 +12,23 @@ data class ResponseMoviePopular(
 @Serializable
 data class MoviePopular(
     @SerialName("backdrop_path")
-    val backdropPath: String? = null,
+    val backdrop: String? = null,
 
     @SerialName("genre_ids")
-    val genreIDS: List<Long>? = null,
+    val genreIDS: List<Long>,
 
     @SerialName("id")
-    val id: Long? = null,
+    val id: Long,
 
     @SerialName("original_title")
-    val original_title: String? = null,
+    val title: String,
 
     @SerialName("overview")
-    val overview: String? = null,
+    val overview: String,
 
     @SerialName("poster_path")
     val poster: String? = null,
 
     @SerialName("vote_average")
-    val numberOfRatings: Double? = null
+    val numberOfRatings: Double
 )

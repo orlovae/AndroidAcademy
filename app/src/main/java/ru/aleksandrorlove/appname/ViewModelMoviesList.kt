@@ -7,10 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import okhttp3.Response
 import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.network.MoviePopular
-import ru.aleksandrorlove.appname.network.ResponseMoviePopular
 
 class ViewModelMoviesList : ViewModel() {
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -22,6 +20,14 @@ class ViewModelMoviesList : ViewModel() {
 
     fun init() {
         scope.launch {
+            val moviesPopular: List<MoviePopular>? = repository.getMoviesPopular()
+            if (moviesPopular != null) {
+                for (item in moviesPopular) {
+                    Log.d("ViewModelMoviesList", " movie popular = " + item.toString())
+                }
+            } else {
+                Log.d("ViewModelMoviesList", " movie popular is null ")
+            }
             movies = repository.getListMovies()
             liveDataListMovie.value = movies
         }

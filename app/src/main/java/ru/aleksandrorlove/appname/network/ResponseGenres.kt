@@ -12,9 +12,9 @@ data class ResponseGenres(
 @Serializable
 data class Genre(
 	@SerialName("id")
-	val id: Int? = null,
+	val id: Int,
 
 	@SerialName("name")
-	val name: String? = null
+	val name: String
 )
 
