@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseActors(
+data class Actors(
 	@SerialName("cast")
 	val actors: List<Actor>
 )

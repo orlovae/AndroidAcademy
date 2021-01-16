@@ -1,8 +1,6 @@
 package ru.aleksandrorlove.appname.Entity
 
-import ru.aleksandrorlove.appname.data.Genre
-
-data class Movie(
+data class MovieEntity(
     val id: Long,
     val title: String,
     val overview: String,
@@ -12,5 +10,5 @@ data class Movie(
     val numberOfRatings: Int,
     val minimumAge: Int,
     val runtime: Int,
-    val genres: List<Genre>
+    val genres: List<ru.aleksandrorlove.appname.network.Genre>
 )

@@ -1,20 +1,19 @@
 package ru.aleksandrorlove.appname
 
 import android.util.Log
+import ru.aleksandrorlove.appname.Entity.MovieEntity
+import ru.aleksandrorlove.appname.Repository.ImageType.*
 import ru.aleksandrorlove.appname.data.JsonLoad
 import ru.aleksandrorlove.appname.data.Movie
-import ru.aleksandrorlove.appname.network.BaseRepository
-import ru.aleksandrorlove.appname.network.MoviePopular
-import ru.aleksandrorlove.appname.network.RetrofitModule
-import ru.aleksandrorlove.appname.network.TmdbApi
+import ru.aleksandrorlove.appname.network.*
+import kotlin.math.roundToInt
 
-class Repository(private val api : TmdbApi) : BaseRepository() {
+class Repository(private val api : TmdbApi) {
     private var movies: List<Movie> = emptyList()
 
+    private var configurationImages: Images? = null
+
     suspend fun getListMovies(): List<Movie> {
-//        getResponseActors(550)
-//        getResponseGenres()
-//        getMoviesPopular()
         movies = JsonLoad().loadMovies()
         return movies
     }
@@ -31,55 +30,91 @@ class Repository(private val api : TmdbApi) : BaseRepository() {
     }
 
     //TODO может быть стоит в аргументы метода передавать язык, поэксперементировать с результатами
-    suspend fun getMoviesPopular() : List<MoviePopular>? {
+    suspend fun getMoviesPopularOrEmptyList() : List<MoviePopular>? {
         val response = api.getMoviesPopular()
         return if (response.isSuccessful) {
             response.body()?.moviesPopular
         } else {
-            Log.d("Repository - fun getMoviesPopular()", "ERORR - " + response.errorBody())
+            Log.d("Repository", "ERROR - " + response.errorBody())
             emptyList()
         }
     }
-//    suspend fun getResponseGenres() {
-//        scope.launch {
-//            val responseGenres = RetrofitModule
-//                .getTmdbApi()
-//                .getResponseGenres(BuildConfig.TMDB_API_KEY, "en-US")
-//            val genres: List<Genre> = responseGenres.genres
-//
-//        }
-//    }
-//
-//    suspend fun getResponseActors(movieId: Int) {
-//        scope.launch {
-//            val responseActors = RetrofitModule
-//                .getTmdbApi()
-//                .getResponseActors(movieId, BuildConfig.TMDB_API_KEY, "en-US")
-//            val actors: List<Actor> = responseActors.actors
-//
-//        }
-//    }
 
-//    fun getMoviesEntity(genres: List<Genre>, moviesPopular: List<MoviePopular>) : List<ru.aleksandrorlove.appname.Entity.Movie> {
-//        val genresMap = genres.associateBy { it.id }
-//
-//        return moviesPopular.map {moviePopular ->
-//            ru.aleksandrorlove.appname.Entity.Movie(
-//                id = moviePopular.id,
-//                title = moviePopular.title,
-//                overview = moviePopular.overview,
-//                poster = moviePopular.poster,
-//                backdrop = moviePopular.backdrop,
-//                ratings = moviePopular.,
-//                numberOfRatings = moviePopular.numberOfRatings, //TODO перенести функцию по пересчёту рейтинга
-//                minimumAge = if (moviesPopular.adult) 16 else 13,
-//                runtime = moviePopular.,
-//                genres = moviePopular.genreIDS.map {
-//                    genresMap[it] ?: throw IllegalArgumentException("Genre not found")
-//                },
-//            )
-//        }
-//    }
+    suspend fun getGenresOrEmptyList() : List<Genre>? {
+        val response = api.getGenres()
+        return if (response.isSuccessful) {
+            response.body()?.genres
+        } else {
+            Log.d("Repository", "ERROR - " + response.errorBody())
+            emptyList()
+        }
+    }
+
+    suspend fun getActorsOrEmptyList(movieId: Int) : List<Actor>? {
+            val response = api.getActors(movieId)
+            return if (response.isSuccessful) {
+                response.body()?.actors
+            } else {
+                Log.d("Repository", "ERROR - " + response.errorBody())
+                emptyList()
+            }
+    }
+
+    suspend fun getConfiguration() : Images? {
+        val response = api.getConfiguration()
+        if (response.isSuccessful) {
+            configurationImages = response.body()?.images
+        }
+        return if (response.isSuccessful) {
+            configurationImages
+        } else {
+            Log.d("Repository", "ERROR - " + response.errorBody())
+            return null
+        }
+    }
+
+    fun getMoviesEntity(genres: List<Genre>, moviesPopular: List<MoviePopular>) : List<MovieEntity> {
+        val genresMap = genres.associateBy { it.id }
+
+        return moviesPopular.map {moviePopular ->
+            MovieEntity(
+                id = moviePopular.id,
+                title = moviePopular.title,
+                overview = moviePopular.overview,
+                poster = createUrlImage(POSTER, moviePopular.poster),
+                backdrop = createUrlImage(BACKDROP, moviePopular.backdrop),
+                ratings = 1.0F,
+                numberOfRatings = mapperNumberPfRating(moviePopular.numberOfRatings),
+                minimumAge = 13,
+//                if (moviesPopular.adult) 16 else 13,
+                runtime = 1,
+                genres = moviePopular.genreIDS.map {
+                    genresMap[it] ?: throw IllegalArgumentException("Genre not found")
+                }
+            )
+        }
+    }
+
+    private fun mapperNumberPfRating(rating: Double): Int {
+        return (rating * 0.5).roundToInt()
+    }
+
+    private fun createUrlImage(imageType: ImageType, path: String?) : String {
+        return when (imageType) {
+            POSTER -> configurationImages?.baseUrlImages +
+                    configurationImages?.posterSizes?.get(4) + path
+            BACKDROP -> configurationImages?.baseUrlImages +
+                    configurationImages?.backdropSizes?.get(1) + path
+            ACTOR -> ""
+            else -> "Заглушка для null"
+        }
+    }
+
+    enum class ImageType {
+        POSTER,
+        BACKDROP,
+        ACTOR
+    }
 
     object Singleton {
         val instance = Repository(RetrofitModule.tmdbApi)

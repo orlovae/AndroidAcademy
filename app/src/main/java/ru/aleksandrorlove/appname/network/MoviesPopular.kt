@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseMoviePopular(
+data class MoviesPopular(
     @SerialName("results")
     val moviesPopular: List<MoviePopular>
 )
@@ -15,7 +15,7 @@ data class MoviePopular(
     val backdrop: String? = null,
 
     @SerialName("genre_ids")
-    val genreIDS: List<Long>,
+    val genreIDS: List<Int>,
 
     @SerialName("id")
     val id: Long,
