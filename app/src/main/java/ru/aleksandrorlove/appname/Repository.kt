@@ -1,6 +1,7 @@
 package ru.aleksandrorlove.appname
 
 import android.util.Log
+import ru.aleksandrorlove.appname.Entity.ActorEntity
 import ru.aleksandrorlove.appname.Entity.MovieEntity
 import ru.aleksandrorlove.appname.Repository.ImageType.*
 import ru.aleksandrorlove.appname.data.JsonLoad
@@ -8,7 +9,7 @@ import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.network.*
 import kotlin.math.roundToInt
 
-class Repository(private val api : TmdbApi) {
+class Repository(private val api: TmdbApi) {
     private var movies: List<Movie> = emptyList()
 
     private var configurationImages: Images? = null
@@ -30,7 +31,7 @@ class Repository(private val api : TmdbApi) {
     }
 
     //TODO может быть стоит в аргументы метода передавать язык, поэксперементировать с результатами
-    suspend fun getMoviesPopularOrEmptyList() : List<MoviePopular>? {
+    suspend fun getMoviesPopularOrEmptyList(): List<MoviePopular>? {
         val response = api.getMoviesPopular()
         return if (response.isSuccessful) {
             response.body()?.moviesPopular
@@ -40,7 +41,7 @@ class Repository(private val api : TmdbApi) {
         }
     }
 
-    suspend fun getGenresOrEmptyList() : List<Genre>? {
+    suspend fun getGenresOrEmptyList(): List<Genre>? {
         val response = api.getGenres()
         return if (response.isSuccessful) {
             response.body()?.genres
@@ -50,17 +51,17 @@ class Repository(private val api : TmdbApi) {
         }
     }
 
-    suspend fun getActorsOrEmptyList(movieId: Int) : List<Actor>? {
-            val response = api.getActors(movieId)
-            return if (response.isSuccessful) {
-                response.body()?.actors
-            } else {
-                Log.d("Repository", "ERROR - " + response.errorBody())
-                emptyList()
-            }
+    suspend fun getActorsEntityFirstSixItemOrEmptyList(movieId: Int): List<ActorEntity>? {
+        val response = api.getActorsNetwork(movieId)
+        return if (response.isSuccessful) {
+            response.body()?.actors?.let { getActorsNetworkFirstSixItem(it) }
+        } else {
+            Log.d("Repository", "ERROR - " + response.errorBody())
+            emptyList()
+        }
     }
 
-    suspend fun getConfiguration() : Images? {
+    suspend fun getConfiguration(): Images? {
         val response = api.getConfiguration()
         if (response.isSuccessful) {
             configurationImages = response.body()?.images
@@ -73,10 +74,32 @@ class Repository(private val api : TmdbApi) {
         }
     }
 
-    fun getMoviesEntity(genres: List<Genre>, moviesPopular: List<MoviePopular>) : List<MovieEntity> {
+    fun getActorsNetworkFirstSixItem(actors: List<ActorNetwork>): List<ActorEntity> {
+        val sizeActorEntity : Int = if (actors.size < 6) {
+            actors.size
+        } else {
+            7
+        }
+        return castActorToActorEntity(actors).subList(0, sizeActorEntity)
+    }
+
+    fun castActorToActorEntity(actorsNetwork: List<ActorNetwork>) : List<ActorEntity> {
+        return actorsNetwork.map { actorNetwork ->
+            ActorEntity(
+                id = actorNetwork.id,
+                name = actorNetwork.name,
+                picture = actorNetwork.picturePath ?: "Заглушка для отсутсвующих картинок"
+            )
+        }
+    }
+
+    suspend fun getMoviesEntity(
+        genres: List<Genre>,
+        moviesPopular: List<MoviePopular>
+    ): List<MovieEntity> {
         val genresMap = genres.associateBy { it.id }
 
-        return moviesPopular.map {moviePopular ->
+        return moviesPopular.map { moviePopular ->
             MovieEntity(
                 id = moviePopular.id,
                 title = moviePopular.title,
@@ -90,7 +113,8 @@ class Repository(private val api : TmdbApi) {
                 runtime = 1,
                 genres = moviePopular.genreIDS.map {
                     genresMap[it] ?: throw IllegalArgumentException("Genre not found")
-                }
+                },
+                actors = getActorsEntityFirstSixItemOrEmptyList(moviePopular.id) ?: emptyList<ActorEntity>()
             )
         }
     }
@@ -99,7 +123,7 @@ class Repository(private val api : TmdbApi) {
         return (rating * 0.5).roundToInt()
     }
 
-    private fun createUrlImage(imageType: ImageType, path: String?) : String {
+    private fun createUrlImage(imageType: ImageType, path: String?): String {
         return when (imageType) {
             POSTER -> configurationImages?.baseUrlImages +
                     configurationImages?.posterSizes?.get(4) + path

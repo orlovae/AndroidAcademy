@@ -1,7 +1,7 @@
 package ru.aleksandrorlove.appname.Entity
 
 data class MovieEntity(
-    val id: Long,
+    val id: Int,
     val title: String,
     val overview: String,
     val poster: String,
@@ -10,5 +10,6 @@ data class MovieEntity(
     val numberOfRatings: Int,
     val minimumAge: Int,
     val runtime: Int,
-    val genres: List<ru.aleksandrorlove.appname.network.Genre>
+    val genres: List<ru.aleksandrorlove.appname.network.Genre>,
+    val actors: List<ActorEntity>
 )

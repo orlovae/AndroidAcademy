@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Actors(
+data class ActorsNetwork(
 	@SerialName("cast")
-	val actors: List<Actor>
+	val actors: List<ActorNetwork>
 )
 
 @Serializable
-data class Actor(
+data class ActorNetwork(
 	@SerialName("id")
 	val id: Int,
 

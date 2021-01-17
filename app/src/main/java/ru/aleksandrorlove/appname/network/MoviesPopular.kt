@@ -18,7 +18,7 @@ data class MoviePopular(
     val genreIDS: List<Int>,
 
     @SerialName("id")
-    val id: Long,
+    val id: Int,
 
     @SerialName("original_title")
     val title: String,

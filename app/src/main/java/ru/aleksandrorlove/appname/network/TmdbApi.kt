@@ -22,11 +22,11 @@ interface TmdbApi {
     ): Response<Genres>
 
     @GET("movie/{movie_id}/credits?")
-    suspend fun getActors(
+    suspend fun getActorsNetwork(
         @Path("movie_id") movieId: Int,
         @Query("api_key") api_key: String  = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String  = "en-US"
-    ): Response<Actors>
+    ): Response<ActorsNetwork>
 
     @GET("configuration")
     suspend fun getConfiguration(
