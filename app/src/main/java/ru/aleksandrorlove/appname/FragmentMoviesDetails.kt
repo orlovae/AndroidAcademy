@@ -13,15 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import ru.aleksandrorlove.appname.data.Actor
-import ru.aleksandrorlove.appname.data.Genre
-import ru.aleksandrorlove.appname.data.Movie
+import ru.aleksandrorlove.appname.Entity.ActorEntity
+import ru.aleksandrorlove.appname.Entity.GenreEntity
+import ru.aleksandrorlove.appname.Entity.MovieEntity
 import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
-import kotlin.math.roundToInt
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var id: Int? = null
-    private var movie: Movie? = null
+    private var movieEntity: MovieEntity? = null
     private var _binding: FragmentMoviesDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -38,9 +37,9 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         id?.let { vm.onPressItemRecyclerView(it) }
         vm.liveDataMovie.observe(
             viewLifecycleOwner,
-            Observer<Movie> {
+            Observer<MovieEntity> {
                 it?.let {
-                    movie = vm.liveDataMovie.value
+                    movieEntity = vm.liveDataMovie.value
                     setView()
                 }
             })
@@ -71,7 +70,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
     private fun setView() {
         binding.movieDetailsButtonBack.setOnClickListener(this)
-        movie?.let {
+        movieEntity?.let {
             binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
             Glide.with(requireActivity())
                 .load(it.backdrop)
@@ -81,7 +80,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
             binding.movieDetailsTextViewTitle.text = it.title
 
-            val genres: String = getGenres(it.genres)
+            val genres: String = getGenresEntity(it.genres)
             binding.movieDetailsTextViewGenre.text = genres
 
             val starImageViewList: List<ImageView> = listOf(
@@ -92,11 +91,10 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
                 binding.movieDetailsStar05
             )
 
-            val stars = getStars(it.ratings) - 1
-            for (i in 0..stars) {
-                starImageViewList.get(i).setColorFilter(
+            for (index in starImageViewList.indices) {
+                starImageViewList[index].setColorFilter(
                     ContextCompat.getColor(
-                        starImageViewList.get(i).context,
+                        starImageViewList[index].context,
                         R.color.pink_light
                     ), android.graphics.PorterDuff.Mode.SRC_IN
                 )
@@ -108,8 +106,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
             binding.movieDetailsTextViewOverview.text = it.overview
 
-            val actors: ArrayList<Actor> = it.actors as ArrayList<Actor>
-            val adapter = ActorsAdapter(actors)
+            val adapter = ActorsEntityAdapter(it.actors)
             binding.movieDetailsRecyclerviewActors.adapter = adapter
             binding.movieDetailsRecyclerviewActors.apply {
                 layoutManager = GridLayoutManager(requireContext(), 4)
@@ -117,16 +114,12 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun getGenres(genres: List<Genre>): String {
+    private fun getGenresEntity(genresEntity: List<GenreEntity>): String {
         val result: StringBuilder = StringBuilder()
-        for (genre in genres) {
-            result.append(genre.name).append(", ")
+        for (genreEntity: GenreEntity in genresEntity) {
+            result.append(genreEntity.name).append(", ")
         }
         return result.dropLast(2).toString()
-    }
-
-    private fun getStars(rating: Float): Int {
-        return (rating * 0.5).roundToInt()
     }
 
     companion object {

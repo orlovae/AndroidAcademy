@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import ru.aleksandrorlove.appname.BuildConfig
+import java.util.concurrent.TimeUnit
 
 
 object RetrofitModule {

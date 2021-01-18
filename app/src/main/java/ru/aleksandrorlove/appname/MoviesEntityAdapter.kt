@@ -1,6 +1,7 @@
 package ru.aleksandrorlove.appname
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,15 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.aleksandrorlove.appname.data.Genre
-import ru.aleksandrorlove.appname.data.Movie
+import ru.aleksandrorlove.appname.Entity.GenreEntity
+import ru.aleksandrorlove.appname.Entity.MovieEntity
 import kotlin.math.roundToInt
 
-class MoviesAdapter(
-    var movies: ArrayList<Movie>,
+class MoviesEntityAdapter(
+    var moviesEntity: ArrayList<MovieEntity>,
     private val cellClickListener: CellClickListener
 ) :
-    RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
+    RecyclerView.Adapter<MoviesEntityAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val poster = itemView.findViewById<ImageView>(R.id.holder_movie_image_view_poster)
@@ -44,41 +45,19 @@ class MoviesAdapter(
         return ViewHolder(movieCard)
     }
 
-    override fun onBindViewHolder(holder: MoviesAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MoviesEntityAdapter.ViewHolder, position: Int) {
         val context: Context = holder.itemView.context
 
-        val movie: Movie = movies[position]
+        val movieEntity: MovieEntity = moviesEntity[position]
 
         val posterImageView: ImageView = holder.poster
 
         Glide.with(context)
-            .load(movie.poster)
-//            .listener(object : RequestListener<Drawable> {
-//                override fun onLoadFailed(
-//                    e: GlideException?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//                    Log.d("MoviesAdapter", "GlideException " + e.toString())
-//                    return false
-//                }
-//
-//                override fun onResourceReady(
-//                    resource: Drawable?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    dataSource: com.bumptech.glide.load.DataSource?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//                    Log.d("MoviesAdapter", "onResourceReady")
-//                    return false
-//                }
-//            })
+            .load(movieEntity.poster)
             .into(posterImageView)
 
         val minimumAgeTextView: TextView = holder.minimumAge
-        minimumAgeTextView.text = movie.minimumAge.toString()
+        minimumAgeTextView.text = movieEntity.minimumAge.toString()
 
 //        val likeImageView = holder.like
 //        if (movie.like) {
@@ -91,35 +70,35 @@ class MoviesAdapter(
 //        }
 
         val genreTextView: TextView = holder.genre
-        val genres: String = getGenres(movie.genres)
+        val genres: String = getGenresEntity(movieEntity.genres)
         genreTextView.text = genres
 
-        val stars: Int = getStars(movie.ratings) - 1
-        setColorStars(holder, stars)
+        setColorStars(holder, movieEntity.ratings)
 
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
         val textNumberOfRatings: String = context.getString(
             R.string.numberOfRatings,
-            movie.numberOfRatings.toString()
+            movieEntity.numberOfRatings.toString()
         )
         numberOfRatingsTextView.text = textNumberOfRatings
 
         val titleTextView: TextView = holder.title
-        titleTextView.text = movie.title
+        titleTextView.text = movieEntity.title
 
         val runtime: TextView = holder.runtime
-        val textRuntime: String = context.getString(R.string.long_movie, movie.runtime.toString())
+        val textRuntime: String =
+            context.getString(R.string.long_movie, movieEntity.runtime.toString())
         runtime.text = textRuntime
 
-        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie.id) }
+        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movieEntity.id) }
 
     }
 
     override fun getItemCount(): Int {
-        return movies.size
+        return moviesEntity.size
     }
 
-    private fun setColorStars(holder: MoviesAdapter.ViewHolder, stars: Int) {
+    private fun setColorStars(holder: MoviesEntityAdapter.ViewHolder, stars: Int) {
         val starImageViewList: MutableList<ImageView> = mutableListOf(
             holder.star01,
             holder.star02,
@@ -128,25 +107,21 @@ class MoviesAdapter(
             holder.star05
         )
 
-        for (i in 0..stars) {
-            starImageViewList.get(i).setColorFilter(
+        for (index in starImageViewList.indices) {
+            starImageViewList[index].setColorFilter(
                 ContextCompat.getColor(
-                    starImageViewList.get(i).context,
+                    starImageViewList[index].context,
                     R.color.pink_light
                 ), android.graphics.PorterDuff.Mode.SRC_IN
             )
         }
     }
 
-    private fun getGenres(genres: List<Genre>): String {
+    private fun getGenresEntity(genresEntity: List<GenreEntity>): String {
         val result: StringBuilder = StringBuilder()
-        for (genre: Genre in genres) {
-            result.append(genre.name).append(", ")
+        for (genreEntity: GenreEntity in genresEntity) {
+            result.append(genreEntity.name).append(", ")
         }
         return result.dropLast(2).toString()
-    }
-
-    private fun getStars(rating: Float): Int {
-        return (rating * 0.5).roundToInt()
     }
 }

@@ -3,18 +3,19 @@ package ru.aleksandrorlove.appname
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.annotations.Since
+import ru.aleksandrorlove.appname.Entity.MovieEntity
 import ru.aleksandrorlove.appname.data.Movie
 
 class ViewModelMovieDetails : ViewModel() {
     private val repository: Repository = Repository.Singleton.instance
 
-    private lateinit var movie: Movie
+    private lateinit var movieEntity: MovieEntity
 
-    var liveDataMovie = MutableLiveData<Movie>()
+    var liveDataMovie = MutableLiveData<MovieEntity>()
 
 
     fun onPressItemRecyclerView(id: Int) {
-        movie = repository.getMovie(id)
-        liveDataMovie.value = movie
+        movieEntity = repository.getMovieEntity(id)
+        liveDataMovie.value = movieEntity
     }
 }

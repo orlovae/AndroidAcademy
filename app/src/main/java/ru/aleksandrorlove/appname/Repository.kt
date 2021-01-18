@@ -2,32 +2,36 @@ package ru.aleksandrorlove.appname
 
 import android.util.Log
 import ru.aleksandrorlove.appname.Entity.ActorEntity
+import ru.aleksandrorlove.appname.Entity.GenreEntity
 import ru.aleksandrorlove.appname.Entity.MovieEntity
 import ru.aleksandrorlove.appname.Repository.ImageType.*
-import ru.aleksandrorlove.appname.data.JsonLoad
 import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.network.*
 import kotlin.math.roundToInt
 
 class Repository(private val api: TmdbApi) {
-    private var movies: List<Movie> = emptyList()
+    var moviesEntity: List<MovieEntity> = emptyList()
 
     private var configurationImages: Images? = null
 
-    suspend fun getListMovies(): List<Movie> {
-        movies = JsonLoad().loadMovies()
-        return movies
-    }
-
-    fun getMovie(id: Int): Movie {
-        var movie: Movie? = null
-        for (item in movies) {
+    fun getMovieEntity(id: Int): MovieEntity {
+        for (item in moviesEntity) {
             if (item.id == id) {
-                movie = item
-                break
+                return item
             }
         }
-        return movie!!
+        return MovieEntity(0, "", "", "", "", 0, 0,0, 0, emptyList(), emptyList())
+    }
+
+    suspend fun init() {
+        val moviesPopular: List<MoviePopular>? = getMoviesPopularOrEmptyList()
+        val genres: List<GenreNetwork>? = getGenresOrEmptyList()
+        if (genres != null && moviesPopular != null) {
+            moviesEntity = getMoviesEntity(genres, moviesPopular)
+//            for (item in moviesEntity) {
+//                    Log.d("ViewModelMoviesList", " moviesEntity = " + item.toString())
+//            }
+        }
     }
 
     //TODO может быть стоит в аргументы метода передавать язык, поэксперементировать с результатами
@@ -41,13 +45,23 @@ class Repository(private val api: TmdbApi) {
         }
     }
 
-    suspend fun getGenresOrEmptyList(): List<Genre>? {
+    suspend fun getGenresOrEmptyList(): List<GenreNetwork>? {
         val response = api.getGenres()
         return if (response.isSuccessful) {
             response.body()?.genres
         } else {
             Log.d("Repository", "ERROR - " + response.errorBody())
             emptyList()
+        }
+    }
+
+    suspend fun getMovieDetailsRatingRuntimeNetwork(movieId: Int): MovieDetailsRatingRuntimeNetwork? {
+        val response = api.getMovieDetailsRatingRuntimeNetwork(movieId)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            Log.d("Repository", "ERROR - " + response.errorBody())
+            MovieDetailsRatingRuntimeNetwork(0, 1.0, 0)
         }
     }
 
@@ -74,30 +88,40 @@ class Repository(private val api: TmdbApi) {
         }
     }
 
-    fun getActorsNetworkFirstSixItem(actors: List<ActorNetwork>): List<ActorEntity> {
+    suspend fun getActorsNetworkFirstSixItem(actors: List<ActorNetwork>): List<ActorEntity> {
         val sizeActorEntity : Int = if (actors.size < 6) {
             actors.size
         } else {
             7
         }
-        return castActorToActorEntity(actors).subList(0, sizeActorEntity)
+        return castActorNetworkToActorEntity(actors).subList(0, sizeActorEntity)
     }
 
-    fun castActorToActorEntity(actorsNetwork: List<ActorNetwork>) : List<ActorEntity> {
+    suspend fun castActorNetworkToActorEntity(actorsNetwork: List<ActorNetwork>) : List<ActorEntity> {
         return actorsNetwork.map { actorNetwork ->
             ActorEntity(
                 id = actorNetwork.id,
                 name = actorNetwork.name,
-                picture = actorNetwork.picturePath ?: "Заглушка для отсутсвующих картинок"
+                picture = createUrlImage(ACTOR, actorNetwork.picturePath)
+            )
+        }
+    }
+    fun castGenresNetworkToGenresEntity(genresNetwork: List<GenreNetwork>) : List<GenreEntity> {
+        return genresNetwork.map { genreNetwork ->
+            GenreEntity(
+                id = genreNetwork.id,
+                name = genreNetwork.name
             )
         }
     }
 
+    //TODO возвраст не раелизован
     suspend fun getMoviesEntity(
-        genres: List<Genre>,
+        genresNetwork: List<GenreNetwork>,
         moviesPopular: List<MoviePopular>
     ): List<MovieEntity> {
-        val genresMap = genres.associateBy { it.id }
+        val genresEntity = castGenresNetworkToGenresEntity(genresNetwork)
+        val genresMap = genresEntity.associateBy { it.id }
 
         return moviesPopular.map { moviePopular ->
             MovieEntity(
@@ -106,11 +130,11 @@ class Repository(private val api: TmdbApi) {
                 overview = moviePopular.overview,
                 poster = createUrlImage(POSTER, moviePopular.poster),
                 backdrop = createUrlImage(BACKDROP, moviePopular.backdrop),
-                ratings = 1.0F,
+                ratings = (getMovieDetailsRatingRuntimeNetwork(moviePopular.id)?.ratings)?.toInt() ?: 0,
                 numberOfRatings = mapperNumberPfRating(moviePopular.numberOfRatings),
                 minimumAge = 13,
 //                if (moviesPopular.adult) 16 else 13,
-                runtime = 1,
+                runtime = getMovieDetailsRatingRuntimeNetwork(moviePopular.id)?.runtime ?: 0,
                 genres = moviePopular.genreIDS.map {
                     genresMap[it] ?: throw IllegalArgumentException("Genre not found")
                 },
@@ -123,13 +147,17 @@ class Repository(private val api: TmdbApi) {
         return (rating * 0.5).roundToInt()
     }
 
-    private fun createUrlImage(imageType: ImageType, path: String?): String {
+    private suspend fun createUrlImage(imageType: ImageType, path: String?): String {
+        if (configurationImages == null) {
+            getConfiguration()
+        }
         return when (imageType) {
             POSTER -> configurationImages?.baseUrlImages +
                     configurationImages?.posterSizes?.get(4) + path
             BACKDROP -> configurationImages?.baseUrlImages +
                     configurationImages?.backdropSizes?.get(1) + path
-            ACTOR -> ""
+            ACTOR -> configurationImages?.baseUrlImages +
+                    configurationImages?.posterSizes?.get(0) + path
             else -> "Заглушка для null"
         }
     }

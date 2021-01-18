@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Genres(
+data class GenresNetwork(
 	@SerialName("genres")
-	val genres: List<Genre>
+	val genres: List<GenreNetwork>
 )
 
 @Serializable
-data class Genre(
+data class GenreNetwork(
 	@SerialName("id")
 	val id: Int,
 

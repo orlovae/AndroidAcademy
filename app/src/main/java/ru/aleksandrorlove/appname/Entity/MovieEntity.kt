@@ -6,10 +6,10 @@ data class MovieEntity(
     val overview: String,
     val poster: String,
     val backdrop: String,
-    val ratings: Float,
+    val ratings: Int,
     val numberOfRatings: Int,
     val minimumAge: Int,
     val runtime: Int,
-    val genres: List<ru.aleksandrorlove.appname.network.Genre>,
+    val genres: List<GenreEntity>,
     val actors: List<ActorEntity>
 )
