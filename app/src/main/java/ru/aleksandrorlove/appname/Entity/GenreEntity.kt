@@ -1,6 +1,6 @@
 package ru.aleksandrorlove.appname.Entity
 
-class GenreEntity (
+class GenreEntity(
     val id: Int,
     val name: String
 )

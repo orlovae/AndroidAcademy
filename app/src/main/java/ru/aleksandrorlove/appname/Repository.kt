@@ -5,7 +5,6 @@ import ru.aleksandrorlove.appname.Entity.ActorEntity
 import ru.aleksandrorlove.appname.Entity.GenreEntity
 import ru.aleksandrorlove.appname.Entity.MovieEntity
 import ru.aleksandrorlove.appname.Repository.ImageType.*
-import ru.aleksandrorlove.appname.data.Movie
 import ru.aleksandrorlove.appname.network.*
 import kotlin.math.roundToInt
 
@@ -20,7 +19,7 @@ class Repository(private val api: TmdbApi) {
                 return item
             }
         }
-        return MovieEntity(0, "", "", "", "", 0, 0,0, 0, emptyList(), emptyList())
+        return MovieEntity(0, "", "", "", "", 0, 0, 0, 0, emptyList(), emptyList())
     }
 
     suspend fun init() {
@@ -28,9 +27,6 @@ class Repository(private val api: TmdbApi) {
         val genres: List<GenreNetwork>? = getGenresOrEmptyList()
         if (genres != null && moviesPopular != null) {
             moviesEntity = getMoviesEntity(genres, moviesPopular)
-//            for (item in moviesEntity) {
-//                    Log.d("ViewModelMoviesList", " moviesEntity = " + item.toString())
-//            }
         }
     }
 
@@ -89,7 +85,7 @@ class Repository(private val api: TmdbApi) {
     }
 
     suspend fun getActorsNetworkFirstSixItem(actors: List<ActorNetwork>): List<ActorEntity> {
-        val sizeActorEntity : Int = if (actors.size < 6) {
+        val sizeActorEntity: Int = if (actors.size < 6) {
             actors.size
         } else {
             7
@@ -97,7 +93,7 @@ class Repository(private val api: TmdbApi) {
         return castActorNetworkToActorEntity(actors).subList(0, sizeActorEntity)
     }
 
-    suspend fun castActorNetworkToActorEntity(actorsNetwork: List<ActorNetwork>) : List<ActorEntity> {
+    suspend fun castActorNetworkToActorEntity(actorsNetwork: List<ActorNetwork>): List<ActorEntity> {
         return actorsNetwork.map { actorNetwork ->
             ActorEntity(
                 id = actorNetwork.id,
@@ -106,7 +102,8 @@ class Repository(private val api: TmdbApi) {
             )
         }
     }
-    fun castGenresNetworkToGenresEntity(genresNetwork: List<GenreNetwork>) : List<GenreEntity> {
+
+    fun castGenresNetworkToGenresEntity(genresNetwork: List<GenreNetwork>): List<GenreEntity> {
         return genresNetwork.map { genreNetwork ->
             GenreEntity(
                 id = genreNetwork.id,
@@ -130,7 +127,8 @@ class Repository(private val api: TmdbApi) {
                 overview = moviePopular.overview,
                 poster = createUrlImage(POSTER, moviePopular.poster),
                 backdrop = createUrlImage(BACKDROP, moviePopular.backdrop),
-                ratings = (getMovieDetailsRatingRuntimeNetwork(moviePopular.id)?.ratings)?.toInt() ?: 0,
+                ratings = (getMovieDetailsRatingRuntimeNetwork(moviePopular.id)?.ratings)?.toInt()
+                    ?: 0,
                 numberOfRatings = mapperNumberPfRating(moviePopular.numberOfRatings),
                 minimumAge = 13,
 //                if (moviesPopular.adult) 16 else 13,
@@ -138,7 +136,8 @@ class Repository(private val api: TmdbApi) {
                 genres = moviePopular.genreIDS.map {
                     genresMap[it] ?: throw IllegalArgumentException("Genre not found")
                 },
-                actors = getActorsEntityFirstSixItemOrEmptyList(moviePopular.id) ?: emptyList<ActorEntity>()
+                actors = getActorsEntityFirstSixItemOrEmptyList(moviePopular.id)
+                    ?: emptyList<ActorEntity>()
             )
         }
     }

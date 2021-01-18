@@ -24,19 +24,19 @@ interface TmdbApi {
     @GET("movie/{movie_id}/credits?")
     suspend fun getActorsNetwork(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") api_key: String  = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String  = "en-US"
+        @Query("api_key") api_key: String = BuildConfig.TMDB_API_KEY,
+        @Query("language") language: String = "en-US"
     ): Response<ActorsNetwork>
 
     @GET("configuration")
     suspend fun getConfiguration(
-        @Query("api_key") api_key: String  = BuildConfig.TMDB_API_KEY
+        @Query("api_key") api_key: String = BuildConfig.TMDB_API_KEY
     ): Response<Configuration>
 
     @GET("movie/{movie_id}?")
     suspend fun getMovieDetailsRatingRuntimeNetwork(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") api_key: String  = BuildConfig.TMDB_API_KEY,
-        @Query("append_to_response") language: String  = "release_dates"
+        @Query("api_key") api_key: String = BuildConfig.TMDB_API_KEY,
+        @Query("append_to_response") language: String = "release_dates"
     ): Response<MovieDetailsRatingRuntimeNetwork>
 }

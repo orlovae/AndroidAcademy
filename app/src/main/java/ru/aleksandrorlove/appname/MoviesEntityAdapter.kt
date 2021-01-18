@@ -1,7 +1,6 @@
 package ru.aleksandrorlove.appname
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.Entity.GenreEntity
 import ru.aleksandrorlove.appname.Entity.MovieEntity
-import kotlin.math.roundToInt
 
 class MoviesEntityAdapter(
     var moviesEntity: ArrayList<MovieEntity>,

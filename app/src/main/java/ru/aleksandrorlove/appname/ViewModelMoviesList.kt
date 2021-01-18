@@ -1,6 +1,5 @@
 package ru.aleksandrorlove.appname
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -8,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import ru.aleksandrorlove.appname.Entity.MovieEntity
-import ru.aleksandrorlove.appname.network.*
 
 class ViewModelMoviesList : ViewModel() {
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)

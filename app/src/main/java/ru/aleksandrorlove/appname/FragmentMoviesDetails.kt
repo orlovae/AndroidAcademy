@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import ru.aleksandrorlove.appname.Entity.ActorEntity
 import ru.aleksandrorlove.appname.Entity.GenreEntity
 import ru.aleksandrorlove.appname.Entity.MovieEntity
 import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding

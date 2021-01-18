@@ -24,7 +24,8 @@ class FragmentMoviesList : Fragment(), CellClickListener {
             viewLifecycleOwner,
             Observer<List<MovieEntity>> {
                 it?.let {
-                    adapter.moviesEntity = vm.liveDataListMovieEntity.value as ArrayList<MovieEntity>
+                    adapter.moviesEntity =
+                        vm.liveDataListMovieEntity.value as ArrayList<MovieEntity>
                     adapter.notifyDataSetChanged()
                 }
             })
