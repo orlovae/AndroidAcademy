@@ -19,14 +19,17 @@ class Repository(private val api: TmdbApi) {
                 return item
             }
         }
-        return MovieEntity(0, "", "", "", "", 0, 0, 0, 0, emptyList(), emptyList())
+        return MovieEntity(0, "", "", "", "", 0, 0, "", 0, emptyList(), emptyList())
     }
 
     suspend fun init() {
         val moviesPopular: List<MoviePopular>? = getMoviesPopularOrEmptyList()
         val genres: List<GenreNetwork>? = getGenresOrEmptyList()
         if (genres != null && moviesPopular != null) {
-            moviesEntity = getMoviesEntity(genres, moviesPopular)
+            moviesEntity = getMoviesEntity(
+                genres, moviesPopular,
+                getListMoviesDetailsNetwork(moviesPopular)
+            )
         }
     }
 
@@ -51,15 +54,33 @@ class Repository(private val api: TmdbApi) {
         }
     }
 
-    suspend fun getMovieDetailsRatingRuntimeNetwork(movieId: Int): MovieDetailsRatingRuntimeNetwork? {
-        val response = api.getMovieDetailsRatingRuntimeNetwork(movieId)
+    suspend fun getMovieDetailNetwork(movieId: Int)
+            : MovieDetailsNetwork? {
+        val response = api
+            .getMovieDetailsRatingRuntimeNetwork(movieId)
+
         return if (response.isSuccessful) {
             response.body()
         } else {
             Log.d("Repository", "ERROR - " + response.errorBody())
-            MovieDetailsRatingRuntimeNetwork(0, 1.0, 0)
+            MovieDetailsNetwork(0, 0.0, 0, ReleaseDates(emptyList()))
         }
     }
+
+    suspend fun getListMoviesDetailsNetwork(moviesPopular: List<MoviePopular>):
+            List<MovieDetailsNetwork> {
+        val listMovieDetailsNetwork:
+                MutableList<MovieDetailsNetwork> = mutableListOf()
+        for (item in moviesPopular.indices) {
+            getMovieDetailNetwork(moviesPopular[item].id)?.let {
+                listMovieDetailsNetwork.add(
+                    it
+                )
+            }
+        }
+        return listMovieDetailsNetwork
+    }
+
 
     suspend fun getActorsEntityFirstSixItemOrEmptyList(movieId: Int): List<ActorEntity>? {
         val response = api.getActorsNetwork(movieId)
@@ -112,13 +133,16 @@ class Repository(private val api: TmdbApi) {
         }
     }
 
-    //TODO возвраст не раелизован
     suspend fun getMoviesEntity(
         genresNetwork: List<GenreNetwork>,
-        moviesPopular: List<MoviePopular>
+        moviesPopular: List<MoviePopular>,
+        moviesDetails:
+        List<MovieDetailsNetwork>
     ): List<MovieEntity> {
         val genresEntity = castGenresNetworkToGenresEntity(genresNetwork)
         val genresMap = genresEntity.associateBy { it.id }
+        val moviesDetailsNetworkMap =
+            moviesDetails.associateBy { it.id }
 
         return moviesPopular.map { moviePopular ->
             MovieEntity(
@@ -127,12 +151,13 @@ class Repository(private val api: TmdbApi) {
                 overview = moviePopular.overview,
                 poster = createUrlImage(POSTER, moviePopular.poster),
                 backdrop = createUrlImage(BACKDROP, moviePopular.backdrop),
-                ratings = (getMovieDetailsRatingRuntimeNetwork(moviePopular.id)?.ratings)?.toInt()
-                    ?: 0,
+                ratings = moviesDetailsNetworkMap[moviePopular.id]?.ratings?.toInt() ?: 0,
+
                 numberOfRatings = mapperNumberPfRating(moviePopular.numberOfRatings),
-                minimumAge = 13,
-//                if (moviesPopular.adult) 16 else 13,
-                runtime = getMovieDetailsRatingRuntimeNetwork(moviePopular.id)?.runtime ?: 0,
+                minimumAge = getMinimumAge(moviesDetails),
+
+                runtime = moviesDetailsNetworkMap[moviePopular.id]?.runtime ?: 0,
+
                 genres = moviePopular.genreIDS.map {
                     genresMap[it] ?: throw IllegalArgumentException("Genre not found")
                 },
@@ -140,6 +165,24 @@ class Repository(private val api: TmdbApi) {
                     ?: emptyList<ActorEntity>()
             )
         }
+    }
+
+    //TODO В данной функции можно добавить агрумент language: String для выбора нащиональной системы рейтинга
+    private fun getMinimumAge(moviesDetails: List<MovieDetailsNetwork>): String {
+        for (index in moviesDetails.indices) {
+            val result = moviesDetails[index].releaseDates.results
+
+            for (i in result.indices) {
+                if (result[i].iso_3166_1.equals("RU", true)) {
+                    Log.d(
+                        "getMinimumAge",
+                        "minimumAge - " + result[i].release_dates_result_item[0].certification.toString()
+                    )
+                    return result[i].release_dates_result_item[0].certification.toString()
+                }
+            }
+        }
+        return "0"
     }
 
     private fun mapperNumberPfRating(rating: Double): Int {

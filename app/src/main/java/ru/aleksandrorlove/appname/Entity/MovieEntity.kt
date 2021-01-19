@@ -8,7 +8,7 @@ data class MovieEntity(
     val backdrop: String,
     val ratings: Int,
     val numberOfRatings: Int,
-    val minimumAge: Int,
+    val minimumAge: String,
     val runtime: Int,
     val genres: List<GenreEntity>,
     val actors: List<ActorEntity>
