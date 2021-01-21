@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MoviesPopular(
+data class MoviesPopularNetwork(
     @SerialName("results")
-    val moviesPopular: List<MoviePopular>
+    val moviesPopular: List<MoviePopularNetwork>
 )
 
 @Serializable
-data class MoviePopular(
+data class MoviePopularNetwork(
     @SerialName("backdrop_path")
     val backdrop: String? = null,
 

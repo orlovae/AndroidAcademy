@@ -10,17 +10,13 @@ import ru.aleksandrorlove.appname.Entity.MovieEntity
 
 class ViewModelMoviesList : ViewModel() {
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private val repository: Repository = Repository.Singleton.instance
-
-    private lateinit var moviesEntity: List<MovieEntity>
+    private val mapper: Mapper = Mapper()
 
     var liveDataListMovieEntity = MutableLiveData<List<MovieEntity>>()
 
     fun init() {
         scope.launch {
-            repository.init()
-
-            liveDataListMovieEntity.value = repository.moviesEntity
+            liveDataListMovieEntity.value = mapper.mapListMoviePopularNetworkToListMoviesEntity()
         }
     }
 }

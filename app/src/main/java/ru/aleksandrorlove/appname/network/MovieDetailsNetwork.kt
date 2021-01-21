@@ -21,11 +21,11 @@ data class MovieDetailsNetwork(
 @Serializable
 data class ReleaseDates(
     @SerialName("results")
-    val results: List<Result>
+    val results: List<ResultItem>
 )
 
 @Serializable
-data class Result(
+data class ResultItem(
     @SerialName("iso_3166_1")
     val iso_3166_1: String,
 

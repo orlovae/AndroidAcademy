@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname.network
 
+import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,7 +14,7 @@ interface TmdbApi {
         @Query("api_key") api_key: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
-    ): Response<MoviesPopular>
+    ): Response<MoviesPopularNetwork>
 
     @GET("genre/movie/list?")
     suspend fun getGenres(
@@ -34,7 +35,7 @@ interface TmdbApi {
     ): Response<Configuration>
 
     @GET("movie/{movie_id}?")
-    suspend fun getMovieDetailsRatingRuntimeNetwork(
+    suspend fun getMovieDetailsNetwork(
         @Path("movie_id") movieId: Int,
         @Query("api_key") api_key: String = BuildConfig.TMDB_API_KEY,
         @Query("append_to_response") append: String = "release_dates"
