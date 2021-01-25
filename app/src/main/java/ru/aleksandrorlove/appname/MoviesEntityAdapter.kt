@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.aleksandrorlove.appname.Entity.GenreEntity
-import ru.aleksandrorlove.appname.Entity.MovieEntity
+import ru.aleksandrorlove.appname.model.Genre
+import ru.aleksandrorlove.appname.model.Movie
 
 class MoviesEntityAdapter(
-    var moviesEntity: ArrayList<MovieEntity>,
+    var movies: ArrayList<Movie>,
     private val cellClickListener: CellClickListener
 ) :
     RecyclerView.Adapter<MoviesEntityAdapter.ViewHolder>() {
@@ -46,16 +46,16 @@ class MoviesEntityAdapter(
     override fun onBindViewHolder(holder: MoviesEntityAdapter.ViewHolder, position: Int) {
         val context: Context = holder.itemView.context
 
-        val movieEntity: MovieEntity = moviesEntity[position]
+        val movie: Movie = movies[position]
 
         val posterImageView: ImageView = holder.poster
 
         Glide.with(context)
-            .load(movieEntity.poster)
+            .load(movie.poster)
             .into(posterImageView)
 
         val minimumAgeTextView: TextView = holder.minimumAge
-        minimumAgeTextView.text = movieEntity.minimumAge.toString()
+        minimumAgeTextView.text = movie.minimumAge.toString()
 
 //        val likeImageView = holder.like
 //        if (movie.like) {
@@ -68,32 +68,32 @@ class MoviesEntityAdapter(
 //        }
 
         val genreTextView: TextView = holder.genre
-        val genres: String = getGenresEntity(movieEntity.genres)
+        val genres: String = getGenresEntity(movie.genres)
         genreTextView.text = genres
 
-        setColorStars(holder, movieEntity.ratings)
+        setColorStars(holder, movie.ratings)
 
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
         val textNumberOfRatings: String = context.getString(
             R.string.numberOfRatings,
-            movieEntity.numberOfRatings.toString()
+            movie.numberOfRatings.toString()
         )
         numberOfRatingsTextView.text = textNumberOfRatings
 
         val titleTextView: TextView = holder.title
-        titleTextView.text = movieEntity.title
+        titleTextView.text = movie.title
 
         val runtime: TextView = holder.runtime
         val textRuntime: String =
-            context.getString(R.string.long_movie, movieEntity.runtime.toString())
+            context.getString(R.string.long_movie, movie.runtime.toString())
         runtime.text = textRuntime
 
-        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movieEntity.id) }
+        holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie.id) }
 
     }
 
     override fun getItemCount(): Int {
-        return moviesEntity.size
+        return movies.size
     }
 
     private fun setColorStars(holder: MoviesEntityAdapter.ViewHolder, stars: Int) {
@@ -115,10 +115,10 @@ class MoviesEntityAdapter(
         }
     }
 
-    private fun getGenresEntity(genresEntity: List<GenreEntity>): String {
+    private fun getGenresEntity(genres: List<Genre>): String {
         val result: StringBuilder = StringBuilder()
-        for (genreEntity: GenreEntity in genresEntity) {
-            result.append(genreEntity.name).append(", ")
+        for (genre: Genre in genres) {
+            result.append(genre.name).append(", ")
         }
         return result.dropLast(2).toString()
     }

@@ -1,18 +1,15 @@
-package ru.aleksandrorlove.appname
+package ru.aleksandrorlove.appname.network
 
-import ru.aleksandrorlove.appname.Entity.ActorEntity
-import ru.aleksandrorlove.appname.Entity.GenreEntity
-import ru.aleksandrorlove.appname.Entity.MovieEntity
-import ru.aleksandrorlove.appname.network.ActorNetwork
-import ru.aleksandrorlove.appname.network.GenreNetwork
-import ru.aleksandrorlove.appname.network.MovieDetailsNetwork
-import ru.aleksandrorlove.appname.network.MoviePopularNetwork
+import ru.aleksandrorlove.appname.NetworkRepository
+import ru.aleksandrorlove.appname.model.Actor
+import ru.aleksandrorlove.appname.model.Genre
+import ru.aleksandrorlove.appname.model.Movie
 import kotlin.math.roundToInt
 
-class Mapper {
+class MapperNetwork {
     private val networkRepository: NetworkRepository = NetworkRepository.Singleton.instance
 
-    suspend fun mapListMoviePopularNetworkToListMoviesEntity(): List<MovieEntity> {
+    suspend fun mapListMoviePopularNetworkToListMoviesEntity(): List<Movie> {
         val moviesPopular: List<MoviePopularNetwork> =
             networkRepository.getListMoviePopularNetwork()
         val moviesDetails: List<MovieDetailsNetwork> =
@@ -25,7 +22,7 @@ class Mapper {
         val moviesDetailsNetworkMap = moviesDetails.associateBy { it.id }
 
         return moviesPopular.map { moviePopular ->
-            MovieEntity(
+            Movie(
                 id = moviePopular.id,
                 title = moviePopular.title,
                 overview = moviePopular.overview,
@@ -50,9 +47,9 @@ class Mapper {
         }
     }
 
-    private fun mapGenresToEntity(genresNetwork: List<GenreNetwork>): List<GenreEntity> {
+    private fun mapGenresToEntity(genresNetwork: List<GenreNetwork>): List<Genre> {
         return genresNetwork.map { genreNetwork ->
-            GenreEntity(
+            Genre(
                 id = genreNetwork.id,
                 name = genreNetwork.name
             )
@@ -101,7 +98,7 @@ class Mapper {
         return "0"
     }
 
-    private fun getListActorEntityFirstSixItem(actors: List<ActorEntity>): List<ActorEntity> {
+    private fun getListActorEntityFirstSixItem(actors: List<Actor>): List<Actor> {
         val sizeActorEntity: Int = if (actors.size < 6) {
             actors.size
         } else {
@@ -110,9 +107,9 @@ class Mapper {
         return (actors).subList(0, sizeActorEntity)
     }
 
-    private suspend fun mapActorsToEntitys(actorsNetwork: List<ActorNetwork>): List<ActorEntity> {
+    private suspend fun mapActorsToEntitys(actorsNetwork: List<ActorNetwork>): List<Actor> {
         return actorsNetwork.map { actorNetwork ->
-            ActorEntity(
+            Actor(
                 id = actorNetwork.id,
                 name = actorNetwork.name,
                 picture = createUrlImage(ImageType.ACTOR, actorNetwork.picturePath)
@@ -120,8 +117,8 @@ class Mapper {
         }
     }
 
-    fun getMovieEntity(id: Int): MovieEntity {
-        return MovieEntity(0, "", "", "", "", 0, 0, "", 0, emptyList(), emptyList())
+    fun getMovieEntity(id: Int): Movie {
+        return Movie(0, "", "", "", "", 0, 0, "", 0, emptyList(), emptyList())
     }
 
 

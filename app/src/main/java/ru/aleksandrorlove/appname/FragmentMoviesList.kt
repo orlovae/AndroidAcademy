@@ -9,10 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.aleksandrorlove.appname.Entity.MovieEntity
+import ru.aleksandrorlove.appname.model.Movie
 
 class FragmentMoviesList : Fragment(), CellClickListener {
-    private var adapter = MoviesEntityAdapter(arrayListOf<MovieEntity>(), this)
+    private var adapter = MoviesEntityAdapter(arrayListOf<Movie>(), this)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -22,10 +22,10 @@ class FragmentMoviesList : Fragment(), CellClickListener {
         vm.init()
         vm.liveDataListMovieEntity.observe(
             viewLifecycleOwner,
-            Observer<List<MovieEntity>> {
+            Observer<List<Movie>> {
                 it?.let {
-                    adapter.moviesEntity =
-                        vm.liveDataListMovieEntity.value as ArrayList<MovieEntity>
+                    adapter.movies =
+                        vm.liveDataListMovieEntity.value as ArrayList<Movie>
                     adapter.notifyDataSetChanged()
                 }
             })

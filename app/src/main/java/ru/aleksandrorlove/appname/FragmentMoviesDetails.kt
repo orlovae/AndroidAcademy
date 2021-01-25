@@ -13,13 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import ru.aleksandrorlove.appname.Entity.GenreEntity
-import ru.aleksandrorlove.appname.Entity.MovieEntity
+import ru.aleksandrorlove.appname.model.Genre
+import ru.aleksandrorlove.appname.model.Movie
 import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var id: Int? = null
-    private var movieEntity: MovieEntity? = null
+    private var movie: Movie? = null
     private var _binding: FragmentMoviesDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -36,9 +36,9 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         id?.let { vm.onPressItemRecyclerView(it) }
         vm.liveDataMovie.observe(
             viewLifecycleOwner,
-            Observer<MovieEntity> {
+            Observer<Movie> {
                 it?.let {
-                    movieEntity = vm.liveDataMovie.value
+                    movie = vm.liveDataMovie.value
                     setView()
                 }
             })
@@ -69,7 +69,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
     private fun setView() {
         binding.movieDetailsButtonBack.setOnClickListener(this)
-        movieEntity?.let {
+        movie?.let {
             binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
             Glide.with(requireActivity())
                 .load(it.backdrop)
@@ -113,10 +113,10 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun getGenresEntity(genresEntity: List<GenreEntity>): String {
+    private fun getGenresEntity(genres: List<Genre>): String {
         val result: StringBuilder = StringBuilder()
-        for (genreEntity: GenreEntity in genresEntity) {
-            result.append(genreEntity.name).append(", ")
+        for (genre: Genre in genres) {
+            result.append(genre.name).append(", ")
         }
         return result.dropLast(2).toString()
     }

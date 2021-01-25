@@ -6,17 +6,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import ru.aleksandrorlove.appname.Entity.MovieEntity
+import ru.aleksandrorlove.appname.model.Movie
+import ru.aleksandrorlove.appname.network.MapperNetwork
+import ru.aleksandrorlove.appname.storage.DbRepository
 
 class ViewModelMoviesList : ViewModel() {
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private val mapper: Mapper = Mapper()
+    private val mapperNetwork: MapperNetwork = MapperNetwork()
 
-    var liveDataListMovieEntity = MutableLiveData<List<MovieEntity>>()
+    var liveDataListMovieEntity = MutableLiveData<List<Movie>>()
 
     fun init() {
+
+        val dbRepository: DbRepository = DbRepository()
         scope.launch {
-            liveDataListMovieEntity.value = mapper.mapListMoviePopularNetworkToListMoviesEntity()
+            dbRepository.readMoviesFromDb()
+            liveDataListMovieEntity.value = mapperNetwork.mapListMoviePopularNetworkToListMoviesEntity()
         }
     }
 }
