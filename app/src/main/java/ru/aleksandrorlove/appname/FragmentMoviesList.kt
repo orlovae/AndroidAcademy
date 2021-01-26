@@ -20,12 +20,12 @@ class FragmentMoviesList : Fragment(), CellClickListener {
 
         val vm: ViewModelMoviesList = ViewModelProvider(this).get(ViewModelMoviesList::class.java)
         vm.init()
-        vm.liveDataListMovieEntity.observe(
+        vm.liveDataListMovie.observe(
             viewLifecycleOwner,
             Observer<List<Movie>> {
                 it?.let {
                     adapter.movies =
-                        vm.liveDataListMovieEntity.value as ArrayList<Movie>
+                        vm.liveDataListMovie.value as ArrayList<Movie>
                     adapter.notifyDataSetChanged()
                 }
             })

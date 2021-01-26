@@ -27,11 +27,11 @@ data class MovieDb(
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_RUNTIME)
     val runtime: Int,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ID_GENRES)
-    val idGenres: List<Int>,
+    val genresId: List<Int>,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_GENRES)
     val genres: List<String>,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ID_ACTORS)
-    val idActors: List<Int>,
+    val actorsId: List<Int>,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTORS_NAME)
     val actorsName: List<String>,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTORS_PICTURE)
