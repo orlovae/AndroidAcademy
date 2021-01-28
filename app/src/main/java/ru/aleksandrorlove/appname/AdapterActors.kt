@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.model.Actor
 
-class ActorsEntityAdapter(private val actors: List<Actor>) :
-    RecyclerView.Adapter<ActorsEntityAdapter.ViewHolder>() {
+class AdapterActors(private val actors: List<Actor>) :
+    RecyclerView.Adapter<AdapterActors.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val photo = itemView.findViewById<ImageView>(R.id.holder_actor_photo)
@@ -25,7 +25,7 @@ class ActorsEntityAdapter(private val actors: List<Actor>) :
         return ViewHolder(holder)
     }
 
-    override fun onBindViewHolder(holder: ActorsEntityAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AdapterActors.ViewHolder, position: Int) {
         val actor: Actor = actors[position]
         val photoImageView = holder.photo
         Glide.with(holder.itemView.context)

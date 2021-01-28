@@ -3,7 +3,7 @@ package ru.aleksandrorlove.appname.storage
 import android.content.Context
 import ru.aleksandrorlove.appname.model.entity.MovieDb
 
-class DbRepository() {
+class RepositoryDb() {
     private val db = AppDataBase.instance
 
     fun readMoviesFromDb() : List<MovieDb> {

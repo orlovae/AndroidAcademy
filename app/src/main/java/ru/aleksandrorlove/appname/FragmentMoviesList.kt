@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.aleksandrorlove.appname.model.Movie
 
 class FragmentMoviesList : Fragment(), CellClickListener {
-    private var adapter = MoviesEntityAdapter(arrayListOf<Movie>(), this)
+    private var adapter = AdapterMovies(arrayListOf<Movie>(), this)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,21 +1,25 @@
 package ru.aleksandrorlove.appname.network
 
-import ru.aleksandrorlove.appname.NetworkRepository
+import ru.aleksandrorlove.appname.RepositoryNetwork
 import ru.aleksandrorlove.appname.model.Actor
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
 import kotlin.math.roundToInt
 
-class MapperNetwork {
-    private val networkRepository: NetworkRepository = NetworkRepository.Singleton.instance
+class ManagerNetwork {
+    private val repositoryNetwork: RepositoryNetwork = RepositoryNetwork.Singleton.instance
 
-    suspend fun mapListMoviePopularNetworkToListMoviesEntity(): List<Movie> {
+    suspend fun getResultListModelOrError(): Result<Any> (
+        val resultMoviesPopularNetworkOrError
+            )
+
+    suspend fun getListMovieFromNetwork(): List<Movie> {
         val moviesPopular: List<MoviePopularNetwork> =
-            networkRepository.getListMoviePopularNetwork()
+            repositoryNetwork.getListMoviePopularNetwork()
         val moviesDetails: List<MovieDetailsNetwork> =
-            networkRepository.getListMovieDetailsNetwork(moviesPopular)
+            repositoryNetwork.getListMovieDetailsNetwork(moviesPopular)
         val genresEntity = mapGenresToEntity(
-            networkRepository.getListGenreNetwork()
+            repositoryNetwork.getListGenreNetwork()
         )
         val genresMap = genresEntity.associateBy { it.id }
 
@@ -40,7 +44,7 @@ class MapperNetwork {
                 },
                 actors = getListActorEntityFirstSixItem(
                     mapActorsToEntitys(
-                        networkRepository.getListActorsNetwork(moviePopular.id)
+                        repositoryNetwork.getListActorsNetwork(moviePopular.id)
                     )
                 )
             )
@@ -60,8 +64,8 @@ class MapperNetwork {
 // 1 - соответсвует размерам backdrop w780
 // 0 - соответсвует размерам profile w45
     private suspend fun createUrlImage(imageType: ImageType, path: String?): String {
-        if (networkRepository.getConfiguration() != null) {
-            val configurationImages = networkRepository.getConfiguration()!!.images
+        if (repositoryNetwork.getConfiguration() != null) {
+            val configurationImages = repositoryNetwork.getConfiguration()!!.images
 
             return when (imageType) {
                 ImageType.POSTER -> configurationImages.baseUrlImages +
@@ -96,7 +100,7 @@ class MapperNetwork {
             }
         }
         return "0"
-    }
+    }-
 
     private fun getListActorEntityFirstSixItem(actors: List<Actor>): List<Actor> {
         val sizeActorEntity: Int = if (actors.size < 6) {
@@ -117,7 +121,7 @@ class MapperNetwork {
         }
     }
 
-    fun getMovieEntity(id: Int): Movie {
+    fun getMovieFromNetwork(id: Int): Movie {
         return Movie(0, "", "", "", "", 0, 0, "", 0, emptyList(), emptyList())
     }
 

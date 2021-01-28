@@ -1,8 +1,10 @@
 package ru.aleksandrorlove.appname
 
+import retrofit2.Response
 import ru.aleksandrorlove.appname.network.*
 
-class NetworkRepository(private val api: TmdbApi) : BaseRepository() {
+
+class RepositoryNetwork(private val api: TmdbApi) : RepositoryBase() {
     private var configurationImages: Configuration? = null
 
     //TODO может быть стоит в аргументы метода передавать язык, поэксперементировать с результатами
@@ -65,6 +67,6 @@ class NetworkRepository(private val api: TmdbApi) : BaseRepository() {
     }
 
     object Singleton {
-        val instance = NetworkRepository(RetrofitModule.tmdbApi)
+        val instance = RepositoryNetwork(RetrofitModule.tmdbApi)
     }
 }

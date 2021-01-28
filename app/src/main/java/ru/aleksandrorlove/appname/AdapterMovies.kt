@@ -12,11 +12,11 @@ import com.bumptech.glide.Glide
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
 
-class MoviesEntityAdapter(
+class AdapterMovies(
     var movies: ArrayList<Movie>,
     private val cellClickListener: CellClickListener
 ) :
-    RecyclerView.Adapter<MoviesEntityAdapter.ViewHolder>() {
+    RecyclerView.Adapter<AdapterMovies.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val poster = itemView.findViewById<ImageView>(R.id.holder_movie_image_view_poster)
@@ -43,7 +43,7 @@ class MoviesEntityAdapter(
         return ViewHolder(movieCard)
     }
 
-    override fun onBindViewHolder(holder: MoviesEntityAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AdapterMovies.ViewHolder, position: Int) {
         val context: Context = holder.itemView.context
 
         val movie: Movie = movies[position]
@@ -96,7 +96,7 @@ class MoviesEntityAdapter(
         return movies.size
     }
 
-    private fun setColorStars(holder: MoviesEntityAdapter.ViewHolder, stars: Int) {
+    private fun setColorStars(holder: AdapterMovies.ViewHolder, stars: Int) {
         val starImageViewList: MutableList<ImageView> = mutableListOf(
             holder.star01,
             holder.star02,

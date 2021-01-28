@@ -3,18 +3,17 @@ package ru.aleksandrorlove.appname
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 import ru.aleksandrorlove.appname.model.Movie
-import ru.aleksandrorlove.appname.network.MapperNetwork
-import ru.aleksandrorlove.appname.storage.DbRepository
+import ru.aleksandrorlove.appname.network.ManagerNetwork2
+import ru.aleksandrorlove.appname.network.Result
+import ru.aleksandrorlove.appname.storage.RepositoryDb
 import ru.aleksandrorlove.appname.storage.MapperDb
 
 class ViewModelMoviesList() : ViewModel() {
     private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private val mapperNetwork: MapperNetwork = MapperNetwork()
+    private val managerNetwork2: ManagerNetwork2 = ManagerNetwork2()
     private val mapperDb: MapperDb = MapperDb()
 
     var liveDataListMovie = MutableLiveData<List<Movie>>()
@@ -26,16 +25,40 @@ class ViewModelMoviesList() : ViewModel() {
     val errorMessage: LiveData<String> = errorMessageMutableData
 
     fun loadMovies() {
+        val repositoryDb: RepositoryDb = RepositoryDb()
+        viewModelScope.launch {
+            val localMovies = withContext(Dispatchers.IO) {
+                mapperDb.mapFromDbToModel(repositoryDb.readMoviesFromDb())
+            }
 
+            if (localMovies.isNotEmpty()) {
+                    moviesMutableData.value = localMovies
+            }
+
+            val remoteMoviesResult = withContext(Dispatchers.IO) {
+                managerNetwork2.getResultListMovieFromNetwork()
+            }
+
+            if (remoteMoviesResult is Result.Success) {
+                val newMovies = remoteMoviesResult.data
+
+                withContext(Dispatchers.IO) {
+                    repositoryDb.saveMovieToDb(mapperDb.mapFromModelToDb(newMovies as List<Movie>))
+                }
+                moviesMutableData.value = newMovies as List<Movie>
+            } else if (remoteMoviesResult is Result.Error) {
+                errorMessageMutableData.value = remoteMoviesResult.message
+            }
+        }
     }
 
 
     fun init() {
 
-        val dbRepository: DbRepository = DbRepository()
-        scope.launch {
-            liveDataListMovie.value = mapperDb.mapFromDbToModel(dbRepository.readMoviesFromDb())
-            liveDataListMovie.value = mapperNetwork.mapListMoviePopularNetworkToListMoviesEntity()
-        }
+//        val repositoryDb: RepositoryDb = RepositoryDb()
+//        scope.launch {
+//            liveDataListMovie.value = mapperDb.mapFromDbToModel(repositoryDb.readMoviesFromDb())
+//            liveDataListMovie.value = managerNetwork.getListMovieFromNetwork()
+//        }
     }
 }

@@ -5,6 +5,9 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -35,19 +38,14 @@ android {
     productFlavors {
         prod {
             dimension "serverType"
+            buildConfigField "String", "TMDB_API_KEY", localProperties['tmdb_api_key']
             buildConfigField "String", "BASE_URL", "\"https://api.themoviedb.org/3/\""
         }
     }
 
     buildTypes.each {
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        def tmdbApiKey = properties.getProperty("tmdb_api_key", "bf8d7c001e2e06e7103834992b477d1a")
-
-        it.buildConfigField 'String', "TMDB_API_KEY", tmdbApiKey
-
-        it.resValue 'string', "api_key", tmdbApiKey
-
+        it.buildConfigField 'String', "TMDB_API_KEY", localProperties['tmdb_api_key']
+        it.resValue 'string', "api_key", localProperties['tmdb_api_key']
     }
 
     compileOptions {
@@ -63,7 +61,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    def lifecycle_version = "2.3.2"
+    def lifecycle_version = "2.2.0"
     def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -80,7 +78,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
@@ -89,8 +87,8 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
-    kapt 'com.github.bumptech.glide:compiler:4.4.0'
-    testImplementation 'junit:junit:4.+'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

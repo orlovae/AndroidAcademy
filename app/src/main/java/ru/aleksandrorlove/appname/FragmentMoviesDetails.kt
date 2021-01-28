@@ -105,7 +105,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
             binding.movieDetailsTextViewOverview.text = it.overview
 
-            val adapter = ActorsEntityAdapter(it.actors)
+            val adapter = AdapterActors(it.actors)
             binding.movieDetailsRecyclerviewActors.adapter = adapter
             binding.movieDetailsRecyclerviewActors.apply {
                 layoutManager = GridLayoutManager(requireContext(), 4)
