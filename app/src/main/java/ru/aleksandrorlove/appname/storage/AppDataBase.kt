@@ -1,6 +1,5 @@
 package ru.aleksandrorlove.appname.storage
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -17,7 +16,7 @@ abstract class AppDataBase : RoomDatabase() {
 
         val instance: AppDataBase by lazy {
             Room.databaseBuilder(
-                App.Singletone.instance,
+                App.appContext,
                 AppDataBase::class.java,
                 Contract.DATABASE_NAME
             ).build()

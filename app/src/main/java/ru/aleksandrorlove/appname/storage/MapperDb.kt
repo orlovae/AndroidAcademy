@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname.storage
 
+import android.util.Log
 import ru.aleksandrorlove.appname.model.Actor
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
@@ -36,11 +37,11 @@ class MapperDb {
                 numberOfRatings = movie.numberOfRatings,
                 minimumAge = movie.minimumAge,
                 runtime = movie.runtime,
-                genresId = movie.genres.map { genre -> genre.id },
-                genres = movie.genres.map { genre -> genre.name },
-                actorsId = movie.actors.map { actor -> actor.id },
-                actorsName = movie.actors.map { actor -> actor.name },
-                actorsPicture = movie.actors.map { actor -> actor.picture }
+                genreId = movie.genres.map { genre -> genre.id },
+                genreName = movie.genres.map { genre -> genre.name },
+                actorId = movie.actors.map { actor -> actor.id },
+                actorName = movie.actors.map { actor -> actor.name },
+                actorPicture = movie.actors.map { actor -> actor.picture }
 
             )
         }
@@ -48,8 +49,9 @@ class MapperDb {
 
     private fun getGenres(movieDb: MovieDb): List<Genre> {
         val genres = mutableListOf<Genre>()
-        val genresId: List<Int> = movieDb.genresId
-        val genresDb: List<String> = movieDb.genres
+        val genresId: List<Int> = movieDb.genreId
+        val genresDb: List<String> = movieDb.genreName
+        Log.d("lsdkf", "lskjf")
         for (index in genresId.indices) {
             genres.add(
                 index,
@@ -64,9 +66,9 @@ class MapperDb {
 
     private fun getActors(movieDb: MovieDb): List<Actor> {
         val actors = mutableListOf<Actor>()
-        val actorsId: List<Int> = movieDb.actorsId
-        val actorsNameDb: List<String> = movieDb.actorsName
-        val actorsPictureDb: List<String> = movieDb.actorsPicture
+        val actorsId: List<Int> = movieDb.actorId
+        val actorsNameDb: List<String> = movieDb.actorName
+        val actorsPictureDb: List<String> = movieDb.actorPicture
 
         for (index in actorsId.indices) {
             actors.add(

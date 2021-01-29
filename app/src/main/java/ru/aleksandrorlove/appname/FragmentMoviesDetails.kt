@@ -13,9 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
-import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var id: Int? = null

@@ -16,21 +16,24 @@ class ManagerNetwork2 {
         val resultGenres = repositoryNetwork2.getResultListGenreNetwork()
 
         if (resultGenres is Result.Success) {
-            val genresNetwork: List<GenreNetwork> = resultGenres.data as List<GenreNetwork>
+            val genresNetwork: GenresNetwork = resultGenres.data as GenresNetwork
 
             val resultListMoviePopular = repositoryNetwork2.getResultListMoviePopularNetwork()
 
             if (resultListMoviePopular is Result.Success) {
 
-                val moviesPopular: List<MoviePopularNetwork> =
-                    resultListMoviePopular.data as List<MoviePopularNetwork>
+                val moviesPopularNetwork: MoviesPopularNetwork
+                        = resultListMoviePopular.data as MoviesPopularNetwork
+                val moviesPopular: List<MoviePopularNetwork> = moviesPopularNetwork.moviesPopular
 
-                val resultListMovieDetailsNetwork = getResultListMovieDetailsNetwork(moviesPopular)
+                val resultListMovieDetailsNetwork =
+                    getResultListMovieDetailsNetwork(moviesPopular)
+
                 if (resultListMovieDetailsNetwork is Result.Success) {
                     val moviesDetails: List<MovieDetailsNetwork> =
                         resultListMovieDetailsNetwork.data as List<MovieDetailsNetwork>
 
-                    val genres = mapGenresFromNetworkToModel(genresNetwork)
+                    val genres = mapGenresFromNetworkToModel(genresNetwork.genres)
                     val genresMap = genres.associateBy { it.id }
 
                     for (index in moviesPopular.indices) {
@@ -39,8 +42,10 @@ class ManagerNetwork2 {
                         )
 
                         if (resultActorsNetwork is Result.Success) {
-                            val actorsNetwork: List<ActorNetwork> =
-                                resultActorsNetwork.data as List<ActorNetwork>
+                            val actorsNetwork: ActorsNetwork =
+                                resultActorsNetwork.data as ActorsNetwork
+
+                            val listActorNetwork: List<ActorNetwork> = actorsNetwork.actors
 
                             listMovies.add(
                                 Movie(
@@ -49,20 +54,23 @@ class ManagerNetwork2 {
                                     moviesPopular[index].overview,
                                     buildUrlImage(
                                         ImageType.POSTER,
-                                        moviesPopular[index].poster),
+                                        moviesPopular[index].poster
+                                    ),
                                     buildUrlImage(
                                         ImageType.BACKDROP,
-                                        moviesPopular[index].backdrop),
-                                    moviesDetails[index].ratings.toInt() ,
+                                        moviesPopular[index].backdrop
+                                    ),
+                                    moviesDetails[index].ratings.toInt(),
                                     convertNumberOfRatingToInt(moviesPopular[index].numberOfRatings),
                                     getMinimumAge(moviesDetails[index]),
                                     moviesDetails[index].runtime ?: 0,
                                     moviesPopular[index].genreIDS.map {
-                                        genresMap[it] ?: throw IllegalArgumentException("Genre not found")
+                                        genresMap[it]
+                                            ?: throw IllegalArgumentException("Genre not found")
                                     },
                                     getListActorEntityFirstSixItem(
                                         mapActorsFromNetworkToModel(
-                                            actorsNetwork
+                                            listActorNetwork
                                         )
                                     )
                                 )
@@ -120,7 +128,7 @@ class ManagerNetwork2 {
         }
     }
 
-// 4 - соответсвует размерам poster w500
+    // 4 - соответсвует размерам poster w500
 // 1 - соответсвует размерам backdrop w780
 // 0 - соответсвует размерам profile w45
     private suspend fun buildUrlImage(imageType: ImageType, path: String?): String {
@@ -158,7 +166,8 @@ class ManagerNetwork2 {
             if (result[i].iso_3166_1.equals(
                     NetworkConfig.LANGUAGE_FOR_PG,
                     true
-                )) {
+                )
+            ) {
                 return result[i].release_dates_result_item[0].certification.toString()
             }
         }
@@ -169,7 +178,7 @@ class ManagerNetwork2 {
         val sizeListActor: Int = if (actors.size < 6) {
             actors.size
         } else {
-            7
+            6
         }
         return (actors).subList(0, sizeListActor)
     }

@@ -35,7 +35,7 @@ open class RepositoryBase {
             is Result.Success ->
                 data = result.data
             is Result.Error -> {
-                Log.d("Repository", "$errorMessage & Exception - ${result.exception}")
+                Log.d("Repository", "$errorMessage & Exception - ${result.message}")
             }
         }
         return data
@@ -56,7 +56,11 @@ open class RepositoryBase {
         val response = call.invoke()
         if (response.isSuccessful) return Result.Success(response.body()!!)
 //TODO прописать возможные варианты когад респонс суксесс, но пришледшее боди - говно
-        return Result.Error(IOException("Error Occurred during getting safe Api result," +
-                " Custom ERROR - $errorMessage"))
+        return Result.Error(
+            IOException(
+                "Error Occurred during getting safe Api result," +
+                        " Custom ERROR - $errorMessage"
+            ).toString()
+        )
     }
 }

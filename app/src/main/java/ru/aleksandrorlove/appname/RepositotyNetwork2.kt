@@ -1,6 +1,9 @@
 package ru.aleksandrorlove.appname
 
-import ru.aleksandrorlove.appname.network.*
+import ru.aleksandrorlove.appname.network.Configuration
+import ru.aleksandrorlove.appname.network.Result
+import ru.aleksandrorlove.appname.network.RetrofitModule
+import ru.aleksandrorlove.appname.network.TmdbApi
 
 
 class RepositoryNetwork2(private val api: TmdbApi) : RepositoryBase() {
@@ -9,7 +12,7 @@ class RepositoryNetwork2(private val api: TmdbApi) : RepositoryBase() {
     //TODO может быть стоит в аргументы метода передавать язык, поэксперементировать с результатами
     suspend fun getResultListMoviePopularNetwork(): Result<Any> {
         return safeApiCall(
-            call = { api.getMoviesPopular()},
+            call = { api.getMoviesPopular() },
             errorMessage = "Error Fetching Popular Movies"
         )
     }

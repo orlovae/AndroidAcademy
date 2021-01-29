@@ -15,10 +15,10 @@ object Contract {
         const val COLUMN_NAME_NUMBER_OF_RAITING = "numberOfRatings"
         const val COLUMN_NAME_MINIMUM_AGE = "minimumAge"
         const val COLUMN_NAME_RUNTIME = "runtime"
-        const val COLUMN_NAME_ID_GENRES = "idGenres"
-        const val COLUMN_NAME_GENRES = "genres"
-        const val COLUMN_NAME_ID_ACTORS = "idActors"
-        const val COLUMN_NAME_ACTORS_NAME = "actorsNome"
-        const val COLUMN_NAME_ACTORS_PICTURE = "actorsPicture"
+        const val COLUMN_NAME_GENRE_ID = "genreId"
+        const val COLUMN_NAME_GENRE_NAME = "genreName"
+        const val COLUMN_NAME_ACTOR_ID = "actorId"
+        const val COLUMN_NAME_ACTOR_NAME = "actorNome"
+        const val COLUMN_NAME_ACTOR_PICTURE = "actorPicture"
     }
 }

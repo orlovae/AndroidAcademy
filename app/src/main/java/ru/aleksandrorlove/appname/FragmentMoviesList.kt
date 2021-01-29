@@ -17,13 +17,14 @@ class FragmentMoviesList : Fragment(), CellClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: ViewModelMoviesList = ViewModelProvider(this).get(ViewModelMoviesList::class.java)
+        val viewModel: ViewModelMoviesList =
+            ViewModelProvider(this).get(ViewModelMoviesList::class.java)
 
         viewModel.movies.observe(viewLifecycleOwner,
-        Observer { movies -> showMovies(movies) })
+            Observer { movies -> showMovies(movies) })
 
         viewModel.errorMessage.observe(viewLifecycleOwner,
-        Observer { message -> showToast(message) })
+            Observer { message -> showToast(message) })
 
         if (savedInstanceState == null) {
             viewModel.loadMovies()

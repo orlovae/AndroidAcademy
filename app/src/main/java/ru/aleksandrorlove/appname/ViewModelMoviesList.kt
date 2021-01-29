@@ -4,19 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.aleksandrorlove.appname.model.Movie
 import ru.aleksandrorlove.appname.network.ManagerNetwork2
 import ru.aleksandrorlove.appname.network.Result
-import ru.aleksandrorlove.appname.storage.RepositoryDb
 import ru.aleksandrorlove.appname.storage.MapperDb
+import ru.aleksandrorlove.appname.storage.RepositoryDb
 
-class ViewModelMoviesList() : ViewModel() {
-    private var scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+class ViewModelMoviesList : ViewModel() {
     private val managerNetwork2: ManagerNetwork2 = ManagerNetwork2()
     private val mapperDb: MapperDb = MapperDb()
-
-    var liveDataListMovie = MutableLiveData<List<Movie>>()
 
     private val moviesMutableData = MutableLiveData<List<Movie>>()
     private val errorMessageMutableData = MutableLiveData<String>()
@@ -32,7 +31,7 @@ class ViewModelMoviesList() : ViewModel() {
             }
 
             if (localMovies.isNotEmpty()) {
-                    moviesMutableData.value = localMovies
+                moviesMutableData.value = localMovies
             }
 
             val remoteMoviesResult = withContext(Dispatchers.IO) {

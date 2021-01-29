@@ -7,7 +7,7 @@ object NetworkConfig {
     const val ERROR_BACKDROP = "Заглушка для backdrop is null"
     const val ERROR_ACTOR = "Заглушка для actor is null"
 
-    const val LANGUAGE_FOR_PG = "RU"
+    const val LANGUAGE_FOR_PG = "US"
 
     const val ERROR_PG = "PG_IS_NULL"
 }

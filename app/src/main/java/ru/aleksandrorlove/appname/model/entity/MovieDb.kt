@@ -26,14 +26,14 @@ data class MovieDb(
     val minimumAge: String,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_RUNTIME)
     val runtime: Int,
-    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ID_GENRES)
-    val genresId: List<Int>,
-    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_GENRES)
-    val genres: List<String>,
-    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ID_ACTORS)
-    val actorsId: List<Int>,
-    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTORS_NAME)
-    val actorsName: List<String>,
-    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTORS_PICTURE)
-    val actorsPicture: List<String>
+    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_GENRE_ID)
+    val genreId: List<Int>,
+    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_GENRE_NAME)
+    val genreName: List<String>,
+    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTOR_ID)
+    val actorId: List<Int>,
+    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTOR_NAME)
+    val actorName: List<String>,
+    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_ACTOR_PICTURE)
+    val actorPicture: List<String>
 )

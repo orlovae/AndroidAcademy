@@ -1,16 +1,15 @@
 package ru.aleksandrorlove.appname.storage
 
-import android.content.Context
 import ru.aleksandrorlove.appname.model.entity.MovieDb
 
-class RepositoryDb() {
+class RepositoryDb {
     private val db = AppDataBase.instance
 
-    fun readMoviesFromDb() : List<MovieDb> {
+    fun readMoviesFromDb(): List<MovieDb> {
         return db.MoviesDao().getAll()
     }
 
-    fun saveMovieToDb(moviesDb: List<MovieDb>){
+    fun saveMovieToDb(moviesDb: List<MovieDb>) {
         db.MoviesDao().insertAll(moviesDb)
     }
 
