@@ -51,14 +51,4 @@ class ViewModelMoviesList() : ViewModel() {
             }
         }
     }
-
-
-    fun init() {
-
-//        val repositoryDb: RepositoryDb = RepositoryDb()
-//        scope.launch {
-//            liveDataListMovie.value = mapperDb.mapFromDbToModel(repositoryDb.readMoviesFromDb())
-//            liveDataListMovie.value = managerNetwork.getListMovieFromNetwork()
-//        }
-    }
 }

@@ -13,7 +13,7 @@ import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
 
 class AdapterMovies(
-    var movies: ArrayList<Movie>,
+    var movies: List<Movie>,
     private val cellClickListener: CellClickListener
 ) :
     RecyclerView.Adapter<AdapterMovies.ViewHolder>() {
@@ -68,7 +68,7 @@ class AdapterMovies(
 //        }
 
         val genreTextView: TextView = holder.genre
-        val genres: String = getGenresEntity(movie.genres)
+        val genres: String = covertListGenreToString(movie.genres)
         genreTextView.text = genres
 
         setColorStars(holder, movie.ratings)
@@ -115,7 +115,7 @@ class AdapterMovies(
         }
     }
 
-    private fun getGenresEntity(genres: List<Genre>): String {
+    private fun covertListGenreToString(genres: List<Genre>): String {
         val result: StringBuilder = StringBuilder()
         for (genre: Genre in genres) {
             result.append(genre.name).append(", ")

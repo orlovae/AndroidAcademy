@@ -14,21 +14,28 @@ import ru.aleksandrorlove.appname.model.Movie
 class FragmentMoviesList : Fragment(), CellClickListener {
     private var adapter = AdapterMovies(arrayListOf<Movie>(), this)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: ViewModelMoviesList = ViewModelProvider(this).get(ViewModelMoviesList::class.java)
-        vm.init()
-        vm.liveDataListMovie.observe(
-            viewLifecycleOwner,
-            Observer<List<Movie>> {
-                it?.let {
-                    adapter.movies =
-                        vm.liveDataListMovie.value as ArrayList<Movie>
-                    adapter.notifyDataSetChanged()
-                }
-            })
+        val viewModel: ViewModelMoviesList = ViewModelProvider(this).get(ViewModelMoviesList::class.java)
+
+        viewModel.movies.observe(viewLifecycleOwner,
+        Observer { movies -> showMovies(movies) })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner,
+        Observer { message -> showToast(message) })
+
+        if (savedInstanceState == null) {
+            viewModel.loadMovies()
+        }
+    }
+
+    private fun showMovies(movies: List<Movie>) {
+        adapter.movies = movies
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun showToast(message: String) {
 
     }
 
