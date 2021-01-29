@@ -34,19 +34,19 @@ class ViewModelMoviesList : ViewModel() {
                 moviesMutableData.value = localMovies
             }
 
-            val remoteMoviesResult = withContext(Dispatchers.IO) {
+            val resultFromNetwork = withContext(Dispatchers.IO) {
                 managerNetwork2.getResultListMovieFromNetwork()
             }
 
-            if (remoteMoviesResult is Result.Success) {
-                val newMovies = remoteMoviesResult.data
+            if (resultFromNetwork is Result.Success) {
+                val newMovies = resultFromNetwork.data as List<Movie>
 
                 withContext(Dispatchers.IO) {
-                    repositoryDb.saveMovieToDb(mapperDb.mapFromModelToDb(newMovies as List<Movie>))
+                    repositoryDb.saveMovieToDb(mapperDb.mapFromModelToDb(newMovies))
                 }
-                moviesMutableData.value = newMovies as List<Movie>
-            } else if (remoteMoviesResult is Result.Error) {
-                errorMessageMutableData.value = remoteMoviesResult.message
+                moviesMutableData.value = newMovies
+            } else if (resultFromNetwork is Result.Error) {
+                errorMessageMutableData.value = resultFromNetwork.message
             }
         }
     }
