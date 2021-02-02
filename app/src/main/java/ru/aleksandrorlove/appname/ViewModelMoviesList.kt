@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,6 +43,7 @@ class ViewModelMoviesList : ViewModel() {
                 val newMovies = remoteMoviesResult.data
 
                 withContext(Dispatchers.IO) {
+                    repositoryDb.deleteAllToDb()
                     repositoryDb.saveMovieToDb(mapperDb.mapFromModelToDb(newMovies as List<Movie>))
                 }
                 moviesMutableData.value = newMovies as List<Movie>

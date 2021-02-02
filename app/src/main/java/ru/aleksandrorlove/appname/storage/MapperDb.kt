@@ -51,7 +51,7 @@ class MapperDb {
         val genres = mutableListOf<Genre>()
         val genresId: List<Int> = movieDb.genreId
         val genresDb: List<String> = movieDb.genreName
-        Log.d("lsdkf", "lskjf")
+
         for (index in genresId.indices) {
             genres.add(
                 index,
