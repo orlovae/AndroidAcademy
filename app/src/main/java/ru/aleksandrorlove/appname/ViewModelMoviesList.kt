@@ -8,13 +8,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.aleksandrorlove.appname.model.Movie
-import ru.aleksandrorlove.appname.network.ManagerNetwork2
+import ru.aleksandrorlove.appname.network.ManagerNetwork
 import ru.aleksandrorlove.appname.network.Result
 import ru.aleksandrorlove.appname.storage.MapperDb
 import ru.aleksandrorlove.appname.storage.RepositoryDb
 
 class ViewModelMoviesList : ViewModel() {
-    private val managerNetwork2: ManagerNetwork2 = ManagerNetwork2()
+    private val managerNetwork: ManagerNetwork = ManagerNetwork()
     private val mapperDb: MapperDb = MapperDb()
 
     private val moviesMutableData = MutableLiveData<List<Movie>>()
@@ -27,7 +27,7 @@ class ViewModelMoviesList : ViewModel() {
         val repositoryDb: RepositoryDb = RepositoryDb()
         viewModelScope.launch {
             val localMovies = withContext(Dispatchers.IO) {
-                mapperDb.mapFromDbToModel(repositoryDb.readMoviesFromDb())
+                mapperDb.mapListFromDbToModel(repositoryDb.readMoviesFromDb())
             }
 
             if (localMovies.isNotEmpty()) {
@@ -35,7 +35,7 @@ class ViewModelMoviesList : ViewModel() {
             }
 
             val remoteMoviesResult = withContext(Dispatchers.IO) {
-                managerNetwork2.getResultListMovieFromNetwork()
+                managerNetwork.getResultListMovieFromNetwork()
             }
 
             if (remoteMoviesResult is Result.Success) {
@@ -43,7 +43,7 @@ class ViewModelMoviesList : ViewModel() {
 
                 withContext(Dispatchers.IO) {
                     repositoryDb.deleteAllToDb()
-                    repositoryDb.saveMovieToDb(mapperDb.mapFromModelToDb(newMovies as List<Movie>))
+                    repositoryDb.saveMovieToDb(mapperDb.mapListFromModelToDb(newMovies as List<Movie>))
                 }
                 moviesMutableData.value = newMovies as List<Movie>
             } else if (remoteMoviesResult is Result.Error) {

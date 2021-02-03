@@ -20,8 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/background_aeg" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_back_horizontal"
@@ -59,7 +58,6 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:maxLines="2"
-            android:text="@string/RARS"
             app:layout_constraintBottom_toBottomOf="@id/movie_details_background_top"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -74,7 +72,6 @@
             android:background="@android:color/transparent"
             android:gravity="start"
             android:includeFontPadding="false"
-            android:text="@string/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_details_text_view_minimumAge" />
 
@@ -89,7 +86,6 @@
             android:background="@android:color/transparent"
             android:gravity="start"
             android:includeFontPadding="false"
-            android:text="@string/tag"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_details_text_view_title" />
 
@@ -180,7 +176,6 @@
             android:background="@android:color/transparent"
             android:gravity="start"
             android:includeFontPadding="false"
-            android:text="@string/story_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline_rating_horizontal" />
 
@@ -195,7 +190,6 @@
             android:background="@android:color/transparent"
             android:gravity="start"
             android:includeFontPadding="false"
-            android:text="@string/description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_story_line" />
 

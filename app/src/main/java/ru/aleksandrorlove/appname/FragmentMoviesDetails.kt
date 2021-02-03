@@ -9,7 +9,6 @@ import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -19,7 +18,6 @@ import ru.aleksandrorlove.appname.model.Movie
 
 class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     private var id: Int? = null
-    private var movie: Movie? = null
     private var _binding: FragmentMoviesDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -31,17 +29,16 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: ViewModelMovieDetails =
+        val viewModel: ViewModelMovieDetails =
             ViewModelProvider(this).get(ViewModelMovieDetails::class.java)
-        id?.let { vm.onPressItemRecyclerView(it) }
-        vm.liveDataMovie.observe(
-            viewLifecycleOwner,
-            Observer<Movie> {
-                it?.let {
-                    movie = vm.liveDataMovie.value
-                    setView()
-                }
-            })
+
+        viewModel.movie.observe(viewLifecycleOwner,
+            { movie -> showMovie(movie) })
+
+        if (savedInstanceState == null) {
+            id?.let { viewModel.onPressItemRecyclerView(it) }
+        }
+
     }
 
     override fun onCreateView(
@@ -67,50 +64,49 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun setView() {
+    private fun showMovie(movie: Movie) {
         binding.movieDetailsButtonBack.setOnClickListener(this)
-        movie?.let {
-            binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
-            Glide.with(requireActivity())
-                .load(it.backdrop)
-                .into(binding.movieDetailsBackgroundTop)
+        binding.movieDetailsBackgroundTop.setImageResource(R.drawable.background_gradient)
+        Glide.with(requireActivity())
+            .load(movie.backdrop)
+            .into(binding.movieDetailsBackgroundTop)
 
-            binding.movieDetailsTextViewMinimumAge.text = it.minimumAge.toString()
+        binding.movieDetailsTextViewMinimumAge.text = movie.minimumAge.toString()
 
-            binding.movieDetailsTextViewTitle.text = it.title
+        binding.movieDetailsTextViewTitle.text = movie.title
 
-            val genres: String = getGenresEntity(it.genres)
-            binding.movieDetailsTextViewGenre.text = genres
+        val genres: String = getGenresEntity(movie.genres)
+        binding.movieDetailsTextViewGenre.text = genres
 
-            val starImageViewList: List<ImageView> = listOf(
-                binding.movieDetailsStar01,
-                binding.movieDetailsStar02,
-                binding.movieDetailsStar03,
-                binding.movieDetailsStar04,
-                binding.movieDetailsStar05
+        val starImageViewList: List<ImageView> = listOf(
+            binding.movieDetailsStar01,
+            binding.movieDetailsStar02,
+            binding.movieDetailsStar03,
+            binding.movieDetailsStar04,
+            binding.movieDetailsStar05
+        )
+
+        for (index in starImageViewList.indices) {
+            starImageViewList[index].setColorFilter(
+                ContextCompat.getColor(
+                    starImageViewList[index].context,
+                    R.color.pink_light
+                ), android.graphics.PorterDuff.Mode.SRC_IN
             )
-
-            for (index in starImageViewList.indices) {
-                starImageViewList[index].setColorFilter(
-                    ContextCompat.getColor(
-                        starImageViewList[index].context,
-                        R.color.pink_light
-                    ), android.graphics.PorterDuff.Mode.SRC_IN
-                )
-            }
-
-            val textNumberOfRatings: String =
-                this.getString(R.string.numberOfRatings, it.numberOfRatings.toString())
-            binding.movieDetailsTextViewNumberOfRatings.text = textNumberOfRatings
-
-            binding.movieDetailsTextViewOverview.text = it.overview
-
-            val adapter = AdapterActors(it.actors)
-            binding.movieDetailsRecyclerviewActors.adapter = adapter
-            binding.movieDetailsRecyclerviewActors.apply {
-                layoutManager = GridLayoutManager(requireContext(), 4)
-            }
         }
+
+        val textNumberOfRatings: String =
+            this.getString(R.string.numberOfRatings, movie.numberOfRatings.toString())
+        binding.movieDetailsTextViewNumberOfRatings.text = textNumberOfRatings
+
+        binding.movieDetailsTextViewOverview.text = movie.overview
+
+        val adapter = AdapterActors(movie.actors)
+        binding.movieDetailsRecyclerviewActors.adapter = adapter
+        binding.movieDetailsRecyclerviewActors.apply {
+            layoutManager = GridLayoutManager(requireContext(), 4)
+        }
+
     }
 
     private fun getGenresEntity(genres: List<Genre>): String {

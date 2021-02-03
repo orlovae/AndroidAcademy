@@ -7,25 +7,31 @@ import ru.aleksandrorlove.appname.model.Movie
 import ru.aleksandrorlove.appname.model.entity.MovieDb
 
 class MapperDb {
-    fun mapFromDbToModel(moviesDb: List<MovieDb>): List<Movie> {
-        return moviesDb.map { movieDb ->
-            Movie(
-                id = movieDb.id,
-                title = movieDb.title,
-                overview = movieDb.overview,
-                poster = movieDb.poster,
-                backdrop = movieDb.backdrop,
-                ratings = movieDb.ratings,
-                numberOfRatings = movieDb.numberOfRatings,
-                minimumAge = movieDb.minimumAge,
-                runtime = movieDb.runtime,
-                genres = getGenres(movieDb),
-                actors = getActors(movieDb)
-            )
+    fun mapListFromDbToModel(moviesDb: List<MovieDb>): List<Movie> {
+        val movies: MutableList<Movie> = mutableListOf()
+        for (item in moviesDb) {
+            movies.add(mapMovieFromDbToModel(item))
         }
+        return movies.toList()
     }
 
-    fun mapFromModelToDb(movies: List<Movie>): List<MovieDb> {
+    fun mapMovieFromDbToModel(movieDb: MovieDb): Movie {
+        return Movie(
+            id = movieDb.id,
+            title = movieDb.title,
+            overview = movieDb.overview,
+            poster = movieDb.poster,
+            backdrop = movieDb.backdrop,
+            ratings = movieDb.ratings,
+            numberOfRatings = movieDb.numberOfRatings,
+            minimumAge = movieDb.minimumAge,
+            runtime = movieDb.runtime,
+            genres = getGenres(movieDb),
+            actors = getActors(movieDb)
+        )
+    }
+
+    fun mapListFromModelToDb(movies: List<Movie>): List<MovieDb> {
         return movies.map { movie ->
             MovieDb(
                 id = movie.id,

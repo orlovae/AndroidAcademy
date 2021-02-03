@@ -7,8 +7,11 @@ import ru.aleksandrorlove.appname.model.entity.MovieDb
 
 @Dao
 interface MovieDao {
-    @Query("SELECT *FROM Movies")
+    @Query("SELECT * FROM Movies")
     fun getAll(): List<MovieDb>
+
+    @Query("SELECT * FROM Movies WHERE id = :id")
+    fun getMovie(id: Int): MovieDb
 
     @Insert
     fun insertAll(movies: List<MovieDb>)

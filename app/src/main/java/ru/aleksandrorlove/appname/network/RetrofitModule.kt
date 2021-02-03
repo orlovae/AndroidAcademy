@@ -20,7 +20,7 @@ object RetrofitModule {
     private val contentType = "application/json".toMediaType()
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+//        level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val httpClient = OkHttpClient.Builder()
