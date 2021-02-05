@@ -15,12 +15,6 @@ interface TmdbApi {
         @Query("page") page: Int = 1
     ): Response<MoviesPopularNetwork>
 
-    @GET("genre/movie/list?")
-    suspend fun getGenres(
-        @Query("api_key") api_key: String = AppConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-US"
-    ): Response<GenresNetwork>
-
     @GET("movie/{movie_id}/credits?")
     suspend fun getActorsNetwork(
         @Path("movie_id") movieId: Int,
@@ -37,6 +31,7 @@ interface TmdbApi {
     suspend fun getMovieDetailsNetwork(
         @Path("movie_id") movieId: Int,
         @Query("api_key") api_key: String = AppConfig.TMDB_API_KEY,
+        @Query("language") language: String = "en-US",
         @Query("append_to_response") append: String = "release_dates"
     ): Response<MovieDetailsNetwork>
 }

@@ -1,6 +1,6 @@
 package ru.aleksandrorlove.appname.network
 
-import ru.aleksandrorlove.appname.RepositoryNetwork2
+import ru.aleksandrorlove.appname.RepositoryNetwork
 import ru.aleksandrorlove.appname.config.NetworkConfig
 import ru.aleksandrorlove.appname.model.Actor
 import ru.aleksandrorlove.appname.model.Genre
@@ -8,115 +8,94 @@ import ru.aleksandrorlove.appname.model.Movie
 import kotlin.math.roundToInt
 
 class ManagerNetwork {
-    private val repositoryNetwork2: RepositoryNetwork2 = RepositoryNetwork2.Singleton.instance
+    private val repositoryNetwork: RepositoryNetwork = RepositoryNetwork.Singleton.instance
 
     suspend fun getResultListMovieFromNetwork(): Result<Any> {
         val listMovies: MutableList<Movie> = mutableListOf()
 
-        val resultGenres = repositoryNetwork2.getResultListGenreNetwork()
+        val resultListMoviePopular = repositoryNetwork.getResultListMoviePopularNetwork()
 
-        if (resultGenres is Result.Success) {
-            val genresNetwork: GenresNetwork = resultGenres.data as GenresNetwork
+        if (resultListMoviePopular is Result.Success) {
 
-            val resultListMoviePopular = repositoryNetwork2.getResultListMoviePopularNetwork()
+            val moviesPopularNetwork: MoviesPopularNetwork =
+                resultListMoviePopular.data as MoviesPopularNetwork
+            val moviesPopular: List<MoviePopularNetwork> = moviesPopularNetwork.moviesPopular
 
-            if (resultListMoviePopular is Result.Success) {
+            moviesPopular.forEach {
+                val resultMovieDetailsNetwork =
+                    getResultMovieDetailsNetwork(it.id)
 
-                val moviesPopularNetwork: MoviesPopularNetwork
-                        = resultListMoviePopular.data as MoviesPopularNetwork
-                val moviesPopular: List<MoviePopularNetwork> = moviesPopularNetwork.moviesPopular
+                if (resultMovieDetailsNetwork is Result.Success) {
+                    val movie: Movie = resultMovieDetailsNetwork.data as Movie
 
-                val resultListMovieDetailsNetwork =
-                    getResultListMovieDetailsNetwork(moviesPopular)
-
-                if (resultListMovieDetailsNetwork is Result.Success) {
-                    val moviesDetails: List<MovieDetailsNetwork> =
-                        resultListMovieDetailsNetwork.data as List<MovieDetailsNetwork>
-
-                    val genres = mapGenresFromNetworkToModel(genresNetwork.genres)
-                    val genresMap = genres.associateBy { it.id }
-
-                    for (index in moviesPopular.indices) {
-                        val resultActorsNetwork = repositoryNetwork2.getResultListActorsNetwork(
-                            moviesPopular[index].id
-                        )
-
-                        if (resultActorsNetwork is Result.Success) {
-                            val actorsNetwork: ActorsNetwork =
-                                resultActorsNetwork.data as ActorsNetwork
-
-                            val listActorNetwork: List<ActorNetwork> = actorsNetwork.actors
-
-                            listMovies.add(
-                                Movie(
-                                    moviesPopular[index].id,
-                                    moviesPopular[index].title,
-                                    moviesPopular[index].overview,
-                                    buildUrlImage(
-                                        ImageType.POSTER,
-                                        moviesPopular[index].poster
-                                    ),
-                                    buildUrlImage(
-                                        ImageType.BACKDROP,
-                                        moviesPopular[index].backdrop
-                                    ),
-                                    moviesDetails[index].ratings.toInt(),
-                                    convertNumberOfRatingToInt(moviesPopular[index].numberOfRatings),
-                                    getMinimumAge(moviesDetails[index]),
-                                    moviesDetails[index].runtime ?: 0,
-                                    moviesPopular[index].genreIDS.map {
-                                        genresMap[it]
-                                            ?: throw IllegalArgumentException("Genre not found")
-                                    },
-                                    getListActorEntityFirstSixItem(
-                                        mapActorsFromNetworkToModel(
-                                            listActorNetwork
-                                        )
-                                    )
-                                )
-                            )
-                        }
-
-                        if (resultActorsNetwork is Result.Error) {
-                            return resultActorsNetwork
-                        }
-                    }
+                    listMovies.add(movie)
                 }
 
-                if (resultListMovieDetailsNetwork is Result.Error) {
-                    return resultListMovieDetailsNetwork
+                if (resultMovieDetailsNetwork is Result.Error) {
+                    return resultMovieDetailsNetwork
                 }
-            }
-
-            if (resultListMoviePopular is Result.Error) {
-                return resultListMoviePopular
             }
         }
 
-        if (resultGenres is Result.Error) {
-            return resultGenres
+        if (resultListMoviePopular is Result.Error) {
+            return resultListMoviePopular
         }
-        return Result.Success(listMovies)
+
+        return Result.Success(listMovies.toList())
     }
 
 
-    suspend fun getResultListMovieDetailsNetwork(moviesPopular: List<MoviePopularNetwork>):
-            Result<Any> {
-        val listMovieDetailsNetwork:
-                MutableList<MovieDetailsNetwork> = mutableListOf()
-        moviesPopular.forEach {
+    suspend fun getResultMovieDetailsNetwork(id: Int): Result<Any> {
+        var movieMutable: Movie = Movie()
 
-            val resultMovieDetailsNetwork = repositoryNetwork2.getResultMovieDetailNetwork(it.id)
+        val resultMovieDetailsNetwork = repositoryNetwork.getResultMovieDetailNetwork(id)
 
-            if (resultMovieDetailsNetwork is Result.Success) {
-                listMovieDetailsNetwork.add(resultMovieDetailsNetwork.data as MovieDetailsNetwork)
+        if (resultMovieDetailsNetwork is Result.Success) {
+            val movieDetailsNetwork: MovieDetailsNetwork =
+                resultMovieDetailsNetwork.data as MovieDetailsNetwork
+
+            val resultActorsNetwork = repositoryNetwork.getResultListActorsNetwork(id)
+
+            if (resultActorsNetwork is Result.Success) {
+                val actorsNetwork: ActorsNetwork =
+                    resultActorsNetwork.data as ActorsNetwork
+
+                val listActorNetwork: List<ActorNetwork> = actorsNetwork.actors
+
+                movieMutable = Movie(
+                    id,
+                    movieDetailsNetwork.title,
+                    movieDetailsNetwork.overview,
+                    buildUrlImage(
+                        ImageType.POSTER,
+                        movieDetailsNetwork.poster
+                    ),
+                    buildUrlImage(
+                        ImageType.BACKDROP,
+                        movieDetailsNetwork.backdrop
+                    ),
+                    convertRatingToInt(movieDetailsNetwork.ratings),
+                    movieDetailsNetwork.reviews,
+                    getMinimumAge(movieDetailsNetwork),
+                    movieDetailsNetwork.runtime ?: 0,
+                    mapGenresFromNetworkToModel(movieDetailsNetwork.genres),
+                    getListActorEntityFirstSixItem(
+                        mapActorsFromNetworkToModel(
+                            listActorNetwork
+                        )
+                    )
+                )
             }
-
-            if (resultMovieDetailsNetwork is Result.Error) {
-                return resultMovieDetailsNetwork
+            if (resultActorsNetwork is Result.Error) {
+                return resultActorsNetwork
             }
         }
-        return Result.Success(listMovieDetailsNetwork)
+
+        if (resultMovieDetailsNetwork is Result.Error) {
+            return resultMovieDetailsNetwork
+        }
+        val movie: Movie = movieMutable
+        return Result.Success(movie)
     }
 
     private fun mapGenresFromNetworkToModel(genresNetwork: List<GenreNetwork>): List<Genre> {
@@ -132,7 +111,7 @@ class ManagerNetwork {
 // 1 - соответсвует размерам backdrop w780
 // 0 - соответсвует размерам profile w45
     private suspend fun buildUrlImage(imageType: ImageType, path: String?): String {
-        val resultConfiguration = repositoryNetwork2.getResultConfiguration()
+        val resultConfiguration = repositoryNetwork.getResultConfiguration()
         if (resultConfiguration is Result.Success) {
             val configuration = resultConfiguration.data
             val configurationImages = configuration.images
@@ -154,7 +133,7 @@ class ManagerNetwork {
         }
     }
 
-    private fun convertNumberOfRatingToInt(rating: Double): Int {
+    private fun convertRatingToInt(rating: Double): Int {
         return (rating * 0.5).roundToInt()
     }
 
@@ -192,11 +171,6 @@ class ManagerNetwork {
             )
         }
     }
-
-    fun getMovieFromNetwork(id: Int): Movie {
-        return Movie(0, "", "", "", "", 0, 0, "", 0, emptyList(), emptyList())
-    }
-
 
     private enum class ImageType {
         POSTER,

@@ -6,7 +6,7 @@ import ru.aleksandrorlove.appname.network.RetrofitModule
 import ru.aleksandrorlove.appname.network.TmdbApi
 
 
-class RepositoryNetwork2(private val api: TmdbApi) : RepositoryBase() {
+class RepositoryNetwork(private val api: TmdbApi) : RepositoryBase() {
     private var resultConfiguration: Result<Configuration>? = null
 
     //TODO может быть стоит в аргументы метода передавать язык, поэксперементировать с результатами
@@ -14,13 +14,6 @@ class RepositoryNetwork2(private val api: TmdbApi) : RepositoryBase() {
         return safeApiCall(
             call = { api.getMoviesPopular() },
             errorMessage = "Error Fetching Popular Movies"
-        )
-    }
-
-    suspend fun getResultListGenreNetwork(): Result<Any> {
-        return safeApiCall(
-            call = { api.getGenres() },
-            errorMessage = "Error Fetching Genres"
         )
     }
 
@@ -50,6 +43,6 @@ class RepositoryNetwork2(private val api: TmdbApi) : RepositoryBase() {
     }
 
     object Singleton {
-        val instance = RepositoryNetwork2(RetrofitModule.tmdbApi)
+        val instance = RepositoryNetwork(RetrofitModule.tmdbApi)
     }
 }

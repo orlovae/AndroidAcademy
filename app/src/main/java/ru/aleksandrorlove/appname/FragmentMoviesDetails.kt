@@ -35,9 +35,16 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         viewModel.movie.observe(viewLifecycleOwner,
             { movie -> showMovie(movie) })
 
+        viewModel.errorMessage.observe(viewLifecycleOwner,
+            {message -> showToast(message)})
+
         if (savedInstanceState == null) {
             id?.let { viewModel.onPressItemRecyclerView(it) }
         }
+
+    }
+
+    private fun showToast(message: String) {
 
     }
 
@@ -75,7 +82,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
         binding.movieDetailsTextViewTitle.text = movie.title
 
-        val genres: String = getGenresEntity(movie.genres)
+        val genres: String = getGenresName(movie.genres)
         binding.movieDetailsTextViewGenre.text = genres
 
         val starImageViewList: List<ImageView> = listOf(
@@ -96,7 +103,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
         }
 
         val textNumberOfRatings: String =
-            this.getString(R.string.numberOfRatings, movie.numberOfRatings.toString())
+            this.getString(R.string.numberOfRatings, movie.reviews.toString())
         binding.movieDetailsTextViewNumberOfRatings.text = textNumberOfRatings
 
         binding.movieDetailsTextViewOverview.text = movie.overview
@@ -109,7 +116,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
     }
 
-    private fun getGenresEntity(genres: List<Genre>): String {
+    private fun getGenresName(genres: List<Genre>): String {
         val result: StringBuilder = StringBuilder()
         for (genre: Genre in genres) {
             result.append(genre.name).append(", ")

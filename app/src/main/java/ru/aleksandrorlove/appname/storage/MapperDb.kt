@@ -1,6 +1,5 @@
 package ru.aleksandrorlove.appname.storage
 
-import android.util.Log
 import ru.aleksandrorlove.appname.model.Actor
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
@@ -15,6 +14,33 @@ class MapperDb {
         return movies.toList()
     }
 
+    fun mapListFromModelToDb(movies: List<Movie>): List<MovieDb> {
+        val moviesDb: MutableList<MovieDb> = mutableListOf()
+        movies.forEach {
+            moviesDb.add(mapMovieFromModelToDb(it))
+        }
+        return moviesDb.toList()
+    }
+
+    fun mapMovieFromModelToDb(movie: Movie): MovieDb {
+        return MovieDb(
+            id = movie.id,
+            title = movie.title,
+            overview = movie.overview,
+            poster = movie.poster,
+            backdrop = movie.backdrop,
+            ratings = movie.ratings,
+            numberOfRatings = movie.reviews,
+            minimumAge = movie.minimumAge,
+            runtime = movie.runtime,
+            genreId = movie.genres.map { genre -> genre.id },
+            genreName = movie.genres.map { genre -> genre.name },
+            actorId = movie.actors.map { actor -> actor.id },
+            actorName = movie.actors.map { actor -> actor.name },
+            actorPicture = movie.actors.map { actor -> actor.picture }
+        )
+    }
+
     fun mapMovieFromDbToModel(movieDb: MovieDb): Movie {
         return Movie(
             id = movieDb.id,
@@ -23,34 +49,12 @@ class MapperDb {
             poster = movieDb.poster,
             backdrop = movieDb.backdrop,
             ratings = movieDb.ratings,
-            numberOfRatings = movieDb.numberOfRatings,
+            reviews = movieDb.numberOfRatings,
             minimumAge = movieDb.minimumAge,
             runtime = movieDb.runtime,
             genres = getGenres(movieDb),
             actors = getActors(movieDb)
         )
-    }
-
-    fun mapListFromModelToDb(movies: List<Movie>): List<MovieDb> {
-        return movies.map { movie ->
-            MovieDb(
-                id = movie.id,
-                title = movie.title,
-                overview = movie.overview,
-                poster = movie.poster,
-                backdrop = movie.backdrop,
-                ratings = movie.ratings,
-                numberOfRatings = movie.numberOfRatings,
-                minimumAge = movie.minimumAge,
-                runtime = movie.runtime,
-                genreId = movie.genres.map { genre -> genre.id },
-                genreName = movie.genres.map { genre -> genre.name },
-                actorId = movie.actors.map { actor -> actor.id },
-                actorName = movie.actors.map { actor -> actor.name },
-                actorPicture = movie.actors.map { actor -> actor.picture }
-
-            )
-        }
     }
 
     private fun getGenres(movieDb: MovieDb): List<Genre> {

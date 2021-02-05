@@ -39,13 +39,13 @@ class ViewModelMoviesList : ViewModel() {
             }
 
             if (remoteMoviesResult is Result.Success) {
-                val newMovies = remoteMoviesResult.data
+                val newMovies: List<Movie> = remoteMoviesResult.data as List<Movie>
 
                 withContext(Dispatchers.IO) {
                     repositoryDb.deleteAllToDb()
-                    repositoryDb.saveMovieToDb(mapperDb.mapListFromModelToDb(newMovies as List<Movie>))
+                    repositoryDb.saveListMovieToDb(mapperDb.mapListFromModelToDb(newMovies as List<Movie>))
                 }
-                moviesMutableData.value = newMovies as List<Movie>
+                moviesMutableData.value = newMovies
             } else if (remoteMoviesResult is Result.Error) {
                 errorMessageMutableData.value = remoteMoviesResult.message
             }

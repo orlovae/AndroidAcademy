@@ -7,9 +7,23 @@ data class Movie(
     val poster: String,
     val backdrop: String,
     val ratings: Int,
-    val numberOfRatings: Int,
+    val reviews: Int,
     val minimumAge: String,
     val runtime: Int,
     val genres: List<Genre>,
     val actors: List<Actor>
-)
+) {
+    constructor() : this (
+        0,
+        "",
+        "",
+        "",
+        "",
+        0,
+        0,
+        "",
+        0,
+        emptyList(),
+        emptyList()
+    )
+}

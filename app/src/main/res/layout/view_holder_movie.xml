@@ -141,7 +141,7 @@
             app:srcCompat="@drawable/star_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/holder_movie_text_view_number_of_ratings"
+            android:id="@+id/holder_movie_text_view_reviews"
             style="@style/RatingMovieDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

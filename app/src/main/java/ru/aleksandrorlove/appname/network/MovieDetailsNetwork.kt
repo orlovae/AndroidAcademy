@@ -8,15 +8,41 @@ data class MovieDetailsNetwork(
     @SerialName("id")
     val id: Int,
 
+    @SerialName("original_title")
+    val title: String,
+
+    @SerialName("overview")
+    val overview: String,
+
+    @SerialName("poster_path")
+    val poster: String? = null,
+
+    @SerialName("backdrop_path")
+    val backdrop: String? = null,
+
     @SerialName("vote_average")
     val ratings: Double,
+
+    @SerialName("vote_count")
+    val reviews: Int,
 
     @SerialName("runtime")
     val runtime: Int? = null,
 
+    @SerialName("genres")
+    val genres: List<GenreNetwork>,
+
     @SerialName("release_dates")
     val releaseDates: ReleaseDates
 )
+
+//@Serializable
+//data class GenresItem(
+//    @SerialName("id")
+//    val id: Int,
+//    @SerialName("name")
+//    val name: String
+//)
 
 @Serializable
 data class ReleaseDates(

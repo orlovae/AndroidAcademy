@@ -13,8 +13,12 @@ class RepositoryDb {
         return db.MoviesDao().getMovie(id)
     }
 
-    fun saveMovieToDb(moviesDb: List<MovieDb>) {
+    fun saveListMovieToDb(moviesDb: List<MovieDb>) {
         db.MoviesDao().insertAll(moviesDb)
+    }
+
+    fun updateMovieToDb(movieDb: MovieDb) {
+        db.MoviesDao().update(movieDb)
     }
 
     fun deleteAllToDb() {

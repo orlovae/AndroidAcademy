@@ -37,7 +37,7 @@ class AdapterMovies(
         val star05 = itemView.findViewById<ImageView>(R.id.holder_movie_star_05)
 
         val numberOfRatings =
-            itemView.findViewById<TextView>(R.id.holder_movie_text_view_number_of_ratings)
+            itemView.findViewById<TextView>(R.id.holder_movie_text_view_reviews)
         val title = itemView.findViewById<TextView>(R.id.holder_movie_text_view_title)
         val runtime = itemView.findViewById<TextView>(R.id.holder_movie_text_view_runtime)
     }
@@ -97,7 +97,7 @@ class AdapterMovies(
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
         val textNumberOfRatings: String = context.getString(
             R.string.numberOfRatings,
-            movie.numberOfRatings.toString()
+            movie.reviews.toString()
         )
         numberOfRatingsTextView.text = textNumberOfRatings
 
