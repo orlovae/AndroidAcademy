@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import ru.aleksandrorlove.appname.model.Movie
 import ru.aleksandrorlove.appname.model.entity.MovieDb
 
 @Dao

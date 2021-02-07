@@ -63,11 +63,23 @@ class AdapterMovies(
         Glide.with(context)
             .load(movie.poster)
             .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: Target<Drawable>?, p3: Boolean): Boolean {
+                override fun onLoadFailed(
+                    p0: GlideException?,
+                    p1: Any?,
+                    p2: Target<Drawable>?,
+                    p3: Boolean
+                ): Boolean {
                     Log.d("Glide", "onLoadFailed")
                     return false
                 }
-                override fun onResourceReady(p0: Drawable?, p1: Any?, p2: Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
+
+                override fun onResourceReady(
+                    p0: Drawable?,
+                    p1: Any?,
+                    p2: Target<Drawable>?,
+                    p3: DataSource?,
+                    p4: Boolean
+                ): Boolean {
                     Log.d("Glide", "OnResourceReady")
                     //do something when picture already loaded
                     return false

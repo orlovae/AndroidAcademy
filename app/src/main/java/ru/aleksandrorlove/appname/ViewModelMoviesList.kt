@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -12,6 +13,8 @@ import ru.aleksandrorlove.appname.network.ManagerNetwork
 import ru.aleksandrorlove.appname.network.Result
 import ru.aleksandrorlove.appname.storage.MapperDb
 import ru.aleksandrorlove.appname.storage.RepositoryDb
+import ru.aleksandrorlove.appname.workmanager.UploadWorker
+import java.util.concurrent.TimeUnit
 
 class ViewModelMoviesList : ViewModel() {
     private val managerNetwork: ManagerNetwork = ManagerNetwork()
@@ -22,6 +25,27 @@ class ViewModelMoviesList : ViewModel() {
 
     val movies: LiveData<List<Movie>> = moviesMutableData
     val errorMessage: LiveData<String> = errorMessageMutableData
+
+    init {
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(true)
+            .setRequiredNetworkType(NetworkType.UNMETERED)
+            .build()
+
+        val uploadWorkRequest = PeriodicWorkRequestBuilder<UploadWorker>(
+            15,
+            TimeUnit.MINUTES
+        )
+            .setConstraints(constraints)
+            .build()
+
+        val workManager = WorkManager.getInstance(App.appContext)
+        workManager.enqueueUniquePeriodicWork(
+            "",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            uploadWorkRequest
+        )
+    }
 
     fun loadMovies() {
         val repositoryDb: RepositoryDb = RepositoryDb()
@@ -43,7 +67,7 @@ class ViewModelMoviesList : ViewModel() {
 
                 withContext(Dispatchers.IO) {
                     repositoryDb.deleteAllToDb()
-                    repositoryDb.saveListMovieToDb(mapperDb.mapListFromModelToDb(newMovies as List<Movie>))
+                    repositoryDb.saveListMovieToDb(mapperDb.mapListFromModelToDb(newMovies))
                 }
                 moviesMutableData.value = newMovies
             } else if (remoteMoviesResult is Result.Error) {

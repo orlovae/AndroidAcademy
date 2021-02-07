@@ -36,7 +36,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             { movie -> showMovie(movie) })
 
         viewModel.errorMessage.observe(viewLifecycleOwner,
-            {message -> showToast(message)})
+            { message -> showToast(message) })
 
         if (savedInstanceState == null) {
             id?.let { viewModel.onPressItemRecyclerView(it) }

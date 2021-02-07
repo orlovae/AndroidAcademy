@@ -63,6 +63,7 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.6"
+    def work_version = "2.5.0"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -88,6 +89,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

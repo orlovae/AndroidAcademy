@@ -17,7 +17,7 @@ class Converters {
     fun toListOfInt(flatStringList: String): List<Int> {
         val listInt: MutableList<Int> = mutableListOf()
         val listString: List<String> = flatStringList.split(",").map { it.trim() }
-        listString.forEach{
+        listString.forEach {
             listInt.add(it.toInt())
         }
         return listInt.toList()

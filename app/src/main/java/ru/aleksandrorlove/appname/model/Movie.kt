@@ -1,4 +1,4 @@
- package ru.aleksandrorlove.appname.model
+package ru.aleksandrorlove.appname.model
 
 data class Movie(
     val id: Int,
@@ -13,7 +13,7 @@ data class Movie(
     val genres: List<Genre>,
     val actors: List<Actor>
 ) {
-    constructor() : this (
+    constructor() : this(
         0,
         "",
         "",

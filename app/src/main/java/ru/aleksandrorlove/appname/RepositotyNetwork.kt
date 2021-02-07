@@ -5,7 +5,6 @@ import ru.aleksandrorlove.appname.network.Result
 import ru.aleksandrorlove.appname.network.RetrofitModule
 import ru.aleksandrorlove.appname.network.TmdbApi
 
-
 class RepositoryNetwork(private val api: TmdbApi) : RepositoryBase() {
     private var resultConfiguration: Result<Configuration>? = null
 
