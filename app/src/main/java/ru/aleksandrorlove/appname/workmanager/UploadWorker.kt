@@ -1,6 +1,7 @@
 package ru.aleksandrorlove.appname.workmanager
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +33,9 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
 
         if (remoteMoviesResult is ru.aleksandrorlove.appname.network.Result.Success) {
             val newMovies: List<Movie> = remoteMoviesResult.data as List<Movie>
+
+
+                Log.d("UploadWorker", newMovies.size.toString())
 
             withContext(Dispatchers.IO) {
                 repositoryDb.deleteAllToDb()
