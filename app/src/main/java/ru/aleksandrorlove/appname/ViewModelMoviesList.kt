@@ -32,19 +32,15 @@ class ViewModelMoviesList : ViewModel() {
             .setRequiredNetworkType(NetworkType.UNMETERED)
             .build()
 
-        val uploadWorkRequest = PeriodicWorkRequestBuilder<UploadWorker>(
-            15,
-            TimeUnit.MINUTES
+        val uploadWorkRequest = PeriodicWorkRequest.Builder(
+            UploadWorker::class.java, 15, TimeUnit.MINUTES
         )
+            .addTag("UploadWorker")
             .setConstraints(constraints)
             .build()
 
-        val workManager = WorkManager.getInstance(App.appContext)
-        workManager.enqueueUniquePeriodicWork(
-            "",
-            ExistingPeriodicWorkPolicy.REPLACE,
-            uploadWorkRequest
-        )
+        WorkManager.getInstance(App.appContext).enqueue(uploadWorkRequest)
+
     }
 
     fun loadMovies() {
