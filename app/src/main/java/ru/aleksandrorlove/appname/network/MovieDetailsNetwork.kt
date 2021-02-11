@@ -36,14 +36,6 @@ data class MovieDetailsNetwork(
     val releaseDates: ReleaseDates
 )
 
-//@Serializable
-//data class GenresItem(
-//    @SerialName("id")
-//    val id: Int,
-//    @SerialName("name")
-//    val name: String
-//)
-
 @Serializable
 data class ReleaseDates(
     @SerialName("results")

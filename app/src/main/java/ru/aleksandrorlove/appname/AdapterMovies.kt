@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
+import kotlin.math.roundToInt
 
 class AdapterMovies(
     var movies: List<Movie>,
@@ -104,7 +105,7 @@ class AdapterMovies(
         val genres: String = covertListGenreToString(movie.genres)
         genreTextView.text = genres
 
-        setColorStars(holder, movie.ratings)
+        setColorStars(holder, convertRatingToInt(movie.ratings))
 
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
         val textNumberOfRatings: String = context.getString(
@@ -154,5 +155,9 @@ class AdapterMovies(
             result.append(genre.name).append(", ")
         }
         return result.dropLast(2).toString()
+    }
+
+    private fun convertRatingToInt(rating: Double): Int {
+        return (rating * 0.5).roundToInt()
     }
 }

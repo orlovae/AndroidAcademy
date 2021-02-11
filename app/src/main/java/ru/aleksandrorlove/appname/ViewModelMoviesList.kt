@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -61,6 +62,9 @@ class ViewModelMoviesList : ViewModel() {
             if (remoteMoviesResult is Result.Success) {
                 val newMovies: List<Movie> = remoteMoviesResult.data as List<Movie>
 
+                val movieRatingHigh = findHighRating(newMovies)
+                Log.d("VMML", "movieRatingHigh is " + movieRatingHigh.toString())
+
                 withContext(Dispatchers.IO) {
                     repositoryDb.deleteAllToDb()
                     repositoryDb.saveListMovieToDb(mapperDb.mapListFromModelToDb(newMovies))
@@ -70,5 +74,22 @@ class ViewModelMoviesList : ViewModel() {
                 errorMessageMutableData.value = remoteMoviesResult.message
             }
         }
+    }
+
+    private fun findNewMovie(moviesFromDb: List<Movie>, moviesFromNetwork: List<Movie>) : Result<Any> {
+
+        return Result.Success(1)
+    }
+
+    private fun findHighRating(movies: List<Movie>) : Movie {
+        var findMovie = movies[0]
+        var ratingHigh = findMovie.ratings
+        for (movie in movies) {
+            if (ratingHigh < movie.ratings) {
+                ratingHigh = movie.ratings
+                findMovie = movie
+            }
+        }
+        return findMovie
     }
 }

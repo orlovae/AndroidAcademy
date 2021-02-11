@@ -74,7 +74,7 @@ class ManagerNetwork {
                         ImageType.BACKDROP,
                         movieDetailsNetwork.backdrop
                     ),
-                    convertRatingToInt(movieDetailsNetwork.ratings),
+                    movieDetailsNetwork.ratings,
                     movieDetailsNetwork.reviews,
                     getMinimumAge(movieDetailsNetwork),
                     movieDetailsNetwork.runtime ?: 0,
@@ -131,10 +131,6 @@ class ManagerNetwork {
             ImageType.BACKDROP -> NetworkConfig.ERROR_BACKDROP
             ImageType.ACTOR -> NetworkConfig.ERROR_ACTOR
         }
-    }
-
-    private fun convertRatingToInt(rating: Double): Int {
-        return (rating * 0.5).roundToInt()
     }
 
     //TODO В данной функции можно добавить агрумент language: String для выбора нащиональной системы рейтинга

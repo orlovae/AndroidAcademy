@@ -19,7 +19,7 @@ data class MovieDb(
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_BACKDROP)
     val backdrop: String,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_RATINGS)
-    val ratings: Int,
+    val ratings: Double,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_NUMBER_OF_RAITING)
     val numberOfRatings: Int,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_MINIMUM_AGE)
