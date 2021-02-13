@@ -48,7 +48,6 @@
             android:alpha="0.9"
             android:background="@drawable/text_view_car_view_top"
             android:padding="4dp"
-            android:text="@string/RARS"
             app:layout_constraintBottom_toBottomOf="@id/guideline_card_view_horizontal_top"
             app:layout_constraintStart_toStartOf="@id/constrain_layout_card_view"
             app:layout_constraintTop_toTopOf="@id/guideline_card_view_horizontal_top" />

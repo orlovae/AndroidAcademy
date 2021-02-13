@@ -1,25 +1,24 @@
 package ru.aleksandrorlove.appname
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.aleksandrorlove.appname.model.Movie
 import ru.aleksandrorlove.appname.network.ManagerNetwork
 import ru.aleksandrorlove.appname.network.Result
+import ru.aleksandrorlove.appname.notification.NotificationManager
 import ru.aleksandrorlove.appname.storage.MapperDb
 import ru.aleksandrorlove.appname.storage.RepositoryDb
-import ru.aleksandrorlove.appname.workmanager.UploadWorker
-import java.util.concurrent.TimeUnit
 
 class ViewModelMoviesList : ViewModel() {
     private val managerNetwork: ManagerNetwork = ManagerNetwork()
     private val mapperDb: MapperDb = MapperDb()
+
+    private val notificationManager = NotificationManager.Singleton.instance
 
     private val moviesMutableData = MutableLiveData<List<Movie>>()
     private val errorMessageMutableData = MutableLiveData<String>()
@@ -28,20 +27,19 @@ class ViewModelMoviesList : ViewModel() {
     val errorMessage: LiveData<String> = errorMessageMutableData
 
     init {
-        val constraints = Constraints.Builder()
-            .setRequiresCharging(true)
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .build()
-
-        val uploadWorkRequest = PeriodicWorkRequest.Builder(
-            UploadWorker::class.java, 15, TimeUnit.MINUTES
-        )
-            .addTag("UploadWorker")
-            .setConstraints(constraints)
-            .build()
-
-        WorkManager.getInstance(App.appContext).enqueue(uploadWorkRequest)
-
+//        val constraints = Constraints.Builder()
+//            .setRequiresCharging(true)
+//            .setRequiredNetworkType(NetworkType.UNMETERED)
+//            .build()
+//
+//        val uploadWorkRequest = PeriodicWorkRequest.Builder(
+//            UploadWorker::class.java, 15, TimeUnit.MINUTES
+//        )
+//            .addTag("UploadWorker")
+//            .setConstraints(constraints)
+//            .build()
+//
+//        WorkManager.getInstance(App.appContext).enqueue(uploadWorkRequest)
     }
 
     fun loadMovies() {
@@ -60,28 +58,47 @@ class ViewModelMoviesList : ViewModel() {
             }
 
             if (remoteMoviesResult is Result.Success) {
-                val newMovies: List<Movie> = remoteMoviesResult.data as List<Movie>
+                val remoteMovies: List<Movie> = remoteMoviesResult.data as List<Movie>
 
-                val movieRatingHigh = findHighRating(newMovies)
-                Log.d("VMML", "movieRatingHigh is " + movieRatingHigh.toString())
+                initNotification(localMovies, remoteMovies)
 
                 withContext(Dispatchers.IO) {
                     repositoryDb.deleteAllToDb()
-                    repositoryDb.saveListMovieToDb(mapperDb.mapListFromModelToDb(newMovies))
+                    repositoryDb.saveListMovieToDb(mapperDb.mapListFromModelToDb(remoteMovies))
                 }
-                moviesMutableData.value = newMovies
+                moviesMutableData.value = remoteMovies
             } else if (remoteMoviesResult is Result.Error) {
                 errorMessageMutableData.value = remoteMoviesResult.message
             }
         }
     }
 
-    private fun findNewMovie(moviesFromDb: List<Movie>, moviesFromNetwork: List<Movie>) : Result<Any> {
+    private fun initNotification(moviesFromDb: List<Movie>, moviesFromNetwork: List<Movie>) {
+        val newMovies: List<Movie> = findNewMovies(moviesFromDb, moviesFromNetwork)
 
-        return Result.Success(1)
+        val movieForNotification: Movie = if (newMovies.isEmpty()) {
+            findMovieHighRating(moviesFromDb)
+        } else {
+            findMovieHighRating(newMovies)
+        }
+        
+        val notification = notificationManager.createNotification(movieForNotification)
+        
+        notificationManager.showNotification(notification)
     }
 
-    private fun findHighRating(movies: List<Movie>) : Movie {
+    private fun findNewMovies(moviesFromDb: List<Movie>, moviesFromNetwork: List<Movie>) : List<Movie> {
+        val findMovies = mutableListOf<Movie>()
+
+        moviesFromNetwork.forEach {
+            if (!moviesFromDb.contains(it)) {
+                findMovies.add(it)
+            }
+        }
+        return findMovies.toList()
+    }
+
+    private fun findMovieHighRating(movies: List<Movie>) : Movie {
         var findMovie = movies[0]
         var ratingHigh = findMovie.ratings
         for (movie in movies) {

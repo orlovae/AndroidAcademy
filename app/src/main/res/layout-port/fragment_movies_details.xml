@@ -160,7 +160,6 @@
             android:background="@android:color/transparent"
             android:gravity="start"
             android:includeFontPadding="false"
-            android:text="@string/numberOfRatings"
             android:textAllCaps="true"
             app:layout_constraintBottom_toBottomOf="@id/guideline_rating_horizontal"
             app:layout_constraintStart_toEndOf="@id/movie_details_star_05"

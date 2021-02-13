@@ -3,17 +3,10 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for movie details -->
     <string name="back">Back</string>
-    <string name="RARS">13+</string>
-    <string name="title">Avengers: End Game</string>
-    <string name="tag">Action, Adventure, Fantasy</string>
-    <string name="numberOfRatings">%1$s Reviews</string>
-    <string name="story_line">Storyline</string>
-    <string name="description">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
     <string name="cast">Cast</string>
-    <string name="name_01">Robert Downey Jr.</string>
-    <string name="name_02">Chris Evans</string>
-    <string name="name_03">Mark Ruffalo</string>
-    <string name="name_04">Chris Hemsworth</string>
     <string name="movie_list">Movie list</string>
-    <string name="long_movie">%1$s min</string>
+    <!-- Notification -->
+    <string name="channel_new_movie">New movie</string>
+    <string name="channel_new_movie_description">Shows the latest films and movies with the highest
+        rating</string>
 </resources>

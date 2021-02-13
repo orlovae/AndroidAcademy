@@ -15,6 +15,7 @@ object Contract {
         const val COLUMN_NAME_NUMBER_OF_RAITING = "numberOfRatings"
         const val COLUMN_NAME_MINIMUM_AGE = "minimumAge"
         const val COLUMN_NAME_RUNTIME = "runtime"
+        const val COLUMN_NAME_RELEASE_DATE = "releaseDate"
         const val COLUMN_NAME_GENRE_ID = "genreId"
         const val COLUMN_NAME_GENRE_NAME = "genreName"
         const val COLUMN_NAME_ACTOR_ID = "actorId"

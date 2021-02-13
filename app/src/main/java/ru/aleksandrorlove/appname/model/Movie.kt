@@ -10,6 +10,7 @@ data class Movie(
     val reviews: Int,
     val minimumAge: String,
     val runtime: Int,
+    val releaseDate: Long,
     val genres: List<Genre>,
     val actors: List<Actor>
 ) {
@@ -22,6 +23,7 @@ data class Movie(
         0.0,
         0,
         "",
+        0,
         0,
         emptyList(),
         emptyList()

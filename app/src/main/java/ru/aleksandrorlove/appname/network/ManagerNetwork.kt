@@ -5,6 +5,9 @@ import ru.aleksandrorlove.appname.config.NetworkConfig
 import ru.aleksandrorlove.appname.model.Actor
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class ManagerNetwork {
@@ -78,6 +81,7 @@ class ManagerNetwork {
                     movieDetailsNetwork.reviews,
                     getMinimumAge(movieDetailsNetwork),
                     movieDetailsNetwork.runtime ?: 0,
+                    convertDateStringToLong(movieDetailsNetwork.releaseDate),
                     mapGenresFromNetworkToModel(movieDetailsNetwork.genres),
                     getListActorEntityFirstSixItem(
                         mapActorsFromNetworkToModel(
@@ -166,6 +170,11 @@ class ManagerNetwork {
                 picture = buildUrlImage(ImageType.ACTOR, actorNetwork.picturePath)
             )
         }
+    }
+
+    private fun convertDateStringToLong(date: String) : Long {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        return dateFormat.parse(date).time
     }
 
     private enum class ImageType {

@@ -33,6 +33,7 @@ class MapperDb {
             numberOfRatings = movie.reviews,
             minimumAge = movie.minimumAge,
             runtime = movie.runtime,
+            releaseDate = movie.releaseDate,
             genreId = movie.genres.map { genre -> genre.id },
             genreName = movie.genres.map { genre -> genre.name },
             actorId = movie.actors.map { actor -> actor.id },
@@ -52,6 +53,7 @@ class MapperDb {
             reviews = movieDb.numberOfRatings,
             minimumAge = movieDb.minimumAge,
             runtime = movieDb.runtime,
+            releaseDate = movieDb.releaseDate,
             genres = getGenres(movieDb),
             actors = getActors(movieDb)
         )

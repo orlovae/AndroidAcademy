@@ -26,6 +26,8 @@ data class MovieDb(
     val minimumAge: String,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_RUNTIME)
     val runtime: Int,
+    @ColumnInfo(name = Contract.Movie.COLUMN_NAME_RELEASE_DATE)
+    val releaseDate: Long,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_GENRE_ID)
     val genreId: List<Int>,
     @ColumnInfo(name = Contract.Movie.COLUMN_NAME_GENRE_NAME)

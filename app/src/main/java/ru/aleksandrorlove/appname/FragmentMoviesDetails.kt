@@ -102,9 +102,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             )
         }
 
-        val textNumberOfRatings: String =
-            this.getString(R.string.numberOfRatings, movie.reviews.toString())
-        binding.movieDetailsTextViewNumberOfRatings.text = textNumberOfRatings
+        binding.movieDetailsTextViewNumberOfRatings.text = movie.reviews.toString()
 
         binding.movieDetailsTextViewOverview.text = movie.overview
 

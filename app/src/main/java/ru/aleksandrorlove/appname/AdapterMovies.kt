@@ -57,10 +57,6 @@ class AdapterMovies(
 
         val posterImageView: ImageView = holder.poster
 
-        Log.d("Adapter", "poster = " + movie.poster)
-
-
-
         Glide.with(context)
             .load(movie.poster)
             .listener(object : RequestListener<Drawable> {
@@ -108,19 +104,13 @@ class AdapterMovies(
         setColorStars(holder, convertRatingToInt(movie.ratings))
 
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
-        val textNumberOfRatings: String = context.getString(
-            R.string.numberOfRatings,
-            movie.reviews.toString()
-        )
-        numberOfRatingsTextView.text = textNumberOfRatings
+        numberOfRatingsTextView.text = movie.reviews.toString()
 
         val titleTextView: TextView = holder.title
         titleTextView.text = movie.title
 
         val runtime: TextView = holder.runtime
-        val textRuntime: String =
-            context.getString(R.string.long_movie, movie.runtime.toString())
-        runtime.text = textRuntime
+        runtime.text = movie.runtime.toString()
 
         holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie.id) }
 

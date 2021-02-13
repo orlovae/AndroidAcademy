@@ -29,6 +29,9 @@ data class MovieDetailsNetwork(
     @SerialName("runtime")
     val runtime: Int? = null,
 
+    @SerialName("release_date")
+    val releaseDate: String,
+
     @SerialName("genres")
     val genres: List<GenreNetwork>,
 

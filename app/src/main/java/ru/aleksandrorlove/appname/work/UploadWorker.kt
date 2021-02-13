@@ -1,4 +1,4 @@
-package ru.aleksandrorlove.appname.workmanager
+package ru.aleksandrorlove.appname.work
 
 import android.content.Context
 import android.util.Log
