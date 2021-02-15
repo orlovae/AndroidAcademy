@@ -83,7 +83,8 @@ class AdapterMovies(
         setColorStars(holder, convertRatingToInt(movie.ratings))
 
         val numberOfRatingsTextView: TextView = holder.numberOfRatings
-        numberOfRatingsTextView.text = movie.reviews.toString()
+        numberOfRatingsTextView.text =
+            movie.reviews.toString() + " " + context.getString(R.string.reviews)
 
         val titleTextView: TextView = holder.title
         titleTextView.text = movie.title

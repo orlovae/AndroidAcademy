@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="action_settings">Settings</string>
+    <string name="reviews">reviews</string>
     <!-- Strings used for movie details -->
     <string name="back">Back</string>
     <string name="cast">Cast</string>

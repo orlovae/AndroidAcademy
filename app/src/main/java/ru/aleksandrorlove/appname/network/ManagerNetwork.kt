@@ -2,6 +2,9 @@ package ru.aleksandrorlove.appname.network
 
 import ru.aleksandrorlove.appname.RepositoryNetwork
 import ru.aleksandrorlove.appname.config.NetworkConfig
+import ru.aleksandrorlove.appname.config.NetworkConfig.BACKDROP_SIZE
+import ru.aleksandrorlove.appname.config.NetworkConfig.POSTER_SIZE
+import ru.aleksandrorlove.appname.config.NetworkConfig.PROFILE_SIZE
 import ru.aleksandrorlove.appname.model.Actor
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
@@ -111,9 +114,6 @@ class ManagerNetwork {
         }
     }
 
-    // 4 - соответсвует размерам poster w500
-// 1 - соответсвует размерам backdrop w780
-// 0 - соответсвует размерам profile w45
     private suspend fun buildUrlImage(imageType: ImageType, path: String?): String {
         val resultConfiguration = repositoryNetwork.getResultConfiguration()
         if (resultConfiguration is Result.Success) {
@@ -122,11 +122,11 @@ class ManagerNetwork {
 
             return when (imageType) {
                 ImageType.POSTER -> configurationImages.baseUrlImages +
-                        configurationImages.posterSizes[4] + path
+                        configurationImages.posterSizes[POSTER_SIZE] + path
                 ImageType.BACKDROP -> configurationImages.baseUrlImages +
-                        configurationImages.backdropSizes[1] + path
+                        configurationImages.backdropSizes[BACKDROP_SIZE] + path
                 ImageType.ACTOR -> configurationImages.baseUrlImages +
-                        configurationImages.profileSizes[0] + path
+                        configurationImages.profileSizes[PROFILE_SIZE] + path
             }
         }
 

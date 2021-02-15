@@ -103,7 +103,8 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
             )
         }
 
-        binding.movieDetailsTextViewNumberOfRatings.text = movie.reviews.toString()
+        binding.movieDetailsTextViewNumberOfRatings.text =
+            movie.reviews.toString() + " " + requireContext().getString(R.string.reviews)
 
         binding.movieDetailsTextViewOverview.text = movie.overview
 
