@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -59,29 +60,7 @@ class AdapterMovies(
 
         Glide.with(context)
             .load(movie.poster)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    p0: GlideException?,
-                    p1: Any?,
-                    p2: Target<Drawable>?,
-                    p3: Boolean
-                ): Boolean {
-                    Log.d("Glide", "onLoadFailed")
-                    return false
-                }
-
-                override fun onResourceReady(
-                    p0: Drawable?,
-                    p1: Any?,
-                    p2: Target<Drawable>?,
-                    p3: DataSource?,
-                    p4: Boolean
-                ): Boolean {
-                    Log.d("Glide", "OnResourceReady")
-                    //do something when picture already loaded
-                    return false
-                }
-            })
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(posterImageView)
 
         val minimumAgeTextView: TextView = holder.minimumAge

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import ru.aleksandrorlove.appname.model.Actor
 
 class AdapterActors(private val actors: List<Actor>) :
@@ -30,6 +31,7 @@ class AdapterActors(private val actors: List<Actor>) :
         val photoImageView = holder.photo
         Glide.with(holder.itemView.context)
             .load(actor.picture)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(photoImageView)
         val nameTextView = holder.name
         nameTextView.text = actor.name

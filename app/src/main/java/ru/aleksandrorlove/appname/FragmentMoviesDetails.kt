@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import ru.aleksandrorlove.appname.config.AppConfig.MOVIE_ID
 import ru.aleksandrorlove.appname.databinding.FragmentMoviesDetailsBinding
 import ru.aleksandrorlove.appname.model.Genre
 import ru.aleksandrorlove.appname.model.Movie
@@ -23,7 +24,7 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { id = it.getInt(ARG_MOVIE_ID) }
+        arguments?.let { id = it.getInt(MOVIE_ID) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -123,11 +124,9 @@ class FragmentMoviesDetails : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private val ARG_MOVIE_ID = "FragmentMoviesDetails_movie_id"
-
         fun newInstance(id: Int): FragmentMoviesDetails {
             val args = Bundle()
-            args.putInt(ARG_MOVIE_ID, id)
+            args.putInt(MOVIE_ID, id)
             val fragment = FragmentMoviesDetails()
             fragment.arguments = args
             return fragment
