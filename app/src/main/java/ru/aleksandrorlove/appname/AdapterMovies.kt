@@ -90,7 +90,7 @@ class AdapterMovies(
         titleTextView.text = movie.title
 
         val runtime: TextView = holder.runtime
-        runtime.text = movie.runtime.toString()
+        runtime.text = movie.runtime.toString() +  " " + context.getString(R.string.min)
 
         holder.itemView.setOnClickListener { cellClickListener.onCellClickListener(movie.id) }
 

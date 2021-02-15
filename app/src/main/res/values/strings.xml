@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="action_settings">Settings</string>
+    <!-- Strings used for movie list -->
     <string name="reviews">reviews</string>
+    <string name="min">min</string>
     <!-- Strings used for movie details -->
     <string name="back">Back</string>
     <string name="cast">Cast</string>
