@@ -1,5 +1,6 @@
 package ru.aleksandrorlove.appname
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -58,7 +59,9 @@ class ViewModelMoviesList : ViewModel() {
             }
 
             if (remoteMoviesResult is Result.Success) {
-                val remoteMovies: List<Movie> = remoteMoviesResult.data as List<Movie>
+                val unSortedRemoteMovie: List<Movie> = remoteMoviesResult.data as List<Movie>
+
+                val  remoteMovies: List<Movie> = unSortedRemoteMovie.sortedBy { it.id }
 
                 initNotification(localMovies, remoteMovies)
 
